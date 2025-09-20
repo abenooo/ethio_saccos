@@ -19,16 +19,20 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.ethio_saccos"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+defaultConfig {
+    applicationId = "com.example.ethio_saccos"
+    minSdkVersion(24)  
+    targetSdkVersion(34)
+    versionCode = flutter.versionCode
+    versionName = flutter.versionName
+
+    ndk {
+        abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
     }
+}
+
+
+
 
     buildTypes {
         release {
