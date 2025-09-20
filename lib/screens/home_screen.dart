@@ -4,6 +4,7 @@ import '../theme.dart';
 import '../providers/theme_provider.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/bottom_nav_bar.dart';
+import '../widgets/card_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,9 +32,9 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   _Header(),
                   const SizedBox(height: 24),
-                  _BalanceCard(
-                    cardGradient: gradients.cardGradient,
+                  CardCarousel(
                     isDark: isDark,
+                    cardGradient: gradients.cardGradient,
                   ),
                   const SizedBox(height: 32),
                   _QuickActions(isDark: isDark),
