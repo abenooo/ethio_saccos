@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_navigation_screen.dart';
 import 'providers/theme_provider.dart';
-import 'widgets/bottom_nav_bar.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => AppNavigationController()),
       ],
       child: const MyApp(),
     ),
@@ -26,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
           title: 'Ethio Saccos',
           theme: themeProvider.theme,
-          home: const HomeScreen(),
+          home: const MainNavigationScreen(),
           debugShowCheckedModeBanner: false,
         );
       },

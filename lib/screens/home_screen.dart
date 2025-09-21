@@ -7,7 +7,9 @@ import '../widgets/bottom_nav_bar.dart';
 import '../widgets/card_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final bool showBottomNav;
+  
+  const HomeScreen({super.key, this.showBottomNav = true});
 
   @override
   Widget build(BuildContext context) {
@@ -16,42 +18,42 @@ class HomeScreen extends StatelessWidget {
     final gradients = Theme.of(context).extension<AppGradients>()!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    return ChangeNotifierProvider(
-      create: (_) => AppNavigationController(),
-      child: Scaffold(
-        backgroundColor: cs.background,
-        drawer: const AppDrawer(),
-        body: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            Container(
-              decoration: BoxDecoration(gradient: gradients.headerGradient),
-              padding: EdgeInsets.fromLTRB(16, top + 16, 16, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _Header(),
-                  const SizedBox(height: 24),
-                  CardCarousel(
-                    isDark: isDark,
-                    cardGradient: gradients.cardGradient,
-                  ),
-                  const SizedBox(height: 32),
-                  _QuickActions(isDark: isDark),
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: cs.background,
+      drawer: const AppDrawer(),
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          Container(
+            decoration: BoxDecoration(gradient: gradients.headerGradient),
+            padding: EdgeInsets.fromLTRB(16, top + 16, 16, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _Header(),
+                const SizedBox(height: 24),
+                CardCarousel(
+                  isDark: isDark,
+                  cardGradient: gradients.cardGradient,
+                ),
+                const SizedBox(height: 32),
+                _QuickActions(isDark: isDark),
+              ],
             ),
-            _TransactionSection(isDark: isDark),
-          ],
-        ),
-        bottomNavigationBar: Consumer<AppNavigationController>(
+          ),
+          _TransactionSection(isDark: isDark),
+        ],
+      ),
+      bottomNavigationBar: showBottomNav ? ChangeNotifierProvider(
+        create: (_) => AppNavigationController(),
+        child: Consumer<AppNavigationController>(
           builder: (context, controller, _) {
             return AppBottomNavBar(
               items: controller.getNavigationItems(),
             );
           },
         ),
-      ),
+      ) : null,
     );
   }
 }
