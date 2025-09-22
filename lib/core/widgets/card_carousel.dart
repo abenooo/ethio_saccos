@@ -16,7 +16,7 @@ class CardCarousel extends StatefulWidget {
 
 class _CardCarouselState extends State<CardCarousel> {
   static const _kViewportFraction = 0.95;
-  static const _kCardHeight = 240.0;
+  static const _kCardHeight = 180.0;
   
   final PageController _pageController = PageController(viewportFraction: _kViewportFraction);
   int _currentPage = 0;
@@ -73,15 +73,16 @@ class _CardCarouselState extends State<CardCarousel> {
   Widget _buildDotIndicator(int index) {
     final isSelected = _currentPage == index;
     final color = isSelected
-        ? (widget.isDark ? Colors.white : Colors.blue[700])
-        : (widget.isDark ? Colors.white.withOpacity(0.3) : Colors.blue.withOpacity(0.2));
+        ? Colors.white
+        : Colors.white.withValues(alpha: 0.4);
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      width: 8,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      margin: const EdgeInsets.symmetric(horizontal: 3),
+      width: isSelected ? 24 : 8,
       height: 8,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
+        borderRadius: BorderRadius.circular(4),
         color: color,
       ),
     );
@@ -94,14 +95,14 @@ class _CardCarouselState extends State<CardCarousel> {
         gradient: widget.cardGradient,
         borderRadius: BorderRadius.circular(20),
       ),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildCardHeader(card),
           const Spacer(),
           _buildAmount(card.amount),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           _buildCardFooter(card),
         ],
       ),

@@ -32,7 +32,7 @@ class AppBottomNavBar extends StatelessWidget {
     final theme = Theme.of(context);
     final color = item.isSelected 
         ? theme.colorScheme.primary
-        : theme.colorScheme.onBackground.withOpacity(0.4);
+        : theme.colorScheme.onBackground.withValues(alpha: 0.4);
 
     return InkWell(
       onTap: item.onTap,
@@ -68,7 +68,7 @@ class AppBottomNavBar extends StatelessWidget {
         boxShadow: [
           if (elevation > 0)
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: elevation,
               offset: const Offset(0, -5),
             ),
@@ -112,14 +112,14 @@ class AppNavigationController extends ChangeNotifier {
         onTap: () => setIndex(0),
       ),
       BottomNavItem(
-        icon: Icons.credit_card,
-        label: 'My Cards',
+        icon: Icons.account_balance,
+        label: 'Loans',
         isSelected: _selectedIndex == 1,
         onTap: () => setIndex(1),
       ),
       BottomNavItem(
-        icon: Icons.pie_chart,
-        label: 'Statistics',
+        icon: Icons.savings,
+        label: 'Savings',
         isSelected: _selectedIndex == 2,
         onTap: () => setIndex(2),
       ),

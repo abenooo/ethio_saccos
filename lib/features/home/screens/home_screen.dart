@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../theme.dart';
-import '../providers/theme_provider.dart';
-import '../widgets/app_drawer.dart';
-import '../widgets/bottom_nav_bar.dart';
-import '../widgets/card_carousel.dart';
+import '../../../core/theme/theme.dart';
+import '../../../core/providers/theme_provider.dart';
+import '../../../core/widgets/app_drawer.dart';
+import '../../../core/widgets/bottom_nav_bar.dart';
+import '../../../core/widgets/card_carousel.dart';
 
 class HomeScreen extends StatelessWidget {
   final bool showBottomNav;
@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          _TransactionSection(isDark: isDark),
+            _AccountMenuSection(isDark: isDark),
         ],
       ),
       bottomNavigationBar: showBottomNav ? ChangeNotifierProvider(
@@ -62,7 +62,6 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white : Colors.black;
     
     return Row(
       children: [
@@ -123,93 +122,6 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _BalanceCard extends StatelessWidget {
-  final Gradient cardGradient;
-  final bool isDark;
-
-  const _BalanceCard({
-    required this.cardGradient,
-    required this.isDark,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: cardGradient,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.credit_card_outlined,
-                  color: isDark ? Colors.white70 : Colors.white),
-              const Spacer(),
-              Icon(Icons.contactless,
-                  color: isDark ? Colors.white70 : Colors.white),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Text(
-            '4562  1122  4595  7852',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              letterSpacing: 2,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('AR Jonson',
-                      style: TextStyle(
-                          color: isDark ? Colors.white70 : Colors.white)),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Expiry Date\n24/2000',
-                    style: TextStyle(
-                        color: isDark ? Colors.white60 : Colors.white70,
-                        fontSize: 12),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // Replace Mastercard image with text
-                  Text(
-                    'Mastercard',
-                    style: TextStyle(
-                      color: isDark ? Colors.white70 : Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'CVV\n6986',
-                    style: TextStyle(
-                        color: isDark ? Colors.white60 : Colors.white70,
-                        fontSize: 12),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class _QuickActions extends StatelessWidget {
   final bool isDark;
@@ -264,40 +176,145 @@ class _QuickActions extends StatelessWidget {
   }
 }
 
-class _TransactionSection extends StatelessWidget {
+class _AccountMenuSection extends StatelessWidget {
   final bool isDark;
 
-  const _TransactionSection({required this.isDark});
+  const _AccountMenuSection({required this.isDark});
 
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          
+          // Account Service Cards - All 6 cards
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.6,
             children: [
-              Text(
-                'Transaction',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : Colors.black,
-                ),
+              _buildQuickAccessCard(
+                context,
+                icon: Icons.account_balance_wallet,
+                title: 'Accounts',
+                subtitle: 'View all accounts',
+                color: Colors.blue,
               ),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  'See All',
-                  style: TextStyle(
-                    color: isDark ? Colors.blue : Colors.blue[700],
-                  ),
-                ),
+              _buildQuickAccessCard(
+                context,
+                icon: Icons.account_balance,
+                title: 'Balance',
+                subtitle: 'Check balance',
+                color: Colors.green,
+              ),
+              _buildQuickAccessCard(
+                context,
+                icon: Icons.receipt_long,
+                title: 'Statement',
+                subtitle: 'View statements',
+                color: Colors.purple,
+              ),
+              _buildQuickAccessCard(
+                context,
+                icon: Icons.add_circle,
+                title: 'Deposit',
+                subtitle: 'Add money',
+                color: Colors.orange,
+              ),
+              _buildQuickAccessCard(
+                context,
+                icon: Icons.remove_circle,
+                title: 'Withdraw',
+                subtitle: 'Take money',
+                color: Colors.red,
+              ),
+              _buildQuickAccessCard(
+                context,
+                icon: Icons.swap_horiz,
+                title: 'Transfer',
+                subtitle: 'Send money',
+                color: Colors.teal,
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildQuickAccessCard(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return GestureDetector(
+      onTap: () {
+        // TODO: Add functionality for each card later
+      },
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.onBackground.withOpacity(0.08),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 20,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 1),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 10,
+                color: colorScheme.onSurface.withOpacity(0.6),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
       ),
     );
   }

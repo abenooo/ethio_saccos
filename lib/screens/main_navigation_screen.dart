@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-import 'profile_screen.dart';
-import 'settings_screen.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:provider/provider.dart';
+import '../features/home/screens/home_screen.dart';
+import '../features/profile/screens/profile_screen.dart';
+import '../features/settings/screens/settings_screen.dart';
+import '../core/providers/theme_provider.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});
@@ -14,9 +17,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = [
-    const HomeScreen(showBottomNav: false), // Don't show bottom nav in home since we handle it here
-    const MyCardsScreen(),
-    const StatisticsScreen(),
+    const LoansScreen(),
+    const SavingsScreen(),
+    const HomeScreen(showBottomNav: false), // Home in the middle (index 2)
+    const ThemeSwitcherScreen(), // New theme toggle screen
     const SettingsScreen(showBackButton: false), // Don't show back button when accessed from main nav
   ];
 
@@ -36,72 +40,274 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         index: _selectedIndex,
         children: _screens,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: colorScheme.background,
-          boxShadow: [
-            BoxShadow(
-              color: colorScheme.onBackground.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, -5),
-            ),
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildNavItem(Icons.home_filled, 'Home', 0),
-                _buildNavItem(Icons.credit_card, 'My Cards', 1),
-                _buildNavItem(Icons.pie_chart, 'Statistics', 2),
-                _buildNavItem(Icons.settings, 'Settings', 3),
-              ],
-            ),
-          ),
-        ),
+      bottomNavigationBar: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          // Different colors for dark and light mode
+          final navBarColor = themeProvider.isDarkMode 
+              ? const Color(0xFF2A2B31) // Dark mode: darker surface color
+              : colorScheme.primary; // Light mode: keep primary color
+          
+          final iconColor = themeProvider.isDarkMode
+              ? Colors.white // Dark mode: white icons
+              : colorScheme.onPrimary; // Light mode: keep original
+              
+          return CurvedNavigationBar(
+            index: _selectedIndex,
+            height: 60.0,
+            items: <Widget>[
+              Icon(
+                Icons.account_balance,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.savings,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.home_filled,
+                size: 32, // Slightly larger for emphasis
+                color: iconColor,
+              ),
+              Icon(
+                themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                size: 30,
+                color: iconColor,
+              ),
+              Icon(
+                Icons.settings,
+                size: 30,
+                color: iconColor,
+              ),
+            ],
+            color: navBarColor,
+            buttonBackgroundColor: navBarColor,
+            backgroundColor: colorScheme.background,
+            animationCurve: Curves.easeInOut,
+            animationDuration: const Duration(milliseconds: 600),
+            onTap: (index) => _onItemTapped(index),
+            letIndexChange: (index) => true,
+          );
+        },
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, String label, int index) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final isSelected = _selectedIndex == index;
-    final color = isSelected 
-        ? colorScheme.primary
-        : colorScheme.onBackground.withOpacity(0.4);
+}
 
-    return InkWell(
-      onTap: () => _onItemTapped(index),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            icon, 
-            color: color, 
-            size: 24,
+// Theme Switcher Screen
+class ThemeSwitcherScreen extends StatelessWidget {
+  const ThemeSwitcherScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Scaffold(
+      backgroundColor: colorScheme.background,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'Theme',
+          style: TextStyle(
+            color: colorScheme.onBackground,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
           ),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: color,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+        ),
+        centerTitle: true,
+      ),
+      body: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Theme illustration
+                Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                    size: 100,
+                    color: colorScheme.primary,
+                  ),
+                ),
+                
+                const SizedBox(height: 40),
+                
+                Text(
+                  themeProvider.isDarkMode ? 'Dark Mode' : 'Light Mode',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onBackground,
+                  ),
+                ),
+                
+                const SizedBox(height: 12),
+                
+                Text(
+                  themeProvider.isDarkMode 
+                      ? 'Enjoy a comfortable viewing experience in low light'
+                      : 'Bright and clear interface for daytime use',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: colorScheme.onBackground.withValues(alpha: 0.7),
+                  ),
+                ),
+                
+                const SizedBox(height: 60),
+                
+                // Theme toggle button
+                Container(
+                  width: double.infinity,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: colorScheme.primary.withValues(alpha: 0.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () {
+                        themeProvider.toggleTheme();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                            color: colorScheme.onPrimary,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            'Switch to ${themeProvider.isDarkMode ? 'Light' : 'Dark'} Mode',
+                            style: TextStyle(
+                              color: colorScheme.onPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+                
+                // Additional theme options
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildThemeOption(
+                        context,
+                        'Auto',
+                        Icons.brightness_auto,
+                        false,
+                        () {
+                          // TODO: Implement auto theme based on system
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: _buildThemeOption(
+                        context,
+                        'System',
+                        Icons.settings_system_daydream,
+                        false,
+                        () {
+                          // TODO: Implement system theme
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildThemeOption(
+    BuildContext context,
+    String title,
+    IconData icon,
+    bool isSelected,
+    VoidCallback onTap,
+  ) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: isSelected ? colorScheme.primary.withValues(alpha: 0.1) : colorScheme.surface,
+        borderRadius: BorderRadius.circular(12),
+        border: isSelected 
+            ? Border.all(color: colorScheme.primary, width: 2)
+            : null,
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.onBackground.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: isSelected ? colorScheme.primary : colorScheme.onSurface.withValues(alpha: 0.7),
+                size: 24,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: TextStyle(
+                  color: isSelected ? colorScheme.primary : colorScheme.onSurface,
+                  fontSize: 12,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
-// Placeholder screens for the navigation
-class MyCardsScreen extends StatelessWidget {
-  const MyCardsScreen({super.key});
+// SACCO-specific screens
+class LoansScreen extends StatelessWidget {
+  const LoansScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +319,7 @@ class MyCardsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'My Cards',
+          'Loans',
           style: TextStyle(
             color: colorScheme.onBackground,
             fontSize: 20,
@@ -127,13 +333,13 @@ class MyCardsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.credit_card,
+              Icons.account_balance,
               size: 80,
-              color: colorScheme.primary.withOpacity(0.5),
+              color: colorScheme.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
-              'My Cards Screen',
+              'Loan Services',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -142,11 +348,12 @@ class MyCardsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Your cards will be displayed here',
+              'Apply for loans, view loan status and payments',
               style: TextStyle(
                 fontSize: 16,
-                color: colorScheme.onBackground.withOpacity(0.7),
+                color: colorScheme.onBackground.withValues(alpha: 0.7),
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -155,8 +362,8 @@ class MyCardsScreen extends StatelessWidget {
   }
 }
 
-class StatisticsScreen extends StatelessWidget {
-  const StatisticsScreen({super.key});
+class SavingsScreen extends StatelessWidget {
+  const SavingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +375,7 @@ class StatisticsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Statistics',
+          'Savings',
           style: TextStyle(
             color: colorScheme.onBackground,
             fontSize: 20,
@@ -182,13 +389,13 @@ class StatisticsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.pie_chart,
+              Icons.savings,
               size: 80,
-              color: colorScheme.primary.withOpacity(0.5),
+              color: colorScheme.primary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
-              'Statistics Screen',
+              'Savings Account',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -197,11 +404,12 @@ class StatisticsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Your statistics will be displayed here',
+              'Manage your savings, view interest and deposits',
               style: TextStyle(
                 fontSize: 16,
-                color: colorScheme.onBackground.withOpacity(0.7),
+                color: colorScheme.onBackground.withValues(alpha: 0.7),
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),

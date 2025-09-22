@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/theme_provider.dart';
-import 'profile_screen.dart';
+import '../../../core/providers/theme_provider.dart';
+import '../../profile/screens/profile_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final bool showBackButton;
@@ -75,9 +75,9 @@ class SettingsScreen extends StatelessWidget {
                       themeProvider.toggleTheme();
                     },
                     activeColor: colorScheme.primary,
-                    activeTrackColor: colorScheme.primary.withOpacity(0.3),
-                    inactiveThumbColor: colorScheme.onSurface.withOpacity(0.6),
-                    inactiveTrackColor: colorScheme.onSurface.withOpacity(0.2),
+                    activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
+                    inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
+                    inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
                   ),
                 );
               },
@@ -120,9 +120,9 @@ class SettingsScreen extends StatelessWidget {
                   // Handle notification toggle
                 },
                 activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withOpacity(0.3),
-                inactiveThumbColor: colorScheme.onSurface.withOpacity(0.6),
-                inactiveTrackColor: colorScheme.onSurface.withOpacity(0.2),
+                activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
+                inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
+                inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
               ),
             ),
             
@@ -145,9 +145,9 @@ class SettingsScreen extends StatelessWidget {
                   // Handle vibration toggle
                 },
                 activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withOpacity(0.3),
-                inactiveThumbColor: colorScheme.onSurface.withOpacity(0.6),
-                inactiveTrackColor: colorScheme.onSurface.withOpacity(0.2),
+                activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
+                inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
+                inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
               ),
             ),
             
@@ -176,9 +176,9 @@ class SettingsScreen extends StatelessWidget {
                   // Handle biometric toggle
                 },
                 activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withOpacity(0.3),
-                inactiveThumbColor: colorScheme.onSurface.withOpacity(0.6),
-                inactiveTrackColor: colorScheme.onSurface.withOpacity(0.2),
+                activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
+                inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
+                inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
               ),
             ),
             
@@ -231,7 +231,7 @@ class SettingsScreen extends StatelessWidget {
                   _showLogoutDialog(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.withOpacity(0.1),
+                  backgroundColor: Colors.red.withValues(alpha:  0.1),
                   foregroundColor: Colors.red,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -289,7 +289,7 @@ class SettingsScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.onBackground.withOpacity(0.03),
+            color: colorScheme.onBackground.withValues(alpha:  0.03),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -300,7 +300,7 @@ class SettingsScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: colorScheme.primary.withOpacity(0.1),
+            color: colorScheme.primary.withValues(alpha:  0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
@@ -321,12 +321,12 @@ class SettingsScreen extends StatelessWidget {
           subtitle,
           style: TextStyle(
             fontSize: 14,
-            color: colorScheme.onSurface.withOpacity(0.7),
+            color: colorScheme.onSurface.withValues(alpha:  0.7),
           ),
         ),
         trailing: trailing ?? Icon(
           Icons.chevron_right,
-          color: colorScheme.onSurface.withOpacity(0.4),
+          color: colorScheme.onSurface.withValues(alpha:  0.4),
         ),
         onTap: onTap,
       ),
@@ -445,7 +445,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           content: Text(
             'Are you sure you want to logout?',
-            style: TextStyle(color: colorScheme.onSurface.withOpacity(0.7)),
+            style: TextStyle(color: colorScheme.onSurface.withValues(alpha:  0.7)),
           ),
           actions: [
             TextButton(
