@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final top = MediaQuery.of(context).padding.top;
     final cs = Theme.of(context).colorScheme;
     final gradients = Theme.of(context).extension<AppGradients>()!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -21,27 +20,128 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: cs.background,
       drawer: const AppDrawer(),
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          Container(
-            decoration: BoxDecoration(gradient: gradients.headerGradient),
-            padding: EdgeInsets.fromLTRB(16, top + 16, 16, 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: CustomScrollView(
+        slivers: [
+          // Sticky App Bar
+          SliverAppBar(
+            floating: false,
+            pinned: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            automaticallyImplyLeading: false,
+            title: Row(
               children: [
-                _Header(),
-                const SizedBox(height: 24),
-                CardCarousel(
-                  isDark: isDark,
-                  cardGradient: gradients.cardGradient,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.2),
+                      width: 1,
+                    ),
+                  ),
+                  child: Builder(
+                    builder: (context) => IconButton(
+                      icon: const Icon(
+                        Icons.menu_rounded,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 32),
-                _QuickActions(isDark: isDark),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Welcome back,',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        'Abenezer Kifle',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: isDark 
+                        ? Colors.white.withOpacity(0.1)
+                        : const Color(0xFFEDF3FF),
+                    shape: BoxShape.circle,
+                    border: isDark 
+                        ? null 
+                        : Border.all(color: Colors.blue.withOpacity(0.2)),
+                  ),
+                  child: IconButton(
+                    icon: Icon(
+                      isDark ? Icons.light_mode : Icons.dark_mode,
+                      color: isDark ? Colors.white : Colors.blue[700],
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      context.read<ThemeProvider>().toggleTheme();
+                    },
+                  ),
+                ),
               ],
             ),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(gradient: gradients.headerGradient),
+            ),
           ),
-            _AccountMenuSection(isDark: isDark),
+          
+          // Scrollable Content
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(gradient: gradients.headerGradient),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 24),
+                  CardCarousel(
+                    isDark: isDark,
+                    cardGradient: gradients.cardGradient,
+                  ),
+                  const SizedBox(height: 32),
+                  // Quick Actions Label
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      'Quick Actions',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  _QuickActions(isDark: isDark),
+                ],
+              ),
+            ),
+          ),
+          
+          // Account Menu Section
+          SliverToBoxAdapter(
+            child: _AccountMenuSection(isDark: isDark),
+          ),
         ],
       ),
       bottomNavigationBar: showBottomNav ? ChangeNotifierProvider(
@@ -61,60 +161,24 @@ class HomeScreen extends StatelessWidget {
 class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IconButton(
-          icon: Icon(
-            Icons.menu,
-            color: Theme.of(context).colorScheme.onBackground,  // This will ensure visibility in both modes
-            size: 28,
-          ),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Welcome back,',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'Abenezer kifle ',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
+        const Text(
+          'Welcome back,',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: isDark 
-                ? Colors.white.withOpacity(0.1)
-                : const Color(0xFFEDF3FF), // Light blue background
-            shape: BoxShape.circle,
-            border: isDark 
-                ? null 
-                : Border.all(color: Colors.blue.withOpacity(0.2)),
-          ),
-          child: IconButton(
-            icon: Icon(
-              isDark ? Icons.light_mode : Icons.dark_mode,
-              color: isDark ? Colors.white : Colors.blue[700],
-              size: 24,
-            ),
-            onPressed: () {
-              context.read<ThemeProvider>().toggleTheme();
-            },
+        const SizedBox(height: 4),
+        const Text(
+          'Abenezer Kifle',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ],
@@ -128,49 +192,60 @@ class _QuickActions extends StatelessWidget {
 
   const _QuickActions({required this.isDark});
 
-  Widget _item(IconData icon, String label) {
-    return Column(
-      children: [
-        Container(
-          height: 56,
-          width: 56,
-          decoration: BoxDecoration(
-            color: isDark 
-                ? Colors.white.withOpacity(0.1)
-                : const Color(0xFFEDF3FF), // Light blue background
-            shape: BoxShape.circle,
-            border: isDark 
-                ? null 
-                : Border.all(color: Colors.blue.withOpacity(0.2)),
-          ),
-          child: Icon(
-            icon,
-            color: isDark ? Colors.white : Colors.blue[700],
-            size: 24,
+  Widget _item(IconData icon, String label, String subtitle) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.15),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withOpacity(0.2),
+            width: 1,
           ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: TextStyle(
-            color: isDark ? Colors.white70 : Colors.black87,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+              size: 22,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            Text(
+              subtitle,
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+                fontSize: 9,
+                fontWeight: FontWeight.w400,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _item(Icons.north_east, 'Sent'),
-        _item(Icons.south_west, 'Receive'),
-        _item(Icons.account_balance, 'Loan'),
-        _item(Icons.cloud_upload, 'Topup'),
+        _item(Icons.savings_rounded, 'Savings', 'Deposit'),
+        _item(Icons.account_balance_rounded, 'Loan', 'Apply'),
+        _item(Icons.payment_rounded, 'Pay', 'Bills'),
+        _item(Icons.history_rounded, 'View', 'History'),
       ],
     );
   }

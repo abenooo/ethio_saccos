@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../features/notifications/screens/notifications_screen.dart';
+import '../../features/home/screens/transaction_details_screen.dart';
+import '../../features/auth/services/auth_service.dart';
+import '../../main.dart';
+import '../../features/savings/screens/savings_list_screen.dart';
+import '../../features/loans/screens/loans_list_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -64,7 +70,7 @@ class AppDrawer extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Tanya Myroniuk',
+            'Abenezer Kifle',
             style: TextStyle(
               color: theme.colorScheme.onPrimary,
               fontSize: 18,
@@ -95,20 +101,75 @@ class AppDrawer extends StatelessWidget {
         children: [
           _buildHeader(context),
           
-          _buildGroupHeader(context, 'Account'),
-          _buildMenuItem(context, Icons.account_balance_wallet, 'My Wallet'),
-          _buildMenuItem(context, Icons.payment, 'Payment History'),
-          _buildMenuItem(context, Icons.analytics, 'Analytics'),
+          _buildGroupHeader(context, 'Member'),
+          _buildMenuItem(
+            context,
+            Icons.savings,
+            'Savings Accounts',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const SavingsListScreen()),
+              );
+            },
+          ),
+          _buildMenuItem(
+            context,
+            Icons.account_balance,
+            'Loans',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const LoansListScreen()),
+              );
+            },
+          ),
+          _buildMenuItem(
+            context,
+            Icons.pie_chart,
+            'Shares',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const TransactionDetailsScreen(title: 'Share Account', isShare: true),
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
+            context,
+            Icons.swap_horiz,
+            'Transfers',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const TransactionDetailsScreen(title: 'Transfers'),
+                ),
+              );
+            },
+          ),
           
           _buildGroupHeader(context, 'Settings'),
-          _buildMenuItem(context, Icons.notifications, 'Notifications'),
+          _buildMenuItem(
+            context,
+            Icons.notifications,
+            'Notifications',
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+              );
+            },
+          ),
           _buildMenuItem(context, Icons.lock, 'Privacy & Security'),
           _buildMenuItem(context, Icons.language, 'Language'),
           
           _buildGroupHeader(context, 'Support'),
           _buildMenuItem(context, Icons.help, 'Help Center'),
           _buildMenuItem(context, Icons.support_agent, 'Contact Support'),
-          _buildMenuItem(context, Icons.info, 'About'),
+          _buildMenuItem(context, Icons.info, 'About SACCO'),
           
           const Divider(),
           _buildMenuItem(
@@ -116,8 +177,12 @@ class AppDrawer extends StatelessWidget {
             Icons.logout,
             'Logout',
             onTap: () {
-              // Handle logout
               Navigator.pop(context);
+              AuthService.logout();
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const AppInitializer()),
+                (route) => false,
+              );
             },
           ),
         ],
