@@ -3,7 +3,15 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/profile/screens/profile_screen.dart';
+import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/register_screen.dart';
+import '../features/auth/screens/forgot_screen.dart';
+import '../features/auth/services/auth_service.dart';
+import '../features/savings/screens/savings_list_screen.dart';
+import '../features/loans/screens/loans_list_screen.dart';
+import '../features/home/screens/transaction_details_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
+import '../features/support/widgets/floating_chat_button.dart';
 import '../core/providers/theme_provider.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -16,13 +24,13 @@ class MainNavigationScreen extends StatefulWidget {
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 2; // Start with Home screen (middle position)
 
-  final List<Widget> _screens = [
-    const LoansScreen(),
-    const SavingsScreen(),
-    const HomeScreen(showBottomNav: false), // Home in the middle (index 2)
-    const ThemeSwitcherScreen(), // New theme toggle screen
-    const SettingsScreen(showBackButton: false), // Don't show back button when accessed from main nav
-  ];
+   late final List<Widget> _screens = [
+      LoansListScreen(onBackToHome: () => _onItemTapped(2)),
+      SavingsListScreen(onBackToHome: () => _onItemTapped(2)),
+      const HomeScreen(showBottomNav: false),
+      TransactionDetailsScreen(title: 'Transaction History', onBackToHome: () => _onItemTapped(2)),
+      SettingsScreen(showBackButton: false, onBackToHome: () => _onItemTapped(2)),
+    ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -36,9 +44,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     final colorScheme = theme.colorScheme;
     
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      body: Stack(
+        children: [
+          IndexedStack(
+            index: _selectedIndex,
+            children: _screens,
+          ),
+          const FloatingChatButton(),
+        ],
       ),
       bottomNavigationBar: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
@@ -71,7 +84,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                 color: iconColor,
               ),
               Icon(
-                themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                Icons.history,
                 size: 30,
                 color: iconColor,
               ),
