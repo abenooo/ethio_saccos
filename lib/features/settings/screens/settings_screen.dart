@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/providers/theme_provider.dart';
+import '../../../core/widgets/custom_app_bar.dart';
 import '../../profile/screens/profile_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final bool showBackButton;
+  final VoidCallback? onBackToHome;
   
-  const SettingsScreen({super.key, this.showBackButton = true});
+  const SettingsScreen({super.key, this.showBackButton = true, this.onBackToHome});
 
   @override
   Widget build(BuildContext context) {
@@ -15,31 +17,27 @@ class SettingsScreen extends StatelessWidget {
     
     return Scaffold(
       backgroundColor: colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: showBackButton ? IconButton(
-          icon: Icon(Icons.arrow_back, color: colorScheme.onBackground),
-          onPressed: () => Navigator.of(context).pop(),
-        ) : null,
-        automaticallyImplyLeading: showBackButton,
-        title: Text(
-          'Settings',
-          style: TextStyle(
-            color: colorScheme.onBackground,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
+      body: Column(
+        children: [
+          CustomAppBar(
+            title: 'Settings',
+            showLanguage: false,
+            onBackPressed: () {
+              if (onBackToHome != null) {
+                onBackToHome!();
+              } else {
+                Navigator.maybePop(context);
+              }
+            },
           ),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Profile Section
-            _buildSectionHeader(context, 'Profile'),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+            // Account & Preferences Section
+            _buildSectionHeader(context, 'Account & Preferences'),
             const SizedBox(height: 12),
             
             _buildSettingTile(
@@ -55,12 +53,6 @@ class SettingsScreen extends StatelessWidget {
                 );
               },
             ),
-            
-            const SizedBox(height: 32),
-            
-            // Appearance Section
-            _buildSectionHeader(context, 'Appearance'),
-            const SizedBox(height: 12),
             
             Consumer<ThemeProvider>(
               builder: (context, themeProvider, child) {
@@ -102,12 +94,6 @@ class SettingsScreen extends StatelessWidget {
                 _showFontSizeDialog(context);
               },
             ),
-            
-            const SizedBox(height: 32),
-            
-            // Notifications Section
-            _buildSectionHeader(context, 'Notifications'),
-            const SizedBox(height: 12),
             
             _buildSettingTile(
               context,
@@ -153,8 +139,8 @@ class SettingsScreen extends StatelessWidget {
             
             const SizedBox(height: 32),
             
-            // Security Section
-            _buildSectionHeader(context, 'Security'),
+            // Security & Support Section
+            _buildSectionHeader(context, 'Security & Support'),
             const SizedBox(height: 12),
             
             _buildSettingTile(
@@ -190,12 +176,6 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {},
             ),
             
-            const SizedBox(height: 32),
-            
-            // Support Section
-            _buildSectionHeader(context, 'Support'),
-            const SizedBox(height: 12),
-            
             _buildSettingTile(
               context,
               icon: Icons.help_outline,
@@ -220,7 +200,7 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {},
             ),
             
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             
             // Logout Button
             Container(
@@ -250,22 +230,29 @@ class SettingsScreen extends StatelessWidget {
             ),
             
             const SizedBox(height: 24),
-          ],
-        ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Padding(
-      padding: const EdgeInsets.only(left: 4),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: colorScheme.onBackground,
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 4),
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onBackground,
+          ),
         ),
       ),
     );
