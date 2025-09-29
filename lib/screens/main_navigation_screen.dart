@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
+import '../core/theme/theme.dart';
 import '../features/home/screens/home_screen.dart';
-import '../features/profile/screens/profile_screen.dart';
-import '../features/auth/screens/login_screen.dart';
-import '../features/auth/screens/register_screen.dart';
-import '../features/auth/screens/forgot_screen.dart';
-import '../features/auth/services/auth_service.dart';
 import '../features/savings/screens/savings_list_screen.dart';
 import '../features/loans/screens/loans_list_screen.dart';
 import '../features/home/screens/transaction_details_screen.dart';
@@ -55,14 +51,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       ),
       bottomNavigationBar: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {
-          // Different colors for dark and light mode
-          final navBarColor = themeProvider.isDarkMode 
-              ? const Color(0xFF2A2B31) // Dark mode: darker surface color
-              : colorScheme.primary; // Light mode: keep primary color
-          
-          final iconColor = themeProvider.isDarkMode
-              ? Colors.white // Dark mode: white icons
-              : colorScheme.onPrimary; // Light mode: keep original
+          final palette = Theme.of(context).extension<AppPalette>()!;
+          // Align nav bar with SACCO theme neutrals
+          final navBarColor = palette.sectionBg;
+          final iconColor = palette.iconPrimary;
               
           return CurvedNavigationBar(
             index: _selectedIndex,
