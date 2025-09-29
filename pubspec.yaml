@@ -49,6 +49,22 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.13.1
 
+# Flutter Launcher Icons Configuration
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "asset/app_logo_dark.png"
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "asset/app_logo_dark.png"
+  windows:
+    generate: true
+    image_path: "asset/app_logo_dark.png"
+  macos:
+    generate: true
+    image_path: "asset/app_logo_dark.png"
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
