@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../profile/screens/profile_screen.dart';
+import '../../../core/theme/theme.dart';
 
 class SettingsScreen extends StatelessWidget {
   final bool showBackButton;
@@ -14,9 +15,10 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
     
     return Scaffold(
-      backgroundColor: colorScheme.background,
+      backgroundColor: colorScheme.surface,
       body: Column(
         children: [
           CustomAppBar(
@@ -211,20 +213,17 @@ class SettingsScreen extends StatelessWidget {
                   _showLogoutDialog(context);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.withValues(alpha:  0.1),
-                  foregroundColor: Colors.red,
+                  backgroundColor: colorScheme.error.withValues(alpha:  0.1),
+                  foregroundColor: colorScheme.error,
                   elevation: 0,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Logout',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.error),
                 ),
               ),
             ),
@@ -241,18 +240,16 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final palette = theme.extension<AppPalette>()!;
+    final textTheme = theme.textTheme;
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 4),
         child: Text(
           title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: colorScheme.onBackground,
-          ),
+          style: textTheme.headlineSmall?.copyWith(color: palette.textPrimary, fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -268,15 +265,18 @@ class SettingsScreen extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final palette = theme.extension<AppPalette>()!;
+    final textTheme = theme.textTheme;
     
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: colorScheme.surface,
+        color: palette.cardBg,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: palette.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.onBackground.withValues(alpha:  0.03),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -298,22 +298,15 @@ class SettingsScreen extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: colorScheme.onSurface,
-          ),
+          style: textTheme.titleMedium?.copyWith(color: palette.textPrimary, fontWeight: FontWeight.w500),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(
-            fontSize: 14,
-            color: colorScheme.onSurface.withValues(alpha:  0.7),
-          ),
+          style: textTheme.bodyMedium?.copyWith(color: palette.textSecondary),
         ),
         trailing: trailing ?? Icon(
           Icons.chevron_right,
-          color: colorScheme.onSurface.withValues(alpha:  0.4),
+          color: palette.iconPrimary.withOpacity(0.6),
         ),
         onTap: onTap,
       ),
@@ -447,9 +440,9 @@ class SettingsScreen extends StatelessWidget {
                 Navigator.of(context).pop();
                 // Handle logout logic here
               },
-              child: const Text(
+              child: Text(
                 'Logout',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: colorScheme.error),
               ),
             ),
           ],
