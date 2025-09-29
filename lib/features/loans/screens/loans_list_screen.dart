@@ -11,13 +11,13 @@ class LoansListScreen extends StatefulWidget {
 }
 
 class _LoansListScreenState extends State<LoansListScreen> {
-  bool _isBalanceVisible = true;
+  bool _isBalanceVisible = false;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final gradients = Theme.of(context).extension<AppGradients>()!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final palette = Theme.of(context).extension<AppPalette>()!;
+    final textTheme = Theme.of(context).textTheme;
     final loanProducts = [
       {
         'title': 'SACCO Emergency Loan',
@@ -62,7 +62,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: cs.background,
+      backgroundColor: cs.surface,
       body: Column(
         children: [
           CustomAppBar(
@@ -75,9 +75,9 @@ class _LoansListScreenState extends State<LoansListScreen> {
               }
             },
           ),
-          // Theme gradient header
+          // Light section header (from theme palette)
           Container(
-            decoration: BoxDecoration(gradient: gradients.headerGradient),
+            decoration: BoxDecoration(color: palette.sectionBg),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
               child: Column(
@@ -86,22 +86,29 @@ class _LoansListScreenState extends State<LoansListScreen> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: palette.cardBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
+                        color: palette.cardBorder,
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'TOTAL LOAN BALANCE',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: palette.textSecondary,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -115,12 +122,13 @@ class _LoansListScreenState extends State<LoansListScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: palette.cardBg,
                                   borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: palette.cardBorder),
                                 ),
                                 child: Icon(
                                   _isBalanceVisible ? Icons.visibility : Icons.visibility_off,
-                                  color: Colors.white,
+                                  color: palette.iconPrimary,
                                   size: 16,
                                 ),
                               ),
@@ -136,22 +144,22 @@ class _LoansListScreenState extends State<LoansListScreen> {
                               children: [
                                 Icon(
                                   Icons.account_balance,
-                                  color: Colors.white,
+                                  color: palette.iconPrimary,
                                   size: 24,
                                 ),
                                 const SizedBox(height: 8),
-                                const Text(
+                                Text(
                                   'Remaining Loan',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: palette.textSecondary,
                                     fontSize: 12,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   _isBalanceVisible ? '- 30,000.00 ETB' : '******************',
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: _isBalanceVisible ? Colors.red[600] : palette.textPrimary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -161,28 +169,28 @@ class _LoansListScreenState extends State<LoansListScreen> {
                             Container(
                               height: 60,
                               width: 1,
-                              color: Colors.white.withOpacity(0.3),
+                              color: palette.cardBorder,
                             ),
                             Column(
                               children: [
                                 Icon(
                                   Icons.trending_up,
-                                  color: Colors.white,
+                                  color: palette.iconPrimary,
                                   size: 24,
                                 ),
                                 const SizedBox(height: 8),
-                                const Text(
+                                Text(
                                   'Total Interest',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: palette.textSecondary,
                                     fontSize: 12,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   _isBalanceVisible ? '3,600.00 ETB' : '******************',
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: palette.textPrimary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -196,8 +204,9 @@ class _LoansListScreenState extends State<LoansListScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
+                            color: palette.cardBg,
                             borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: palette.cardBorder),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,14 +215,14 @@ class _LoansListScreenState extends State<LoansListScreen> {
                                 children: [
                                   Icon(
                                     Icons.receipt_long,
-                                    color: Colors.white.withOpacity(0.8),
+                                    color: palette.iconPrimary,
                                     size: 16,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text(
+                                  Text(
                                     'Initial Loan Provided:',
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: palette.textSecondary,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -222,8 +231,8 @@ class _LoansListScreenState extends State<LoansListScreen> {
                               ),
                               Text(
                                 _isBalanceVisible ? '- 45,000.00 ETB' : '******************',
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color: _isBalanceVisible ? Colors.red[600] : palette.textPrimary,
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -243,9 +252,9 @@ class _LoansListScreenState extends State<LoansListScreen> {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: palette.cardBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: cs.primary, width: 2),
+              border: Border.all(color: palette.cardBorder, width: 1),
             ),
             child: Row(
               children: [
@@ -253,29 +262,29 @@ class _LoansListScreenState extends State<LoansListScreen> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: cs.primary,
+                    color: cs.primary.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.account_balance,
-                    color: Colors.white,
+                    color: cs.primary,
                     size: 20,
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Expanded(
+                Expanded(
                   child: Text(
                     'SACCO Loan Products',
-                    style: TextStyle(
+                    style: textTheme.titleMedium?.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.black87,
+                      color: palette.textPrimary,
                     ),
                   ),
                 ),
                 Icon(
                   Icons.arrow_forward_ios,
-                  color: cs.primary,
+                  color: palette.iconPrimary.withOpacity(0.6),
                   size: 16,
                 ),
               ],
@@ -292,11 +301,12 @@ class _LoansListScreenState extends State<LoansListScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.grey[800] : Colors.white,
+                    color: palette.cardBg,
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: palette.cardBorder),
                     boxShadow: [
                       BoxShadow(
-                        color: isDark ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.05),
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -313,7 +323,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: isDark ? Colors.white : Colors.black87,
+                                color: palette.textPrimary,
                               ),
                             ),
                           ),
@@ -323,7 +333,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                       Text(
                         product['creditLimit']!,
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
@@ -331,7 +341,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                       Text(
                         'Limit: ${product['limit']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
@@ -339,7 +349,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                       Text(
                         'Penalty: ${product['penalty']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
@@ -347,7 +357,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                       Text(
                         'Service charge: ${product['serviceCharge']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
@@ -355,7 +365,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                       Text(
                         'No of Installment: ${product['installments']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
