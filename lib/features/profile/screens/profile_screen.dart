@@ -9,21 +9,20 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final palette = Theme.of(context).extension<AppPalette>()!;
     final colorScheme = theme.colorScheme;
-    final gradients = Theme.of(context).extension<AppGradients>()!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
-      backgroundColor: isDark ? Colors.grey[900] : Colors.grey[100],
+      backgroundColor: colorScheme.surface,
       body: Column(
         children: [
           const CustomAppBar(
             title: 'Profile',
             showLanguage: false,
           ),
-          // Gradient header with profile info
+          // Themed section header with profile info
           Container(
-            decoration: BoxDecoration(gradient: gradients.headerGradient),
+            decoration: BoxDecoration(color: palette.sectionBg),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
               child: Column(
@@ -32,31 +31,35 @@ class ProfileScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: palette.cardBg,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
-                        width: 1,
-                      ),
+                      border: Border.all(color: palette.cardBorder, width: 1),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.06),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: Column(
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          child: const Icon(
+                          backgroundColor: palette.cardBg,
+                          child: Icon(
                             Icons.person,
                             size: 60,
-                            color: Colors.white,
+                            color: palette.iconPrimary,
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
+                        Text(
                           'Abenezer Kifle',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: palette.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -64,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
                           'Senior Designer',
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.white.withOpacity(0.8),
+                            color: palette.textSecondary,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -72,13 +75,13 @@ class ProfileScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            _buildStatItem('Member Since', '2019'),
+                            _buildStatItem(context, 'Member Since', '2019'),
                             Container(
                               height: 40,
                               width: 1,
-                              color: Colors.white.withOpacity(0.3),
+                              color: palette.cardBorder,
                             ),
-                            _buildStatItem('Account Status', 'Active'),
+                            _buildStatItem(context, 'Account Status', 'Active'),
                           ],
                         ),
                       ],
@@ -163,16 +166,16 @@ class ProfileScreen extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final palette = Theme.of(context).extension<AppPalette>()!;
     
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[800] : Colors.white,
+        color: palette.cardBg,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: isDark ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -197,7 +200,7 @@ class ProfileScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: isDark ? Colors.white : Colors.black87,
+            color: palette.textPrimary,
           ),
         ),
         trailing: Row(
@@ -222,7 +225,7 @@ class ProfileScreen extends StatelessWidget {
             if (badge != null) const SizedBox(width: 8),
             Icon(
               Icons.chevron_right,
-              color: colorScheme.onSurface.withValues(alpha: 0.4),
+              color: palette.iconPrimary.withOpacity(0.6),
             ),
           ],
         ),
@@ -231,21 +234,22 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String label, String value) {
+  Widget _buildStatItem(BuildContext context, String label, String value) {
+    final palette = Theme.of(context).extension<AppPalette>()!;
     return Column(
       children: [
         Text(
           label,
           style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
+            color: palette.textSecondary,
             fontSize: 12,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: palette.textPrimary,
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),

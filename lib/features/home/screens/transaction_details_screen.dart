@@ -86,11 +86,10 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final gradients = Theme.of(context).extension<AppGradients>()!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final palette = Theme.of(context).extension<AppPalette>()!;
     
     return Scaffold(
-      backgroundColor: cs.background,
+      backgroundColor: cs.surface,
       body: Column(
         children: [
           CustomAppBar(
@@ -103,10 +102,10 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
               }
             },
           ),
-          // Beautiful header with gradient
+          // Themed header section
           Container(
             decoration: BoxDecoration(
-              gradient: gradients.headerGradient,
+              color: palette.sectionBg,
             ),
             child: Column(
               children: [
@@ -116,24 +115,32 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: palette.cardBg,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
+                      color: palette.cardBorder,
                       width: 1,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   child: Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: palette.cardBg,
                           borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: palette.cardBorder),
                         ),
                         child: Icon(
                           _getScreenIcon(),
-                          color: Colors.white,
+                          color: palette.iconPrimary,
                           size: 28,
                         ),
                       ),
@@ -144,8 +151,8 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                           children: [
                             Text(
                               widget.title,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: palette.textPrimary,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -154,7 +161,7 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                             Text(
                               'Transaction History',
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.8),
+                                color: palette.textSecondary,
                                 fontSize: 14,
                               ),
                             ),
@@ -170,8 +177,9 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: palette.cardBg,
                     borderRadius: BorderRadius.circular(25),
+                    border: Border.all(color: palette.cardBorder),
                   ),
                   child: Row(
                     children: List.generate(_tabs.length, (i) {
@@ -183,14 +191,14 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                             duration: const Duration(milliseconds: 200),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             decoration: BoxDecoration(
-                              color: selected ? Colors.white : Colors.transparent,
+                              color: selected ? cs.primary.withOpacity(0.12) : Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
                               _tabs[i],
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: selected ? cs.primary : Colors.white,
+                                color: selected ? cs.primary : palette.textSecondary,
                                 fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                                 fontSize: 14,
                               ),
@@ -255,11 +263,11 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
-                            color: isDark ? Colors.grey[800] : Colors.white,
+                            color: palette.cardBg,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
-                                color: isDark ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.04),
+                                color: Colors.black.withOpacity(0.04),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -294,7 +302,7 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w600,
-                                          color: isDark ? Colors.white : Colors.black87,
+                                          color: palette.textPrimary,
                                         ),
                                       ),
                                       const SizedBox(height: 2),
@@ -302,7 +310,7 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                                         data.party,
                                         style: TextStyle(
                                           fontSize: 13,
-                                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                                          color: palette.textSecondary,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -328,7 +336,7 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
                                             data.date,
                                             style: TextStyle(
                                               fontSize: 12,
-                                              color: isDark ? Colors.grey[400] : Colors.grey[500],
+                                              color: palette.textSecondary,
                                             ),
                                           ),
                                         ],
