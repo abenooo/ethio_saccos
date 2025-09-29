@@ -9,17 +9,17 @@ class SupportMenuSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final gradients = Theme.of(context).extension<AppGradients>()!;
+    final palette = Theme.of(context).extension<AppPalette>()!;
 
     return Container(
       decoration: BoxDecoration(
-        gradient: gradients.headerGradient,
+        color: palette.sectionBg,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 24,
-            offset: const Offset(0, -8),
+            color: Colors.black.withOpacity(0.12),
+            blurRadius: 16,
+            offset: const Offset(0, -6),
           )
         ],
       ),
@@ -36,7 +36,7 @@ class SupportMenuSheet extends StatelessWidget {
                   width: 40,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.3),
+                    color: palette.dotInactive,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -48,13 +48,13 @@ class SupportMenuSheet extends StatelessWidget {
                   Text(
                     'Quick Actions',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: palette.textPrimary,
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.close, color: Colors.white.withValues(alpha: 0.8)),
+                    icon: Icon(Icons.close, color: palette.iconPrimary.withOpacity(0.8)),
                     onPressed: () => Navigator.of(context).pop(),
                   )
                 ],
@@ -107,12 +107,12 @@ class SupportMenuSheet extends StatelessWidget {
                 contentPadding: const EdgeInsets.symmetric(horizontal: 4),
                 leading: CircleAvatar(
                   radius: 18,
-                  backgroundColor: cs.primary.withValues(alpha: 0.15),
+                  backgroundColor: cs.primary.withOpacity(0.15),
                   child: Icon(Icons.chat_bubble_outline, color: cs.primary),
                 ),
-                title: Text('Chat with support', style: TextStyle(color: cs.onBackground)),
-                subtitle: Text('Get answers instantly', style: TextStyle(color: cs.onBackground.withValues(alpha: 0.6))),
-                trailing: Icon(Icons.chevron_right, color: cs.onBackground.withValues(alpha: 0.5)),
+                title: Text('Chat with support', style: TextStyle(color: palette.textPrimary)),
+                subtitle: Text('Get answers instantly', style: TextStyle(color: palette.textSecondary)),
+                trailing: Icon(Icons.chevron_right, color: palette.iconPrimary.withOpacity(0.7)),
                 onTap: () {},
               )
             ],
@@ -131,17 +131,17 @@ class _MenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
+    final palette = Theme.of(context).extension<AppPalette>()!;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.15),
+          color: palette.cardBg,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Colors.white.withOpacity(0.2),
+            color: palette.cardBorder,
             width: 1,
           ),
         ),
@@ -150,14 +150,14 @@ class _MenuItem extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.white,
+              color: palette.iconPrimary,
               size: 24,
             ),
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: palette.textPrimary,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
               ),
