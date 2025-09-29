@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/models/loan_models.dart';
+import '../../payments/screens/payment_method_screen.dart';
 
 class LoanDetailsScreen extends StatefulWidget {
   final String title;
@@ -47,6 +48,7 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
 
     _amortizationSchedule = [];
     double remainingBalance = widget.loanAmount;
+    final currentDate = DateTime.now();
 
     for (int month = 1; month <= numPayments; month++) {
       final interestPayment = remainingBalance * monthlyRate;
@@ -58,6 +60,26 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
         widget.startDate.month + month - 1,
       );
 
+      // Determine payment status based on date and simulate some payments
+      PaymentStatus status;
+      DateTime? paidDate;
+      String? paymentMethod;
+      
+      if (paymentDate.isBefore(currentDate)) {
+        // For demo purposes, mark first 3 payments as paid
+        if (month <= 3) {
+          status = PaymentStatus.paid;
+          paidDate = paymentDate;
+          paymentMethod = month == 1 ? 'TeleBirr' : month == 2 ? 'CBE Mobile' : 'Dashen Bank';
+        } else if (paymentDate.isBefore(currentDate.subtract(const Duration(days: 30)))) {
+          status = PaymentStatus.overdue;
+        } else {
+          status = PaymentStatus.notPaid;
+        }
+      } else {
+        status = PaymentStatus.notPaid;
+      }
+
       _amortizationSchedule.add(AmortizationEntry(
         paymentNumber: month,
         paymentDate: paymentDate,
@@ -65,6 +87,9 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
         principalAmount: principalPayment,
         interestAmount: interestPayment,
         remainingBalance: remainingBalance > 0 ? remainingBalance : 0,
+        paymentStatus: status,
+        paidDate: paidDate,
+        paymentMethod: paymentMethod,
       ));
     }
   }
@@ -263,37 +288,35 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
             ],
           ),
         ),
+        const SizedBox(height: 16),
         // Result section header
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              Text(
-                'Result',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: palette.textPrimary,
-                ),
-              ),
-            ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'Payment Schedule',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: palette.textPrimary,
+            ),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         // Table
         Expanded(
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.fromLTRB(4, 0, 4, 16),
             decoration: BoxDecoration(
               color: palette.cardBg,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: palette.cardBorder),
             ),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 // Table header
                 Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
                     borderRadius: const BorderRadius.only(
@@ -303,48 +326,168 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
                   ),
                   child: Row(
                     children: [
-                      Expanded(flex: 1, child: Text('#', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center)),
-                      Expanded(flex: 2, child: Text('Payment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center)),
-                      Expanded(flex: 2, child: Text('Interest', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center)),
-                      Expanded(flex: 2, child: Text('Principal', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center)),
-                      Expanded(flex: 2, child: Text('Balance', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14), textAlign: TextAlign.center)),
+                      Expanded(flex: 1, child: Text('#', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 3, child: Text('Payment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 3, child: Text('Interest', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 3, child: Text('Principal', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 3, child: Text('Balance', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 3, child: Text('Status', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 2, child: Text('Action', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
                     ],
                   ),
                 ),
                 // Table rows
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: _amortizationSchedule.length,
-                    itemBuilder: (context, index) {
-                      final entry = _amortizationSchedule[index];
-                      final isEven = index % 2 == 0;
-                      final itemPalette = Theme.of(context).extension<AppPalette>()!;
+                Flexible(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width - 8,
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        itemCount: _amortizationSchedule.length,
+                        itemBuilder: (context, index) {
+                          final entry = _amortizationSchedule[index];
+                          final isEven = index % 2 == 0;
+                          final itemPalette = Theme.of(context).extension<AppPalette>()!;
 
-                      return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: isEven ? itemPalette.cardBg : itemPalette.sectionBg,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(flex: 1, child: Text('${entry.paymentNumber}', style: TextStyle(fontSize: 13, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
-                            Expanded(flex: 2, child: Text(entry.paymentAmount.toStringAsFixed(2), style: TextStyle(fontSize: 13, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
-                            Expanded(flex: 2, child: Text(entry.interestAmount.toStringAsFixed(2), style: TextStyle(fontSize: 13, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
-                            Expanded(flex: 2, child: Text(entry.principalAmount.toStringAsFixed(2), style: TextStyle(fontSize: 13, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
-                            Expanded(flex: 2, child: Text(entry.remainingBalance.toStringAsFixed(2), style: TextStyle(fontSize: 13, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
-                          ],
-                        ),
-                      );
-                    },
+                          return Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                            decoration: BoxDecoration(
+                              color: isEven ? itemPalette.cardBg : itemPalette.sectionBg,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(flex: 1, child: Text('${entry.paymentNumber}', style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
+                                Expanded(flex: 3, child: Text(entry.paymentAmount.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
+                                Expanded(flex: 3, child: Text(entry.interestAmount.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
+                                Expanded(flex: 3, child: Text(entry.principalAmount.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
+                                Expanded(flex: 3, child: Text(entry.remainingBalance.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
+                                Expanded(flex: 3, child: Center(child: _buildPaymentStatus(entry, itemPalette))),
+                                const SizedBox(width: 8),
+                                Expanded(flex: 2, child: Center(child: _buildActionButton(entry, itemPalette))),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 16),
       ],
+    );
+  }
+
+  Widget _buildPaymentStatus(AmortizationEntry entry, AppPalette palette) {
+    Color statusColor;
+    String statusText;
+    IconData statusIcon;
+
+    switch (entry.paymentStatus) {
+      case PaymentStatus.paid:
+        statusColor = const Color(0xFF059669); // Success Green
+        statusText = 'Paid';
+        statusIcon = Icons.check_circle;
+        break;
+      case PaymentStatus.overdue:
+        statusColor = const Color(0xFFDC2626); // Error Red
+        statusText = 'Overdue';
+        statusIcon = Icons.error;
+        break;
+      case PaymentStatus.pending:
+        statusColor = const Color(0xFFD97706); // Accent Gold
+        statusText = 'Pending';
+        statusIcon = Icons.schedule;
+        break;
+      case PaymentStatus.notPaid:
+        statusColor = palette.textSecondary;
+        statusText = 'Due';
+        statusIcon = Icons.radio_button_unchecked;
+        break;
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      decoration: BoxDecoration(
+        color: statusColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: statusColor.withValues(alpha: 0.3), width: 1),
+      ),
+      child: Icon(statusIcon, color: statusColor, size: 12),
+    );
+  }
+
+  Widget _buildActionButton(AmortizationEntry entry, AppPalette palette) {
+    if (entry.paymentStatus == PaymentStatus.paid) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        decoration: BoxDecoration(
+          color: const Color(0xFF059669).withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFF059669).withValues(alpha: 0.3), width: 1),
+        ),
+        child: Icon(
+          Icons.check,
+          color: const Color(0xFF059669),
+          size: 12,
+        ),
+      );
+    }
+
+    if (entry.paymentStatus == PaymentStatus.notPaid || entry.paymentStatus == PaymentStatus.overdue) {
+      return InkWell(
+        onTap: () => _navigateToPayment(entry),
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3), width: 1),
+          ),
+          child: Icon(
+            Icons.payment,
+            color: Theme.of(context).colorScheme.primary,
+            size: 12,
+          ),
+        ),
+      );
+    }
+
+    return Icon(
+      Icons.remove,
+      color: palette.textSecondary,
+      size: 12,
+    );
+  }
+
+  void _navigateToPayment(AmortizationEntry entry) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PaymentMethodScreen(
+          amount: entry.paymentAmount,
+          loanTitle: widget.title,
+          paymentNumber: entry.paymentNumber,
+          onPaymentCompleted: (paymentMethod) {
+            setState(() {
+              final index = _amortizationSchedule.indexWhere(
+                (e) => e.paymentNumber == entry.paymentNumber,
+              );
+              if (index != -1) {
+                _amortizationSchedule[index] = entry.copyWith(
+                  paymentStatus: PaymentStatus.paid,
+                  paidDate: DateTime.now(),
+                  paymentMethod: paymentMethod,
+                );
+              }
+            });
+          },
+        ),
+      ),
     );
   }
 
