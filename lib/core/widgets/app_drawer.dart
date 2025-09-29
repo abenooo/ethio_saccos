@@ -5,18 +5,21 @@ import '../../features/auth/services/auth_service.dart';
 import '../../main.dart';
 import '../../features/savings/screens/savings_list_screen.dart';
 import '../../features/loans/screens/loans_list_screen.dart';
+import '../theme/theme.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
   Widget _buildGroupHeader(BuildContext context, String title) {
+    final theme = Theme.of(context);
+    final palette = theme.extension<AppPalette>()!;
+    final textTheme = theme.textTheme;
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
       child: Text(
         title.toUpperCase(),
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          fontSize: 12,
+        style: textTheme.bodySmall?.copyWith(
+          color: palette.textSecondary,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.2,
         ),
@@ -31,6 +34,8 @@ class AppDrawer extends StatelessWidget {
     {VoidCallback? onTap}
   ) {
     final theme = Theme.of(context);
+    final palette = theme.extension<AppPalette>()!;
+    final textTheme = theme.textTheme;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
@@ -44,7 +49,7 @@ class AppDrawer extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: theme.colorScheme.primary.withOpacity(0.1),
+            color: theme.colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
@@ -55,93 +60,86 @@ class AppDrawer extends StatelessWidget {
         ),
         title: Text(
           title,
-          style: TextStyle(
-            color: theme.colorScheme.onBackground,
-            fontSize: 15,
+          style: textTheme.bodyLarge?.copyWith(
+            color: palette.textPrimary,
             fontWeight: FontWeight.w500,
           ),
         ),
         trailing: Icon(
           Icons.chevron_right,
-          color: theme.colorScheme.onBackground.withOpacity(0.4),
+          color: palette.iconPrimary.withValues(alpha: 0.6),
           size: 18,
         ),
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        hoverColor: theme.colorScheme.primary.withOpacity(0.05),
-        splashColor: theme.colorScheme.primary.withOpacity(0.1),
+        hoverColor: theme.colorScheme.primary.withValues(alpha: 0.05),
+        splashColor: theme.colorScheme.primary.withValues(alpha: 0.1),
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
+    final palette = theme.extension<AppPalette>()!;
     
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 60, 20, 24),
+      height: 200,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            theme.colorScheme.primary,
-            theme.colorScheme.primary.withOpacity(0.8),
+            const Color(0xFF1E3A8A), // Primary Blue
+            const Color(0xFF0F766E), // Secondary Teal
           ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: theme.colorScheme.primary.withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: theme.colorScheme.onPrimary.withOpacity(0.15),
-              border: Border.all(
-                color: theme.colorScheme.onPrimary.withOpacity(0.3),
-                width: 2,
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              // Profile Avatar
+              Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withValues(alpha: 0.2),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
+                ),
+                child: const Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
-            ),
-            child: Icon(
-              Icons.person,
-              color: theme.colorScheme.onPrimary,
-              size: 48,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Abenezer Kifle',
-            style: TextStyle(
-              color: theme.colorScheme.onPrimary,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              height: 1.2,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.onPrimary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              '+251 910 979060 678',
-              style: TextStyle(
-                color: theme.colorScheme.onPrimary.withOpacity(0.9),
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+              const SizedBox(height: 12),
+              
+              // User Name
+              Text(
+                'Abenezer Kifle',
+                style: theme.textTheme.titleLarge?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                ),
               ),
-            ),
+              const SizedBox(height: 4),
+              
+              // Member ID
+              Text(
+                'Member ID: SAC001234',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.white.withValues(alpha: 0.8),
+                  fontSize: 14,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -151,21 +149,13 @@ class AppDrawer extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Drawer(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              theme.colorScheme.background,
-              theme.colorScheme.surface.withOpacity(0.3),
-            ],
-          ),
-        ),
+        decoration: BoxDecoration(color: theme.colorScheme.surface),
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
+            // Header Section
             _buildHeader(context),
             
             // Member Section
@@ -245,7 +235,7 @@ class AppDrawer extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Divider(
-                color: theme.colorScheme.outline.withOpacity(0.3),
+                color: Theme.of(context).extension<AppPalette>()!.cardBorder,
                 thickness: 1,
               ),
             ),
@@ -255,7 +245,7 @@ class AppDrawer extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.red.withOpacity(0.05),
+                color: theme.colorScheme.error.withValues(alpha: 0.05),
               ),
               child: _buildMenuItem(
                 context,
