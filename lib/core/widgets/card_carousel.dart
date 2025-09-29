@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../theme/theme.dart';
+import '../../features/home/screens/transaction_details_screen.dart' as details;
+import '../../features/loans/screens/loan_details_screen.dart';
 
 class CardCarousel extends StatefulWidget {
   final bool isDark;
@@ -20,27 +24,35 @@ class _CardCarouselState extends State<CardCarousel> {
   
   final PageController _pageController = PageController(viewportFraction: _kViewportFraction);
   int _currentPage = 0;
+  bool _obscure = true;
 
   final List<CardData> _cards = [
     CardData(
-      title: 'Savings Account',
-      amount: 'ETB 25,000.00',
-      info1: 'Member since: Jan 2024',
-      info2: 'Last transaction: Today, 10:30 AM',
-      icon: Icons.savings,
-    ),
-    CardData(
-      title: 'Loan Account',
-      amount: 'ETB 100,000.00',
-      info1: 'Due date: March 30, 2024',
-      info2: 'Interest rate: 12% p.a',
+      title: 'Abenezer Kifle',
+      amount: '2,000,000.00 ETB',
+      info1: '1213123123123123',
+      info2: 'Main Account',
       icon: Icons.account_balance_wallet,
     ),
     CardData(
+      title: 'Personal Loan',
+      amount: '50,000.00 ETB',
+      info1: '1213123123123456',
+      info2: 'Loan Account',
+      icon: Icons.account_balance,
+    ),
+    CardData(
+      title: 'Savings Account',
+      amount: '85,500.00 ETB',
+      info1: '1213123123123789',
+      info2: 'Savings Account',
+      icon: Icons.savings,
+    ),
+    CardData(
       title: 'Share Account',
-      amount: '250 Shares',
-      info1: 'Value: ETB 25,000',
-      info2: 'Dividend rate: 15%',
+      amount: '45,000.00 ETB',
+      info1: '1213123123123890',
+      info2: 'Share Investment',
       icon: Icons.pie_chart,
     ),
   ];
@@ -72,9 +84,8 @@ class _CardCarouselState extends State<CardCarousel> {
 
   Widget _buildDotIndicator(int index) {
     final isSelected = _currentPage == index;
-    final color = isSelected
-        ? Colors.white
-        : Colors.white.withValues(alpha: 0.4);
+    final palette = Theme.of(context).extension<AppPalette>()!;
+    final color = isSelected ? palette.dotActive : palette.dotInactive;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -89,22 +100,92 @@ class _CardCarouselState extends State<CardCarousel> {
   }
 
   Widget _buildCard(CardData card) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
-        gradient: widget.cardGradient,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildCardHeader(card),
-          const Spacer(),
-          _buildAmount(card.amount),
-          const SizedBox(height: 16),
-          _buildCardFooter(card),
-        ],
+    final isLoan = card.title.toLowerCase().contains('loan');
+    final isShare = card.title.toLowerCase().contains('share');
+
+    final String displayedAmount = _obscure 
+        ? '*********************' 
+        : (isLoan ? '- ${card.amount}' : card.amount);
+
+    // Premium gradient for each card type
+    Gradient cardGradient;
+    if (isLoan) {
+      cardGradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFFDC2626), Color(0xFFEA580C)], // Error red to warning orange
+      );
+    } else if (isShare) {
+      cardGradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFFD97706), Color(0xFFEA580C)], // Accent gold to warning orange
+      );
+    } else {
+      cardGradient = const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)], // Primary blue to light blue
+      );
+    }
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(20),
+      onTap: () {
+        if (isLoan) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => LoanDetailsScreen(
+                title: card.title,
+                loanAmount: 50000,
+                interestRate: 12.0,
+                loanTermMonths: 24,
+                startDate: DateTime(2023, 1, 1),
+              ),
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => details.TransactionDetailsScreen(
+                title: card.title,
+                isLoan: isLoan,
+                isShare: isShare,
+              ),
+            ),
+          );
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          gradient: cardGradient,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildCardHeader(card),
+            Text(
+              displayedAmount,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            _buildCardFooter(card),
+          ],
+        ),
       ),
     );
   }
@@ -114,40 +195,34 @@ class _CardCarouselState extends State<CardCarousel> {
       children: [
         Icon(
           card.icon,
-          color: widget.isDark ? Colors.white70 : Colors.white,
+          color: Colors.white.withOpacity(0.9),
           size: 24,
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             card.title,
-            style: TextStyle(
-              color: widget.isDark ? Colors.white70 : Colors.white,
+            style: const TextStyle(
+              color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
             ),
             overflow: TextOverflow.ellipsis,
           ),
         ),
-        Icon(
-          Icons.verified_user,
-          color: widget.isDark ? Colors.white70 : Colors.white,
-          size: 24,
+        IconButton(
+          icon: Icon(
+            _obscure ? Icons.visibility_off : Icons.visibility,
+            color: Colors.white.withOpacity(0.9),
+            size: 22,
+          ),
+          onPressed: () => setState(() => _obscure = !_obscure),
+          splashRadius: 18,
         ),
       ],
     );
   }
 
-  Widget _buildAmount(String amount) {
-    return Text(
-      amount,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 28,
-        fontWeight: FontWeight.w600,
-      ),
-    );
-  }
 
   Widget _buildCardFooter(CardData card) {
     return Row(
@@ -157,10 +232,11 @@ class _CardCarouselState extends State<CardCarousel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                card.info1,
-                style: TextStyle(
-                  color: widget.isDark ? Colors.white70 : Colors.white,
+                _obscure ? '•••• •••• •••• ${card.info1.length >= 4 ? card.info1.substring(card.info1.length - 4) : card.info1}' : card.info1,
+                style: const TextStyle(
+                  color: Colors.white,
                   fontSize: 14,
+                  fontWeight: FontWeight.w500,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -168,7 +244,7 @@ class _CardCarouselState extends State<CardCarousel> {
               Text(
                 card.info2,
                 style: TextStyle(
-                  color: widget.isDark ? Colors.white60 : Colors.white70,
+                  color: Colors.white.withOpacity(0.8),
                   fontSize: 12,
                 ),
                 overflow: TextOverflow.ellipsis,
@@ -180,19 +256,19 @@ class _CardCarouselState extends State<CardCarousel> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text(
+            const Text(
               'ETHIO SACCOS',
               style: TextStyle(
-                color: widget.isDark ? Colors.white70 : Colors.white,
+                color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 4),
             Text(
-              DateTime.now().toString().substring(0, 16),
+              DateFormat.yMMMd().add_Hm().format(DateTime.now()),
               style: TextStyle(
-                color: widget.isDark ? Colors.white60 : Colors.white70,
+                color: Colors.white.withOpacity(0.8),
                 fontSize: 12,
               ),
             ),
