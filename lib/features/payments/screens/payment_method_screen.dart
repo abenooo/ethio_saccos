@@ -145,6 +145,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                         _buildSummaryRow('Payment #', '${widget.paymentNumber}', palette),
                         const SizedBox(height: 8),
                         _buildSummaryRow('Amount', '${widget.amount.toStringAsFixed(2)} ETB', palette, isAmount: true),
+                        const SizedBox(height: 8),
+                        _buildSummaryRow('Penalty', '0.00 ETB', palette, isAmount: true),
+                        Divider(height: 24, color: palette.cardBorder),
+                        _buildSummaryRow('Total', '${widget.amount.toStringAsFixed(2)} ETB', palette, isAmount: true, isTotal: true),
                       ],
                     ),
                   ),
@@ -216,23 +220,28 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     );
   }
 
-  Widget _buildSummaryRow(String label, String value, AppPalette palette, {bool isAmount = false}) {
+  Widget _buildSummaryRow(String label, String value, AppPalette palette, {bool isAmount = false, bool isTotal = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
           style: TextStyle(
-            color: palette.textSecondary,
-            fontSize: 14,
+            color: isTotal ? palette.textPrimary : palette.textSecondary,
+            fontSize: isTotal ? 16 : 14,
+            fontWeight: isTotal ? FontWeight.w600 : FontWeight.normal,
           ),
         ),
         Text(
           value,
           style: TextStyle(
-            color: isAmount ? Theme.of(context).colorScheme.primary : palette.textPrimary,
-            fontSize: isAmount ? 16 : 14,
-            fontWeight: isAmount ? FontWeight.w600 : FontWeight.w500,
+            color: isTotal 
+                ? Theme.of(context).colorScheme.primary 
+                : isAmount 
+                    ? Theme.of(context).colorScheme.primary 
+                    : palette.textPrimary,
+            fontSize: isTotal ? 18 : isAmount ? 16 : 14,
+            fontWeight: isTotal ? FontWeight.bold : isAmount ? FontWeight.w600 : FontWeight.w500,
           ),
         ),
       ],
