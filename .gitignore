@@ -53,3 +53,14 @@ app.*.map.json
 **/ios/DerivedData/
 **/ios/Pods/
 **/ios/.symlinks/
+**/ios/Podfile.lock
+**/ios/Flutter/Debug.xcconfig
+**/ios/Flutter/Release.xcconfig
+**/ios/Runner.xcodeproj/project.pbxproj
+**/ios/Runner.xcworkspace/contents.xcworkspacedata
+
+# macOS build artifacts
+**/macos/Pods/
+**/macos/Podfile.lock
+**/macos/Flutter/Flutter-Debug.xcconfig
+**/macos/Flutter/Flutter-Release.xcconfig
