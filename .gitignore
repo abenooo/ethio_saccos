@@ -64,3 +64,7 @@ app.*.map.json
 **/macos/Podfile.lock
 **/macos/Flutter/Flutter-Debug.xcconfig
 **/macos/Flutter/Flutter-Release.xcconfig
+**/macos/Podfile
+
+# Additional iOS files that should be ignored
+**/ios/Podfile
