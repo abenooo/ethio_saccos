@@ -11,13 +11,12 @@ class SavingsListScreen extends StatefulWidget {
 }
 
 class _SavingsListScreenState extends State<SavingsListScreen> {
-  bool _isBalanceVisible = true;
+  bool _isBalanceVisible = false;
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final gradients = Theme.of(context).extension<AppGradients>()!;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final palette = Theme.of(context).extension<AppPalette>()!;
     
     final savingsProducts = [
       {
@@ -60,7 +59,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
     ];
 
     return Scaffold(
-      backgroundColor: cs.background,
+      backgroundColor: cs.surface,
       body: Column(
         children: [
           CustomAppBar(
@@ -73,9 +72,9 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
               }
             },
           ),
-          // Theme gradient header
+          // Light section header (from theme palette)
           Container(
-            decoration: BoxDecoration(gradient: gradients.headerGradient),
+            decoration: BoxDecoration(color: palette.sectionBg),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
               child: Column(
@@ -84,22 +83,29 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
+                      color: palette.cardBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.white.withOpacity(0.2),
+                        color: palette.cardBorder,
                         width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'TOTAL SAVINGS BALANCE',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: palette.textSecondary,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -113,12 +119,13 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: palette.cardBg,
                                   borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: palette.cardBorder),
                                 ),
                                 child: Icon(
                                   _isBalanceVisible ? Icons.visibility : Icons.visibility_off,
-                                  color: Colors.white,
+                                  color: palette.iconPrimary,
                                   size: 16,
                                 ),
                               ),
@@ -134,22 +141,22 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                               children: [
                                 Icon(
                                   Icons.account_balance_wallet,
-                                  color: Colors.white,
+                                  color: palette.iconPrimary,
                                   size: 24,
                                 ),
                                 const SizedBox(height: 8),
-                                const Text(
+                                Text(
                                   'Total Savings',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: palette.textSecondary,
                                     fontSize: 12,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   _isBalanceVisible ? '25,450.00 ETB' : '******************',
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: palette.textPrimary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -159,28 +166,28 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                             Container(
                               height: 60,
                               width: 1,
-                              color: Colors.white.withOpacity(0.3),
+                              color: palette.cardBorder,
                             ),
                             Column(
                               children: [
                                 Icon(
                                   Icons.trending_up,
-                                  color: Colors.white,
+                                  color: palette.iconPrimary,
                                   size: 24,
                                 ),
                                 const SizedBox(height: 8),
-                                const Text(
+                                Text(
                                   'Total Interest',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: palette.textSecondary,
                                     fontSize: 12,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   _isBalanceVisible ? '1,850.75 ETB' : '******************',
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: TextStyle(
+                                    color: palette.textPrimary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -207,11 +214,11 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.grey[800] : Colors.white,
+                    color: palette.cardBg,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: isDark ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.05),
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -228,7 +235,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: isDark ? Colors.white : Colors.black87,
+                                color: palette.textPrimary,
                               ),
                             ),
                           ),
@@ -239,7 +246,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                         Text(
                           product['description']!,
                           style: TextStyle(
-                            color: isDark ? Colors.grey[300] : Colors.grey[700],
+                            color: palette.textSecondary,
                             fontSize: 13,
                             fontStyle: FontStyle.italic,
                           ),
@@ -250,7 +257,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                         Text(
                           'Saving days: ${product['savingDays']}',
                           style: TextStyle(
-                            color: isDark ? Colors.grey[300] : Colors.grey[600],
+                            color: palette.textSecondary,
                             fontSize: 12,
                           ),
                         ),
@@ -259,7 +266,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       Text(
                         'Interest Rate: ${product['interestRate']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
@@ -267,7 +274,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       Text(
                         'Min Deposit: ${product['minDeposit']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
@@ -275,7 +282,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       Text(
                         'Max Deposit: ${product['maxDeposit']}',
                         style: TextStyle(
-                          color: isDark ? Colors.grey[300] : Colors.grey[600],
+                          color: palette.textSecondary,
                           fontSize: 12,
                         ),
                       ),
