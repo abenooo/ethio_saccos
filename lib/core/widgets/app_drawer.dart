@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../providers/card_data_provider.dart';
+import '../services/navigation_service.dart';
 import '../../features/notifications/screens/notifications_screen.dart';
 import '../../features/home/screens/transaction_details_screen.dart';
 import '../../features/auth/services/auth_service.dart';
@@ -9,6 +11,9 @@ import '../theme/theme.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
+
+  // Use centralized card data provider for better performance
+  static final CardDataProvider _cardDataProvider = CardDataProvider();
 
   Widget _buildGroupHeader(BuildContext context, String title) {
     final theme = Theme.of(context);
@@ -165,10 +170,8 @@ class AppDrawer extends StatelessWidget {
               Icons.savings,
               'Savings Accounts',
               onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const SavingsListScreen()),
-                );
+                NavigationService.popAndCloseDrawer(context);
+                NavigationService.navigateToSavings(context);
               },
             ),
             _buildMenuItem(
@@ -176,10 +179,8 @@ class AppDrawer extends StatelessWidget {
               Icons.account_balance,
               'Loans',
               onTap: () {
-                Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const LoansListScreen()),
-                );
+                NavigationService.popAndCloseDrawer(context);
+                NavigationService.navigateToLoans(context);
               },
             ),
             _buildMenuItem(
