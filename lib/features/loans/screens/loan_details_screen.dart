@@ -11,15 +11,17 @@ class LoanDetailsScreen extends StatefulWidget {
   final double interestRate;
   final int loanTermMonths;
   final DateTime startDate;
+  final bool isFromLoanCard; // New parameter to distinguish real vs calculated data
 
   LoanDetailsScreen({
     super.key,
     required this.title,
-    this.loanAmount = 50000,
-    this.interestRate = 12.0,
-    this.loanTermMonths = 24,
-    DateTime? startDate,
-  }) : startDate = startDate ?? DateTime(2023, 1, 1);
+    required this.loanAmount,
+    required this.interestRate,
+    required this.loanTermMonths,
+    required this.startDate,
+    this.isFromLoanCard = false, // Default to false for calculations
+  });
 
   @override
   State<LoanDetailsScreen> createState() => _LoanDetailsScreenState();
@@ -61,22 +63,28 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
       );
 
       // Determine payment status based on date and simulate some payments
+      // Only add payment status if this is from a loan card (real data)
       PaymentStatus status;
       DateTime? paidDate;
       String? paymentMethod;
       
-      if (paymentDate.isBefore(currentDate)) {
-        // For demo purposes, mark first 3 payments as paid
-        if (month <= 3) {
-          status = PaymentStatus.paid;
-          paidDate = paymentDate;
-          paymentMethod = month == 1 ? 'TeleBirr' : month == 2 ? 'CBE Mobile' : 'Dashen Bank';
-        } else if (paymentDate.isBefore(currentDate.subtract(const Duration(days: 30)))) {
-          status = PaymentStatus.overdue;
+      if (widget.isFromLoanCard) {
+        if (paymentDate.isBefore(currentDate)) {
+          // For demo purposes, mark first 3 payments as paid
+          if (month <= 3) {
+            status = PaymentStatus.paid;
+            paidDate = paymentDate;
+            paymentMethod = month == 1 ? 'TeleBirr' : month == 2 ? 'CBE Mobile' : 'Dashen Bank';
+          } else if (paymentDate.isBefore(currentDate.subtract(const Duration(days: 30)))) {
+            status = PaymentStatus.overdue;
+          } else {
+            status = PaymentStatus.notPaid;
+          }
         } else {
           status = PaymentStatus.notPaid;
         }
       } else {
+        // For calculations, default to not paid (no payment functionality)
         status = PaymentStatus.notPaid;
       }
 
@@ -327,12 +335,15 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
                   child: Row(
                     children: [
                       Expanded(flex: 1, child: Text('#', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      Expanded(flex: 3, child: Text('Date', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
                       Expanded(flex: 3, child: Text('Payment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
                       Expanded(flex: 3, child: Text('Interest', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
                       Expanded(flex: 3, child: Text('Principal', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
                       Expanded(flex: 3, child: Text('Balance', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
-                      Expanded(flex: 3, child: Text('Status', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
-                      Expanded(flex: 2, child: Text('Action', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      if (widget.isFromLoanCard) ...[
+                        Expanded(flex: 3, child: Text('Status', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                        Expanded(flex: 2, child: Text('Action', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12), textAlign: TextAlign.center)),
+                      ],
                     ],
                   ),
                 ),
@@ -341,7 +352,9 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width - 8,
+                      width: widget.isFromLoanCard 
+                          ? MediaQuery.of(context).size.width + 100  // Extra width for Status & Action columns
+                          : MediaQuery.of(context).size.width - 8,
                       child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount: _amortizationSchedule.length,
@@ -358,13 +371,16 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
                             child: Row(
                               children: [
                                 Expanded(flex: 1, child: Text('${entry.paymentNumber}', style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
+                                Expanded(flex: 3, child: Text(_formatPaymentDate(entry.paymentDate), style: TextStyle(fontSize: 11, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
                                 Expanded(flex: 3, child: Text(entry.paymentAmount.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
                                 Expanded(flex: 3, child: Text(entry.interestAmount.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
                                 Expanded(flex: 3, child: Text(entry.principalAmount.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
                                 Expanded(flex: 3, child: Text(entry.remainingBalance.toStringAsFixed(0), style: TextStyle(fontSize: 12, color: itemPalette.textPrimary), textAlign: TextAlign.center)),
-                                Expanded(flex: 3, child: Center(child: _buildPaymentStatus(entry, itemPalette))),
-                                const SizedBox(width: 8),
-                                Expanded(flex: 2, child: Center(child: _buildActionButton(entry, itemPalette))),
+                                if (widget.isFromLoanCard) ...[
+                                  Expanded(flex: 3, child: Center(child: _buildPaymentStatus(entry, itemPalette))),
+                                  const SizedBox(width: 8),
+                                  Expanded(flex: 2, child: Center(child: _buildActionButton(entry, itemPalette))),
+                                ],
                               ],
                             ),
                           );
@@ -379,6 +395,14 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
         ),
       ],
     );
+  }
+
+  String _formatPaymentDate(DateTime date) {
+    const months = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
+    return '${months[date.month - 1]} ${date.year}';
   }
 
   Widget _buildPaymentStatus(AmortizationEntry entry, AppPalette palette) {
@@ -410,29 +434,41 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
       decoration: BoxDecoration(
         color: statusColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: statusColor.withValues(alpha: 0.3), width: 1),
       ),
-      child: Icon(statusIcon, color: statusColor, size: 12),
+      child: Text(
+        statusText,
+        style: TextStyle(
+          fontSize: 10,
+          color: statusColor,
+          fontWeight: FontWeight.w600,
+        ),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
   Widget _buildActionButton(AmortizationEntry entry, AppPalette palette) {
     if (entry.paymentStatus == PaymentStatus.paid) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         decoration: BoxDecoration(
           color: const Color(0xFF059669).withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: const Color(0xFF059669).withValues(alpha: 0.3), width: 1),
         ),
-        child: Icon(
-          Icons.check,
-          color: const Color(0xFF059669),
-          size: 12,
+        child: Text(
+          'Paid',
+          style: TextStyle(
+            fontSize: 10,
+            color: const Color(0xFF059669),
+            fontWeight: FontWeight.w600,
+          ),
+          textAlign: TextAlign.center,
         ),
       );
     }
@@ -442,25 +478,32 @@ class _LoanDetailsScreenState extends State<LoanDetailsScreen>
         onTap: () => _navigateToPayment(entry),
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3), width: 1),
           ),
-          child: Icon(
-            Icons.payment,
-            color: Theme.of(context).colorScheme.primary,
-            size: 12,
+          child: Text(
+            'Pay Now',
+            style: TextStyle(
+              fontSize: 10,
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       );
     }
 
-    return Icon(
-      Icons.remove,
-      color: palette.textSecondary,
-      size: 12,
+    return Text(
+      '-',
+      style: TextStyle(
+        fontSize: 12,
+        color: palette.textSecondary,
+      ),
+      textAlign: TextAlign.center,
     );
   }
 
