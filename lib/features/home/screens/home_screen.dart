@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/theme.dart';
-import '../../../core/providers/theme_provider.dart';
-import '../../../core/widgets/app_drawer.dart';
-import '../../../core/widgets/bottom_nav_bar.dart';
 import '../../../core/widgets/card_carousel.dart';
+import '../../../core/widgets/app_drawer.dart';
+import '../../../core/widgets/custom_app_bar.dart';
+import '../../../core/providers/theme_provider.dart';
+import '../../../core/services/navigation_service.dart';
 import '../../savings/screens/savings_list_screen.dart';
 import '../../loans/screens/loans_list_screen.dart';
 import '../../loans/screens/loan_calculator_screen.dart';
@@ -175,16 +176,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: showBottomNav ? ChangeNotifierProvider(
-        create: (_) => AppNavigationController(),
-        child: Consumer<AppNavigationController>(
-          builder: (context, controller, _) {
-            return AppBottomNavBar(
-              items: controller.getNavigationItems(),
-            );
-          },
-        ),
-      ) : null,
+      // Bottom navigation is handled by MainNavigationScreen when needed
     );
   }
 }
@@ -195,6 +187,9 @@ class _QuickActions extends StatelessWidget {
   final bool isDark;
 
   const _QuickActions({required this.isDark});
+
+  // Use centralized navigation service for better performance
+  static final NavigationService _navigationService = NavigationService();
 
   Widget _item(BuildContext context, IconData icon, String label, String subtitle, VoidCallback? onTap, Color accentColor) {
     final palette = Theme.of(context).extension<AppPalette>()!;
@@ -269,18 +264,10 @@ class _QuickActions extends StatelessWidget {
     return Row(
       children: [
         _item(context, Icons.savings_rounded, 'Savings', 'Deposit', () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const SavingsListScreen(),
-            ),
-          );
+          NavigationService.navigateToSavings(context);
         }, brandColor),
         _item(context, Icons.account_balance_rounded, 'Loan', 'Apply', () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const LoansListScreen(),
-            ),
-          );
+          NavigationService.navigateToLoans(context);
         }, brandColor),
         _item(context, Icons.payment_rounded, 'Pay', 'Bills', () {
           // TODO: Navigate to payment screen
