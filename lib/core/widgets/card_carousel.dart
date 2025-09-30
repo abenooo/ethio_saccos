@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../theme/theme.dart';
+import '../services/navigation_service.dart';
+import '../providers/card_data_provider.dart';
 import '../../features/home/screens/transaction_details_screen.dart' as details;
 import '../../features/loans/screens/loan_details_screen.dart';
 
@@ -26,36 +28,32 @@ class _CardCarouselState extends State<CardCarousel> {
   int _currentPage = 0;
   bool _obscure = true;
 
-  final List<CardData> _cards = [
+  // Use centralized card data for consistency and performance
+  late final List<CardData> _cards = CardDataProvider.allCardData.map((cardMap) => 
     CardData(
-      title: 'Abenezer Kifle',
-      amount: '2,000,000.00 ETB',
-      info1: '1213123123123123',
-      info2: 'Main Account',
-      icon: Icons.account_balance_wallet,
-    ),
-    CardData(
-      title: 'Personal Loan',
-      amount: '50,000.00 ETB',
-      info1: '1213123123123456',
-      info2: 'Loan Account',
-      icon: Icons.account_balance,
-    ),
-    CardData(
-      title: 'Savings Account',
-      amount: '85,500.00 ETB',
-      info1: '1213123123123789',
-      info2: 'Savings Account',
-      icon: Icons.savings,
-    ),
-    CardData(
-      title: 'Share Account',
-      amount: '45,000.00 ETB',
-      info1: '1213123123123890',
-      info2: 'Share Investment',
-      icon: Icons.pie_chart,
-    ),
-  ];
+      title: cardMap['title'] as String,
+      amount: cardMap['amount'] as String,
+      info1: cardMap['info1'] as String,
+      info2: cardMap['info2'] as String,
+      icon: _getIconForCard(cardMap['title'] as String),
+    )
+  ).toList();
+
+  // Helper method to get appropriate icon for each card type
+  IconData _getIconForCard(String title) {
+    switch (title.toLowerCase()) {
+      case 'abenezer kifle':
+        return Icons.account_balance_wallet;
+      case 'personal loan':
+        return Icons.account_balance;
+      case 'savings account':
+        return Icons.savings;
+      case 'share account':
+        return Icons.pie_chart;
+      default:
+        return Icons.credit_card;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -131,32 +129,7 @@ class _CardCarouselState extends State<CardCarousel> {
 
     return InkWell(
       borderRadius: BorderRadius.circular(20),
-      onTap: () {
-        if (isLoan) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => LoanDetailsScreen(
-                title: card.title,
-                loanAmount: 50000,
-                interestRate: 12.0,
-                loanTermMonths: 24,
-                startDate: DateTime(2023, 1, 1),
-                isFromLoanCard: true, // This is from a loan card, so show payment functionality
-              ),
-            ),
-          );
-        } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => details.TransactionDetailsScreen(
-                title: card.title,
-                isLoan: isLoan,
-                isShare: isShare,
-              ),
-            ),
-          );
-        }
-      },
+      onTap: () => _handleCardTap(context, card, isLoan, isShare),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
@@ -300,4 +273,29 @@ class CardData {
     required this.info2,
     required this.icon,
   });
+}
+
+// Extension for optimized card tap handling
+extension CardCarouselNavigation on _CardCarouselState {
+  // Optimized card tap handler using centralized navigation service
+  void _handleCardTap(BuildContext context, CardData card, bool isLoan, bool isShare) {
+    if (isLoan) {
+      // Navigate to Loans screen with loan card data
+      NavigationService.navigateToLoansWithCardData(context, card);
+    } else if (isShare || card.title.toLowerCase().contains('savings') || card.title == 'Abenezer Kifle') {
+      // Navigate to Savings screen with main account data
+      NavigationService.navigateToSavingsWithCardData(context, _cards);
+    } else {
+      // Navigate to transaction details for other cards
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => details.TransactionDetailsScreen(
+            title: card.title,
+            isLoan: isLoan,
+            isShare: isShare,
+          ),
+        ),
+      );
+    }
+  }
 }
