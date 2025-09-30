@@ -141,6 +141,7 @@ class _CardCarouselState extends State<CardCarousel> {
                 interestRate: 12.0,
                 loanTermMonths: 24,
                 startDate: DateTime(2023, 1, 1),
+                isFromLoanCard: true, // This is from a loan card, so show payment functionality
               ),
             ),
           );
