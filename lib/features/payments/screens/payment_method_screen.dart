@@ -202,7 +202,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                       ),
                       child: Text(
                         _selectedMethod != null 
-                          ? 'Pay ${widget.amount.toStringAsFixed(2)} ETB'
+                          ? 'Pay Now - ${widget.amount.toStringAsFixed(2)} ETB'
                           : 'Select Payment Method',
                         style: const TextStyle(
                           fontSize: 16,
