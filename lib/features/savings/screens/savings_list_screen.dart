@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/custom_app_bar.dart';
+import '../../../core/providers/card_data_provider.dart';
+import '../../home/screens/transaction_details_screen.dart';
 
 class SavingsListScreen extends StatefulWidget {
   final VoidCallback? onBackToHome;
-  const SavingsListScreen({super.key, this.onBackToHome});
+  final String? mainAccountBalance;
+  const SavingsListScreen({super.key, this.onBackToHome, this.mainAccountBalance});
 
-  @override
   State<SavingsListScreen> createState() => _SavingsListScreenState();
 }
 
 class _SavingsListScreenState extends State<SavingsListScreen> {
   bool _isBalanceVisible = false;
+  
+  // Use centralized card data provider for better performance
+  late final CardDataProvider _cardDataProvider = CardDataProvider();
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final palette = Theme.of(context).extension<AppPalette>()!;
+    
+    // Use centralized data conversion for consistency and performance
+    final savingsAccounts = _cardDataProvider.convertToSavingsAccounts(widget.mainAccountBalance);
     
     final savingsProducts = [
       {
@@ -135,40 +143,47 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                         const SizedBox(height: 16),
                         // Two column layout matching loan design
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Column(
-                              children: [
-                                Icon(
-                                  Icons.account_balance_wallet,
-                                  color: palette.iconPrimary,
-                                  size: 24,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Total Savings',
-                                  style: TextStyle(
-                                    color: palette.textSecondary,
-                                    fontSize: 12,
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Icon(
+                                    Icons.account_balance_wallet,
+                                    color: palette.iconPrimary,
+                                    size: 24,
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _isBalanceVisible ? '25,450.00 ETB' : '******************',
-                                  style: TextStyle(
-                                    color: palette.textPrimary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Total Savings',
+                                    style: TextStyle(
+                                      color: palette.textSecondary,
+                                      fontSize: 12,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    _isBalanceVisible 
+                                        ? (widget.mainAccountBalance ?? '25,450.00 ETB')
+                                        : '******************',
+                                    style: TextStyle(
+                                      color: palette.textPrimary,
+                                      fontSize: 20, // Reduced from 28 to prevent overflow
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
                             Container(
                               height: 60,
                               width: 1,
                               color: palette.cardBorder,
+                              margin: const EdgeInsets.symmetric(horizontal: 16),
                             ),
-                            Column(
+                            Expanded(
+                              child: Column(
                               children: [
                                 Icon(
                                   Icons.trending_up,
@@ -191,8 +206,11 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ],
+                              ),
                             ),
                           ],
                         ),
