@@ -80,153 +80,59 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
               }
             },
           ),
-          // Light section header (from theme palette)
-          Container(
-            decoration: BoxDecoration(color: palette.sectionBg),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          // Scrollable content
+          Expanded(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Total savings balance card
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: palette.cardBg,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: palette.cardBorder,
-                        width: 1,
+                  // Savings Accounts Carousel Section
+                  if (savingsAccounts.isNotEmpty) ...[
+                    Container(
+                      decoration: BoxDecoration(color: palette.sectionBg),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: SizedBox(
+                        height: 170, // Increased height to prevent overflow
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          itemCount: savingsAccounts.length,
+                          itemBuilder: (context, index) {
+                            final account = savingsAccounts[index];
+                            return SizedBox(
+                              width: 320, // Slightly reduced width for each card
+                              child: _buildSavingsAccountCard(account, palette),
+                            );
+                          },
+                        ),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'TOTAL SAVINGS BALANCE',
-                              style: TextStyle(
-                                color: palette.textSecondary,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _isBalanceVisible = !_isBalanceVisible;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: palette.cardBg,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: palette.cardBorder),
-                                ),
-                                child: Icon(
-                                  _isBalanceVisible ? Icons.visibility : Icons.visibility_off,
-                                  color: palette.iconPrimary,
-                                  size: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        // Two column layout matching loan design
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.account_balance_wallet,
-                                    color: palette.iconPrimary,
-                                    size: 24,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Total Savings',
-                                    style: TextStyle(
-                                      color: palette.textSecondary,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    _isBalanceVisible 
-                                        ? (widget.mainAccountBalance ?? '25,450.00 ETB')
-                                        : '******************',
-                                    style: TextStyle(
-                                      color: palette.textPrimary,
-                                      fontSize: 20, // Reduced from 28 to prevent overflow
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 60,
-                              width: 1,
-                              color: palette.cardBorder,
-                              margin: const EdgeInsets.symmetric(horizontal: 16),
-                            ),
-                            Expanded(
-                              child: Column(
-                              children: [
-                                Icon(
-                                  Icons.trending_up,
-                                  color: palette.iconPrimary,
-                                  size: 24,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Total Interest',
-                                  style: TextStyle(
-                                    color: palette.textSecondary,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  _isBalanceVisible ? '1,850.75 ETB' : '******************',
-                                  style: TextStyle(
-                                    color: palette.textPrimary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                  ],
+          
+          // Savings Products Section
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Available Savings Products',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: palette.textPrimary,
+                ),
               ),
             ),
           ),
+          const SizedBox(height: 16),
+          
           // Products list
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: savingsProducts.length,
-              itemBuilder: (context, index) {
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: savingsProducts.length,
+            itemBuilder: (context, index) {
                 final product = savingsProducts[index];
                 return Container(
                   margin: const EdgeInsets.only(bottom: 12),
@@ -335,8 +241,208 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                 );
               },
             ),
+                ],
+              ),
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Build individual savings account card with onClick functionality
+  Widget _buildSavingsAccountCard(Map<String, dynamic> account, AppPalette palette) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            // Navigate to savings account details
+            print('🔵 Savings Card Tapped: ${account['title']}'); // Debug print
+            try {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TransactionDetailsScreen(
+                    title: account['title'] as String,
+                    isLoan: false,
+                    isShare: account['accountType'] == 'Share',
+                    accountNumber: account['accountNumber'] as String,
+                    balance: account['balance'] as double,
+                    accountType: account['accountType'] as String,
+                  ),
+                ),
+              );
+            } catch (e) {
+              print('❌ Navigation Error: $e');
+            }
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  palette.cardBg,
+                  palette.cardBg.withOpacity(0.95),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: palette.cardBorder.withOpacity(0.5), width: 1.5),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green.withOpacity(0.08),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Compact header with eye icon
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          account['title'] as String,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: palette.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _isBalanceVisible = !_isBalanceVisible;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: palette.sectionBg,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Icon(
+                            _isBalanceVisible ? Icons.visibility_off : Icons.visibility,
+                            color: palette.textSecondary,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    account['accountNumber'] as String,
+                    style: TextStyle(
+                      color: palette.textSecondary,
+                      fontSize: 10,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Balance row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Balance',
+                              style: TextStyle(
+                                color: palette.textSecondary,
+                                fontSize: 9,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              _isBalanceVisible 
+                                  ? '${(account['balance'] as double).toStringAsFixed(2)}'
+                                  : '••••••••',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w800,
+                                color: Colors.green[700],
+                                letterSpacing: 0.3,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: Colors.green[600],
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          account['interestRate'] as String,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  // Footer info
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: palette.sectionBg,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.history,
+                          size: 11,
+                          color: palette.textSecondary,
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            account['lastTransaction'] as String,
+                            style: TextStyle(
+                              color: palette.textSecondary,
+                              fontSize: 9,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          account['lastTransactionDate'] as String,
+                          style: TextStyle(
+                            color: palette.textSecondary,
+                            fontSize: 8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
