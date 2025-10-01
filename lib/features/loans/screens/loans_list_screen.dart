@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/custom_app_bar.dart';
+import '../../../core/providers/card_data_provider.dart';
+import 'loan_details_screen.dart';
 
 class LoansListScreen extends StatefulWidget {
   final VoidCallback? onBackToHome;
-  const LoansListScreen({super.key, this.onBackToHome});
+  final dynamic loanCardData; // Add loan card data parameter
+  const LoansListScreen({super.key, this.onBackToHome, this.loanCardData});
 
   @override
   State<LoansListScreen> createState() => _LoansListScreenState();
@@ -12,54 +15,16 @@ class LoansListScreen extends StatefulWidget {
 
 class _LoansListScreenState extends State<LoansListScreen> {
   bool _isBalanceVisible = false;
-
+  
+  // Use centralized card data provider for better performance
+  late final CardDataProvider _cardDataProvider = CardDataProvider();
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final palette = Theme.of(context).extension<AppPalette>()!;
     final textTheme = Theme.of(context).textTheme;
-    final loanProducts = [
-      {
-        'title': 'SACCO Emergency Loan',
-        'creditLimit': 'Quick access loan for members',
-        'limit': '15,000.00 ETB',
-        'penalty': '2.0 %',
-        'serviceCharge': '5.0 %',
-        'installments': '1 Month',
-      },
-      {
-        'title': 'SACCO Personal Loan',
-        'creditLimit': 'Personal development loan',
-        'limit': '25,000.00 ETB',
-        'penalty': '1.5 %',
-        'serviceCharge': '8.0 %',
-        'installments': '3 Months',
-      },
-      {
-        'title': 'SACCO Business Loan',
-        'creditLimit': 'Small business development',
-        'limit': '50,000.00 ETB',
-        'penalty': '1.0 %',
-        'serviceCharge': '12.0 %',
-        'installments': '6 Months',
-      },
-      {
-        'title': 'SACCO Asset Loan',
-        'creditLimit': 'Asset purchase financing',
-        'limit': '75,000.00 ETB',
-        'penalty': '1.0 %',
-        'serviceCharge': '15.0 %',
-        'installments': '9 Months',
-      },
-      {
-        'title': 'SACCO Development Loan',
-        'creditLimit': 'Long-term development loan',
-        'limit': '100,000.00 ETB',
-        'penalty': '0.8 %',
-        'serviceCharge': '18.0 %',
-        'installments': '12 Months',
-      },
-    ];
+    // Use centralized data conversion for consistency and performance
+    final loanAccounts = _cardDataProvider.convertToLoanAccounts(widget.loanCardData);
 
     return Scaffold(
       backgroundColor: cs.surface,
@@ -157,7 +122,9 @@ class _LoansListScreenState extends State<LoansListScreen> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  _isBalanceVisible ? '- 30,000.00 ETB' : '******************',
+                                  _isBalanceVisible 
+                                      ? '- ${loanAccounts.fold<double>(0, (sum, loan) => sum + (loan['balance'] as double)).toStringAsFixed(2)} ETB'
+                                      : '******************',
                                   style: TextStyle(
                                     color: _isBalanceVisible ? Colors.red[600] : palette.textPrimary,
                                     fontSize: 16,
@@ -290,86 +257,159 @@ class _LoansListScreenState extends State<LoansListScreen> {
               ],
             ),
           ),
-          // Products list
+          // Loan accounts list
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: loanProducts.length,
+              itemCount: loanAccounts.length,
               itemBuilder: (context, index) {
-                final product = loanProducts[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: palette.cardBg,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: palette.cardBorder),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
+                final loan = loanAccounts[index];
+                return InkWell(
+                  onTap: () {
+                    // Navigate to loan details screen for this account
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoanDetailsScreen(
+                          title: loan['title'] as String,
+                          loanAmount: loan['balance'] as double,
+                          interestRate: double.tryParse(loan['interestRate'].toString().replaceAll('%', '')) ?? 12.0,
+                          loanTermMonths: loan['remainingMonths'] as int,
+                          startDate: DateTime.now().subtract(Duration(days: 365)),
+                          isFromLoanCard: true,
+                        ),
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              product['title']!,
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: palette.textPrimary,
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: palette.cardBg,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: palette.cardBorder),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    loan['title'] as String,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      color: palette.textPrimary,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    loan['accountNumber'] as String,
+                                    style: TextStyle(
+                                      color: palette.textSecondary,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        product['creditLimit']!,
-                        style: TextStyle(
-                          color: palette.textSecondary,
-                          fontSize: 12,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  _isBalanceVisible 
+                                      ? '- ${(loan['balance'] as double).toStringAsFixed(2)} ETB'
+                                      : '••••••••',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red[600],
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red[50],
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    loan['interestRate'] as String,
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.red[600],
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Limit: ${product['limit']}',
-                        style: TextStyle(
-                          color: palette.textSecondary,
-                          fontSize: 12,
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.payment,
+                              size: 14,
+                              color: palette.textSecondary,
+                            ),
+                            const SizedBox(width: 6),
+                            Expanded(
+                              child: Text(
+                                loan['lastPayment'] as String,
+                                style: TextStyle(
+                                  color: palette.textSecondary,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              loan['lastPaymentDate'] as String,
+                              style: TextStyle(
+                                color: palette.textSecondary,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Penalty: ${product['penalty']}',
-                        style: TextStyle(
-                          color: palette.textSecondary,
-                          fontSize: 12,
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Monthly Payment: ${(loan['monthlyPayment'] as double).toStringAsFixed(2)} ETB',
+                              style: TextStyle(
+                                color: palette.textSecondary,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              '${loan['remainingMonths']} months left',
+                              style: TextStyle(
+                                color: palette.textSecondary,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Service charge: ${product['serviceCharge']}',
-                        style: TextStyle(
-                          color: palette.textSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'No of Installment: ${product['installments']}',
-                        style: TextStyle(
-                          color: palette.textSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
