@@ -79,7 +79,7 @@ class CardDataProvider {
       {
         'title': 'Share Account',
         'accountNumber': 'SA-001-2024',
-        'balance': balanceValue * 0.0225, // 2.25% of main balance
+        'balance': balanceValue * 0.0225, // 2.25% of main balance (45,000 ETB)
         'lastTransaction': 'Deposit +2,500 ETB',
         'lastTransactionDate': '2 days ago',
         'interestRate': '6.5%',
@@ -88,16 +88,16 @@ class CardDataProvider {
       {
         'title': 'Regular Savings',
         'accountNumber': 'RS-002-2024',
-        'balance': balanceValue * 0.014375, // 1.4375% of main balance
+        'balance': balanceValue * 0.014375, // 1.4375% of main balance (28,750 ETB)
         'lastTransaction': 'Deposit +1,200 ETB',
         'lastTransactionDate': '5 days ago',
         'interestRate': '7.0%',
         'accountType': 'Savings',
       },
       {
-        'title': 'Fixed Deposit',
+        'title': 'Fixed Deposit 12M',
         'accountNumber': 'FD-003-2024',
-        'balance': balanceValue * 0.0625, // 6.25% of main balance
+        'balance': balanceValue * 0.0625, // 6.25% of main balance (125,000 ETB)
         'lastTransaction': 'Interest +1,875 ETB',
         'lastTransactionDate': '1 week ago',
         'interestRate': '9.5%',
@@ -107,11 +107,29 @@ class CardDataProvider {
       {
         'title': 'Emergency Fund',
         'accountNumber': 'EF-004-2024',
-        'balance': balanceValue * 0.00775, // 0.775% of main balance
+        'balance': balanceValue * 0.00775, // 0.775% of main balance (15,500 ETB)
         'lastTransaction': 'Deposit +500 ETB',
         'lastTransactionDate': '3 days ago',
         'interestRate': '5.5%',
         'accountType': 'Emergency',
+      },
+      {
+        'title': 'Children Education',
+        'accountNumber': 'CE-005-2024',
+        'balance': balanceValue * 0.015, // 1.5% of main balance (30,000 ETB)
+        'lastTransaction': 'Deposit +1,000 ETB',
+        'lastTransactionDate': '1 week ago',
+        'interestRate': '8.0%',
+        'accountType': 'Education',
+      },
+      {
+        'title': 'Holiday Savings',
+        'accountNumber': 'HS-006-2024',
+        'balance': balanceValue * 0.0075, // 0.75% of main balance (15,000 ETB)
+        'lastTransaction': 'Deposit +750 ETB',
+        'lastTransactionDate': '4 days ago',
+        'interestRate': '6.0%',
+        'accountType': 'Holiday',
       },
     ];
   }
