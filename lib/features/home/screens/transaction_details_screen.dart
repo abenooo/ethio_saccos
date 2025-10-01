@@ -7,7 +7,20 @@ class TransactionDetailsScreen extends StatefulWidget {
   final bool isLoan;
   final bool isShare;
   final VoidCallback? onBackToHome;
-  const TransactionDetailsScreen({super.key, required this.title, this.isLoan = false, this.isShare = false, this.onBackToHome});
+  final String? accountNumber;
+  final double? balance;
+  final String? accountType;
+  
+  const TransactionDetailsScreen({
+    super.key, 
+    required this.title, 
+    this.isLoan = false, 
+    this.isShare = false, 
+    this.onBackToHome,
+    this.accountNumber,
+    this.balance,
+    this.accountType,
+  });
 
   @override
   State<TransactionDetailsScreen> createState() => _TransactionDetailsScreenState();
