@@ -24,21 +24,52 @@ class CardDataProvider {
     'info2': 'Main Account',
   };
 
-  // All card data for consistency
+  // All card data for consistency - includes all savings accounts
   static const List<Map<String, dynamic>> allCardData = [
     mainAccountCardData,
     defaultLoanCardData,
-    {
-      'title': 'Savings Account',
-      'amount': '85,500.00 ETB',
-      'info1': '1213123123123789',
-      'info2': 'Savings Account',
-    },
+    // All savings accounts displayed as cards
     {
       'title': 'Share Account',
       'amount': '45,000.00 ETB',
-      'info1': '1213123123123890',
-      'info2': 'Share Investment',
+      'info1': 'SA-001-2024',
+      'info2': 'Share • 6.5%',
+      'accountType': 'Share',
+    },
+    {
+      'title': 'Regular Savings',
+      'amount': '28,750.00 ETB',
+      'info1': 'RS-002-2024',
+      'info2': 'Savings • 7.0%',
+      'accountType': 'Savings',
+    },
+    {
+      'title': 'Fixed Deposit 12M',
+      'amount': '125,000.00 ETB',
+      'info1': 'FD-003-2024',
+      'info2': 'Fixed • 9.5%',
+      'accountType': 'Fixed Deposit',
+    },
+    {
+      'title': 'Emergency Fund',
+      'amount': '15,500.00 ETB',
+      'info1': 'EF-004-2024',
+      'info2': 'Emergency • 5.5%',
+      'accountType': 'Emergency',
+    },
+    {
+      'title': 'Children Education',
+      'amount': '30,000.00 ETB',
+      'info1': 'CE-005-2024',
+      'info2': 'Education • 8.0%',
+      'accountType': 'Education',
+    },
+    {
+      'title': 'Holiday Savings',
+      'amount': '12,250.00 ETB',
+      'info1': 'HS-006-2024',
+      'info2': 'Holiday • 6.0%',
+      'accountType': 'Savings',
     },
   ];
 

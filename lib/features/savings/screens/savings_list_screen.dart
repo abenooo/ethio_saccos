@@ -13,10 +13,19 @@ class SavingsListScreen extends StatefulWidget {
 }
 
 class _SavingsListScreenState extends State<SavingsListScreen> {
-  bool _isBalanceVisible = false;
+  // Individual visibility state for each savings account
+  late final List<bool> _accountVisibility;
   
   // Use centralized card data provider for better performance
   late final CardDataProvider _cardDataProvider = CardDataProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize visibility state for each savings account (all hidden by default)
+    final savingsAccounts = _cardDataProvider.convertToSavingsAccounts(widget.mainAccountBalance);
+    _accountVisibility = List.filled(savingsAccounts.length, false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +109,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                             final account = savingsAccounts[index];
                             return SizedBox(
                               width: 320, // Slightly reduced width for each card
-                              child: _buildSavingsAccountCard(account, palette),
+                              child: _buildSavingsAccountCard(account, palette, index),
                             );
                           },
                         ),
@@ -251,7 +260,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
   }
 
   // Build individual savings account card with onClick functionality
-  Widget _buildSavingsAccountCard(Map<String, dynamic> account, AppPalette palette) {
+  Widget _buildSavingsAccountCard(Map<String, dynamic> account, AppPalette palette, int accountIndex) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       child: Material(
@@ -324,7 +333,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       InkWell(
                         onTap: () {
                           setState(() {
-                            _isBalanceVisible = !_isBalanceVisible;
+                            _accountVisibility[accountIndex] = !_accountVisibility[accountIndex];
                           });
                         },
                         child: Container(
@@ -334,7 +343,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Icon(
-                            _isBalanceVisible ? Icons.visibility_off : Icons.visibility,
+                            _accountVisibility[accountIndex] ? Icons.visibility : Icons.visibility_off,
                             color: palette.textSecondary,
                             size: 16,
                           ),
@@ -369,7 +378,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                             ),
                             const SizedBox(height: 2),
                             Text(
-                              _isBalanceVisible 
+                              _accountVisibility[accountIndex] 
                                   ? '${(account['balance'] as double).toStringAsFixed(2)}'
                                   : '••••••••',
                               style: TextStyle(

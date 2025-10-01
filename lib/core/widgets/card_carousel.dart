@@ -4,7 +4,6 @@ import '../theme/theme.dart';
 import '../services/navigation_service.dart';
 import '../providers/card_data_provider.dart';
 import '../../features/home/screens/transaction_details_screen.dart' as details;
-import '../../features/loans/screens/loan_details_screen.dart';
 
 class CardCarousel extends StatefulWidget {
   final bool isDark;
@@ -24,20 +23,33 @@ class _CardCarouselState extends State<CardCarousel> {
   static const _kViewportFraction = 0.95;
   static const _kCardHeight = 180.0;
   
-  final PageController _pageController = PageController(viewportFraction: _kViewportFraction);
+  late final PageController _pageController;
   int _currentPage = 0;
-  bool _obscure = true;
+  
+  // Individual visibility state for each card
+  late final List<bool> _cardVisibility;
 
-  // Use centralized card data for consistency and performance
-  late final List<CardData> _cards = CardDataProvider.allCardData.map((cardMap) => 
-    CardData(
-      title: cardMap['title'] as String,
-      amount: cardMap['amount'] as String,
-      info1: cardMap['info1'] as String,
-      info2: cardMap['info2'] as String,
-      icon: _getIconForCard(cardMap['title'] as String),
-    )
-  ).toList();
+  // Cache card data for better performance
+  late final List<CardData> _cards;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: _kViewportFraction);
+    // Initialize cards once for optimal performance
+    _cards = CardDataProvider.allCardData.map((cardMap) => 
+      CardData(
+        title: cardMap['title'] as String,
+        amount: cardMap['amount'] as String,
+        info1: cardMap['info1'] as String,
+        info2: cardMap['info2'] as String,
+        icon: _getIconForCard(cardMap['title'] as String),
+      )
+    ).toList();
+    
+    // Initialize visibility state for each card (all hidden by default)
+    _cardVisibility = List.filled(_cards.length, false);
+  }
 
   // Helper method to get appropriate icon for each card type
   IconData _getIconForCard(String title) {
@@ -46,12 +58,20 @@ class _CardCarouselState extends State<CardCarousel> {
         return Icons.account_balance_wallet;
       case 'personal loan':
         return Icons.account_balance;
-      case 'savings account':
-        return Icons.savings;
       case 'share account':
         return Icons.pie_chart;
+      case 'regular savings':
+        return Icons.savings;
+      case 'fixed deposit 12m':
+        return Icons.trending_up;
+      case 'emergency fund':
+        return Icons.emergency;
+      case 'children education':
+        return Icons.school;
+      case 'holiday savings':
+        return Icons.beach_access;
       default:
-        return Icons.credit_card;
+        return Icons.savings;
     }
   }
 
@@ -65,7 +85,7 @@ class _CardCarouselState extends State<CardCarousel> {
             controller: _pageController,
             onPageChanged: (index) => setState(() => _currentPage = index),
             itemCount: _cards.length,
-            itemBuilder: (context, index) => _buildCard(_cards[index]),
+            itemBuilder: (context, index) => _buildCard(_cards[index], index),
           ),
         ),
         const SizedBox(height: 16),
@@ -97,79 +117,99 @@ class _CardCarouselState extends State<CardCarousel> {
     );
   }
 
-  Widget _buildCard(CardData card) {
+  // Cached gradients for better performance
+  static const _loanGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFDC2626), Color(0xFFEA580C)],
+  );
+  
+  static const _shareGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFD97706), Color(0xFFEA580C)],
+  );
+  
+  static const _savingsGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF059669), Color(0xFF10B981)],
+  );
+  
+  static const _defaultGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)],
+  );
+
+  Widget _buildCard(CardData card, int cardIndex) {
     final isLoan = card.title.toLowerCase().contains('loan');
     final isShare = card.title.toLowerCase().contains('share');
+    final isSavings = card.title.toLowerCase().contains('savings') || 
+                      card.title.toLowerCase().contains('fixed') ||
+                      card.title.toLowerCase().contains('emergency') ||
+                      card.title.toLowerCase().contains('education') ||
+                      card.title.toLowerCase().contains('holiday');
 
-    final String displayedAmount = _obscure 
-        ? '*********************' 
-        : (isLoan ? '- ${card.amount}' : card.amount);
+    final String displayedAmount = _cardVisibility[cardIndex] 
+        ? (isLoan ? '- ${card.amount}' : card.amount)
+        : '*********************';
 
-    // Premium gradient for each card type
-    Gradient cardGradient;
-    if (isLoan) {
-      cardGradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFFDC2626), Color(0xFFEA580C)], // Error red to warning orange
-      );
-    } else if (isShare) {
-      cardGradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFFD97706), Color(0xFFEA580C)], // Accent gold to warning orange
-      );
-    } else {
-      cardGradient = const LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)], // Primary blue to light blue
-      );
-    }
+    // Select cached gradient for performance
+    final Gradient cardGradient = isLoan ? _loanGradient
+        : isShare ? _shareGradient
+        : isSavings ? _savingsGradient
+        : _defaultGradient;
 
-    return InkWell(
-      borderRadius: BorderRadius.circular(20),
-      onTap: () => _handleCardTap(context, card, isLoan, isShare),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 4),
-        decoration: BoxDecoration(
-          gradient: cardGradient,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
+          onTap: () => _handleCardTap(context, card, isLoan, isShare),
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: cardGradient,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 12,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
-          ],
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildCardHeader(card),
-            Text(
-              displayedAmount,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildCardHeader(card, cardIndex),
+                Text(
+                  displayedAmount,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                _buildCardFooter(card),
+              ],
             ),
-            _buildCardFooter(card),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildCardHeader(CardData card) {
+  Widget _buildCardHeader(CardData card, int cardIndex) {
     return Row(
       children: [
         Icon(
           card.icon,
-          color: Colors.white.withOpacity(0.9),
+          color: Colors.white.withValues(alpha: 0.9),
           size: 24,
         ),
         const SizedBox(width: 8),
@@ -186,17 +226,16 @@ class _CardCarouselState extends State<CardCarousel> {
         ),
         IconButton(
           icon: Icon(
-            _obscure ? Icons.visibility_off : Icons.visibility,
-            color: Colors.white.withOpacity(0.9),
+            _cardVisibility[cardIndex] ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white.withValues(alpha: 0.9),
             size: 22,
           ),
-          onPressed: () => setState(() => _obscure = !_obscure),
+          onPressed: () => setState(() => _cardVisibility[cardIndex] = !_cardVisibility[cardIndex]),
           splashRadius: 18,
         ),
       ],
     );
   }
-
 
   Widget _buildCardFooter(CardData card) {
     return Row(
@@ -206,7 +245,7 @@ class _CardCarouselState extends State<CardCarousel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _obscure ? '•••• •••• •••• ${card.info1.length >= 4 ? card.info1.substring(card.info1.length - 4) : card.info1}' : card.info1,
+                card.info1,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 14,
@@ -259,6 +298,10 @@ class _CardCarouselState extends State<CardCarousel> {
   }
 }
 
+/// Immutable data class representing a financial card
+/// 
+/// Used for displaying account information in the card carousel.
+/// Immutability ensures thread-safety and better performance.
 class CardData {
   final String title;
   final String amount;
@@ -273,17 +316,37 @@ class CardData {
     required this.info2,
     required this.icon,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CardData &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          amount == other.amount;
+
+  @override
+  int get hashCode => Object.hash(title, amount);
 }
 
 // Extension for optimized card tap handling
 extension CardCarouselNavigation on _CardCarouselState {
   // Optimized card tap handler using centralized navigation service
   void _handleCardTap(BuildContext context, CardData card, bool isLoan, bool isShare) {
+    // Check if it's any savings-type card
+    final isSavingsType = isShare || 
+                          card.title.toLowerCase().contains('savings') ||
+                          card.title.toLowerCase().contains('fixed') ||
+                          card.title.toLowerCase().contains('emergency') ||
+                          card.title.toLowerCase().contains('education') ||
+                          card.title.toLowerCase().contains('holiday') ||
+                          card.title == 'Abenezer Kifle';
+    
     if (isLoan) {
       // Navigate to Loans screen with loan card data
       NavigationService.navigateToLoansWithCardData(context, card);
-    } else if (isShare || card.title.toLowerCase().contains('savings') || card.title == 'Abenezer Kifle') {
-      // Navigate to Savings screen with main account data
+    } else if (isSavingsType) {
+      // Navigate to Savings screen with all savings data
       NavigationService.navigateToSavingsWithCardData(context, _cards);
     } else {
       // Navigate to transaction details for other cards

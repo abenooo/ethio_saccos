@@ -70,23 +70,36 @@ class NavigationService {
   }
 
   /// Navigate to savings screen via bottom navigation with card data
+  /// 
+  /// Extracts the main account balance from the provided card list and navigates
+  /// to the savings screen. Falls back to default balance if main account is not found.
+  /// 
+  /// Parameters:
+  /// - [context]: BuildContext for navigation
+  /// - [cards]: List of card data (supports both Map and CardData objects)
   static void navigateToSavingsWithCardData(BuildContext context, List<dynamic> cards) {
-    // Find the main account (Abenezer Kifle) balance
-    final mainAccount = cards.firstWhere(
-      (card) => (card is Map ? card['title'] : card.title) == 'Abenezer Kifle',
-      orElse: () => _cardDataProvider.getMainAccountCardData(),
-    );
+    assert(cards.isNotEmpty, 'Cards list should not be empty');
     
-    final balance = mainAccount is Map ? mainAccount['amount'] : mainAccount.amount;
+    String balance = _cardDataProvider.getMainAccountBalance();
+    
+    try {
+      final mainAccount = cards.firstWhere(
+        (card) => (card is Map ? card['title'] : card.title) == 'Abenezer Kifle',
+      );
+      balance = mainAccount is Map ? mainAccount['amount'] : mainAccount.amount;
+    } catch (_) {
+      // Silently fall back to default balance - expected behavior
+      balance = _cardDataProvider.getMainAccountBalance();
+    }
     
     Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(
-        builder: (context) => MainNavigationScreen(
-          initialIndex: 1, // Savings screen index
+        builder: (_) => MainNavigationScreen(
+          initialIndex: 1,
           mainAccountBalance: balance,
         ),
       ),
-      (route) => false,
+      (_) => false,
     );
   }
 

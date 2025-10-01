@@ -3,11 +3,8 @@ import 'package:provider/provider.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/card_carousel.dart';
 import '../../../core/widgets/app_drawer.dart';
-import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/services/navigation_service.dart';
-import '../../savings/screens/savings_list_screen.dart';
-import '../../loans/screens/loans_list_screen.dart';
 import '../../loans/screens/loan_calculator_screen.dart';
 import 'transaction_details_screen.dart';
 
@@ -45,12 +42,12 @@ class HomeScreen extends StatelessWidget {
                       color: palette.cardBg,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: const Color(0xFF1E3A8A).withOpacity(0.3), // Primary blue border
+                        color: const Color(0xFF1E3A8A).withValues(alpha: 0.3), // Primary blue border
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFF1E3A8A).withOpacity(0.1),
+                          color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),
@@ -104,12 +101,12 @@ class HomeScreen extends StatelessWidget {
                       color: palette.cardBg,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: const Color(0xFFD97706).withOpacity(0.3), // Accent gold border
+                        color: const Color(0xFFD97706).withValues(alpha: 0.3), // Accent gold border
                         width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: const Color(0xFFD97706).withOpacity(0.1),
+                          color: const Color(0xFFD97706).withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),
@@ -188,9 +185,6 @@ class _QuickActions extends StatelessWidget {
 
   const _QuickActions({required this.isDark});
 
-  // Use centralized navigation service for better performance
-  static final NavigationService _navigationService = NavigationService();
-
   Widget _item(BuildContext context, IconData icon, String label, String subtitle, VoidCallback? onTap, Color accentColor) {
     final palette = Theme.of(context).extension<AppPalette>()!;
     return Expanded(
@@ -204,12 +198,12 @@ class _QuickActions extends StatelessWidget {
             color: palette.cardBg,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: accentColor.withOpacity(0.4),
+              color: accentColor.withValues(alpha: 0.4),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: accentColor.withOpacity(0.15),
+                color: accentColor.withValues(alpha: 0.15),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -221,7 +215,7 @@ class _QuickActions extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: accentColor.withOpacity(0.15),
+                  color: accentColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
@@ -398,12 +392,12 @@ class _AccountMenuSection extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: accentColor.withOpacity(0.3),
+            color: accentColor.withValues(alpha: 0.3),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: accentColor.withOpacity(0.1),
+              color: accentColor.withValues(alpha: 0.1),
               blurRadius: 8,
               offset: const Offset(0, 4),
               spreadRadius: 0,
@@ -421,13 +415,13 @@ class _AccountMenuSection extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    accentColor.withOpacity(0.1),
-                    accentColor.withOpacity(0.2),
+                    accentColor.withValues(alpha: 0.1),
+                    accentColor.withValues(alpha: 0.2),
                   ],
                 ),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: accentColor.withOpacity(0.3),
+                  color: accentColor.withValues(alpha: 0.3),
                   width: 1,
                 ),
               ),

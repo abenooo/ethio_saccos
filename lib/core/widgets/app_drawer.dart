@@ -72,14 +72,12 @@ class AppDrawer extends StatelessWidget {
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         hoverColor: theme.colorScheme.primary.withValues(alpha: 0.05),
-        splashColor: theme.colorScheme.primary.withValues(alpha: 0.1),
       ),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
-    final palette = theme.extension<AppPalette>()!;
     
     return Container(
       height: 200,
@@ -97,17 +95,19 @@ class AppDrawer extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Profile Avatar
+              // Profile Picture
               Container(
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
                   color: Colors.white.withValues(alpha: 0.2),
-                  border: Border.all(color: Colors.white.withValues(alpha: 0.3), width: 2),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
                 ),
                 child: const Icon(
                   Icons.person,

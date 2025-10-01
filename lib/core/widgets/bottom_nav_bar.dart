@@ -32,7 +32,7 @@ class AppBottomNavBar extends StatelessWidget {
     final theme = Theme.of(context);
     final color = item.isSelected 
         ? theme.colorScheme.primary
-        : theme.colorScheme.onBackground.withValues(alpha: 0.4);
+        : theme.colorScheme.onSurface.withValues(alpha: 0.4);
 
     return InkWell(
       onTap: item.onTap,
@@ -64,7 +64,7 @@ class AppBottomNavBar extends StatelessWidget {
     
     return Container(
       decoration: BoxDecoration(
-        color: backgroundColor ?? theme.colorScheme.background,
+        color: backgroundColor ?? theme.colorScheme.surface,
         boxShadow: [
           if (elevation > 0)
             BoxShadow(
