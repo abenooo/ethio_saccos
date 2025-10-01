@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import '../core/theme/theme.dart';
+import '../core/providers/card_data_provider.dart';
 import '../features/home/screens/home_screen.dart';
 import '../features/savings/screens/savings_list_screen.dart';
 import '../features/loans/screens/loans_list_screen.dart';
@@ -11,22 +12,46 @@ import '../features/support/widgets/floating_chat_button.dart';
 import '../core/providers/theme_provider.dart';
 
 class MainNavigationScreen extends StatefulWidget {
-  const MainNavigationScreen({super.key});
+  final int initialIndex;
+  final String? mainAccountBalance;
+  final dynamic loanCardData; // Add loan card data parameter
+  
+  const MainNavigationScreen({
+    super.key, 
+    this.initialIndex = 2, // Default to Home screen
+    this.mainAccountBalance,
+    this.loanCardData,
+  });
 
   @override
   State<MainNavigationScreen> createState() => _MainNavigationScreenState();
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 2; // Start with Home screen (middle position)
+  late int _selectedIndex;
+
+  // Use centralized card data provider for better performance
+  late final CardDataProvider _cardDataProvider = CardDataProvider();
 
    late final List<Widget> _screens = [
-      LoansListScreen(onBackToHome: () => _onItemTapped(2)),
-      SavingsListScreen(onBackToHome: () => _onItemTapped(2)),
+      LoansListScreen(
+        onBackToHome: () => _onItemTapped(2),
+        loanCardData: widget.loanCardData ?? _cardDataProvider.getLoanCardData(),
+      ),
+      SavingsListScreen(
+        onBackToHome: () => _onItemTapped(2),
+        mainAccountBalance: widget.mainAccountBalance ?? _cardDataProvider.getMainAccountBalance(),
+      ),
       const HomeScreen(showBottomNav: false),
       TransactionDetailsScreen(title: 'Transaction History', onBackToHome: () => _onItemTapped(2)),
       SettingsScreen(showBackButton: false, onBackToHome: () => _onItemTapped(2)),
     ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
