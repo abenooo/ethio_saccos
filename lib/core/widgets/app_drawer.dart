@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import '../providers/card_data_provider.dart';
 import '../services/navigation_service.dart';
 import '../../features/notifications/screens/notifications_screen.dart';
 import '../../features/home/screens/transaction_details_screen.dart';
 import '../../features/auth/services/auth_service.dart';
 import '../../main.dart';
-import '../../features/savings/screens/savings_list_screen.dart';
-import '../../features/loans/screens/loans_list_screen.dart';
 import '../theme/theme.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
-
-  // Use centralized card data provider for better performance
-  static final CardDataProvider _cardDataProvider = CardDataProvider();
 
   Widget _buildGroupHeader(BuildContext context, String title) {
     final theme = Theme.of(context);
