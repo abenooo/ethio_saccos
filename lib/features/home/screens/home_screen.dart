@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/theme.dart';
-import '../../../core/widgets/card_carousel.dart';
 import '../../../core/widgets/app_drawer.dart';
+import '../../../core/widgets/card_carousel.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/services/navigation_service.dart';
 import '../../loans/screens/loan_calculator_screen.dart';
@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       drawer: const AppDrawer(),
       body: CustomScrollView(
         slivers: [
-          // Sticky App Bar
+          // Sticky App Bar with Green Gradient
           SliverAppBar(
             floating: false,
             pinned: true,
@@ -39,25 +39,14 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: palette.cardBg,
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFF1E3A8A).withValues(alpha: 0.3), // Primary blue border
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF1E3A8A).withValues(alpha: 0.1),
-                          blurRadius: 6,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
                     ),
                     child: Builder(
                       builder: (context) => IconButton(
                         icon: const Icon(
                           Icons.menu_rounded,
-                          color: Color(0xFF1E3A8A), // Primary blue icon
+                          color: Colors.white,
                           size: 24,
                         ),
                         onPressed: () {
@@ -74,19 +63,19 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          const Text(
                             'Welcome back,',
                             style: TextStyle(
-                              color: palette.textSecondary,
+                              color: Colors.white,
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 2),
-                          Text(
+                          const Text(
                             'Abenezer Kifle',
                             style: TextStyle(
-                              color: palette.textPrimary,
+                              color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -98,24 +87,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Container(
                     decoration: BoxDecoration(
-                      color: palette.cardBg,
+                      color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFFD97706).withValues(alpha: 0.3), // Accent gold border
-                        width: 1.5,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFFD97706).withValues(alpha: 0.1),
-                          blurRadius: 6,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
                     ),
                     child: IconButton(
                       icon: Icon(
                         isDark ? Icons.light_mode : Icons.dark_mode,
-                        color: const Color(0xFFD97706), // Accent gold icon
+                        color: Colors.white,
                         size: 24,
                       ),
                       onPressed: () {
@@ -127,43 +105,63 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             flexibleSpace: Container(
-              decoration: BoxDecoration(
-                color: palette.sectionBg,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF10B981), // Emerald green
+                    Color(0xFF059669), // Darker emerald
+                  ],
+                ),
               ),
             ),
           ),
           
           // Scrollable Content
           SliverToBoxAdapter(
-            child: Container(
-              decoration: BoxDecoration(
-                color: palette.sectionBg,
-              ),
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  CardCarousel(
-                    isDark: isDark,
-                    cardGradient: gradients.cardGradient,
-                  ),
-                  const SizedBox(height: 32),
-                  // Quick Actions Label
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Text(
-                      'Quick Actions',
-                      style: TextStyle(
-                        color: palette.textPrimary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
+            child: Stack(
+              children: [
+                // Green background with curved bottom
+                Container(
+                  height: 280,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF10B981),
+                        Color(0xFF059669),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
                     ),
                   ),
-                  _QuickActions(isDark: isDark),
-                ],
-              ),
+                ),
+                // Content
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 8),
+                      // Card Carousel Section (replacing balance card)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: CardCarousel(
+                          isDark: isDark,
+                          cardGradient: gradients.cardGradient,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      _ModernQuickActions(isDark: isDark),
+                      const SizedBox(height: 24),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           
@@ -178,104 +176,308 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-
-
-class _QuickActions extends StatelessWidget {
+// Modern Balance Card Widget
+class _ModernBalanceCard extends StatelessWidget {
   final bool isDark;
 
-  const _QuickActions({required this.isDark});
+  const _ModernBalanceCard({required this.isDark});
 
-  Widget _item(BuildContext context, IconData icon, String label, String subtitle, VoidCallback? onTap, Color accentColor) {
-    final palette = Theme.of(context).extension<AppPalette>()!;
-    return Expanded(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-          decoration: BoxDecoration(
-            color: palette.cardBg,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: accentColor.withValues(alpha: 0.4),
-              width: 2,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: accentColor.withValues(alpha: 0.15),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const Text(
+                'Total Balance',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: accentColor.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  icon,
-                  color: accentColor,
-                  size: 24,
+                child: const Icon(
+                  Icons.visibility_outlined,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
-              const SizedBox(height: 8),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            'KSh 245,680',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _BalanceIndicator(
+                  icon: Icons.south_west_rounded,
+                  label: 'Income',
+                  amount: 'KSh 85,450',
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: _BalanceIndicator(
+                  icon: Icons.north_east_rounded,
+                  label: 'Expenses',
+                  amount: 'KSh 23,120',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BalanceIndicator extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String amount;
+
+  const _BalanceIndicator({
+    required this.icon,
+    required this.label,
+    required this.amount,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 14,
+          ),
+        ),
+        const SizedBox(width: 6),
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Text(
                 label,
-                style: TextStyle(
-                  color: palette.textPrimary,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  color: palette.textSecondary,
-                  fontSize: 9,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
                   fontWeight: FontWeight.w400,
                 ),
-                textAlign: TextAlign.center,
+              ),
+              Text(
+                amount,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
+}
+
+// Modern Quick Actions Widget
+class _ModernQuickActions extends StatelessWidget {
+  final bool isDark;
+
+  const _ModernQuickActions({required this.isDark});
 
   @override
   Widget build(BuildContext context) {
-    // Single consistent brand color for all quick actions
-    const brandColor = Color(0xFF1E3A8A); // Primary blue for all
-    
-    return Row(
-      children: [
-        _item(context, Icons.savings_rounded, 'Savings', 'Deposit', () {
-          NavigationService.navigateToSavings(context);
-        }, brandColor),
-        _item(context, Icons.account_balance_rounded, 'Loan', 'Apply', () {
-          NavigationService.navigateToLoans(context);
-        }, brandColor),
-        _item(context, Icons.payment_rounded, 'Pay', 'Bills', () {
-          // TODO: Navigate to payment screen
-        }, brandColor),
-        _item(context, Icons.history_rounded, 'View', 'History', () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const TransactionDetailsScreen(
-                title: 'Transaction History',
-              ),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.15),
+            blurRadius: 25,
+            offset: const Offset(0, -5),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 15,
+            offset: const Offset(0, -2),
+            spreadRadius: 0,
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Quick Actions',
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
             ),
-          );
-        }, brandColor),
-      ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _QuickActionButton(
+                icon: Icons.savings_rounded,
+                label: 'Saving\nDeposit',
+                backgroundColor: const Color(0xFF059669), // Emerald green
+                onTap: () {
+                  NavigationService.navigateToSavings(context);
+                },
+              ),
+              _QuickActionButton(
+                icon: Icons.account_balance_rounded,
+                label: 'Loan\nApply',
+                backgroundColor: const Color(0xFF2563EB), // Royal blue
+                onTap: () {
+                  NavigationService.navigateToLoans(context);
+                },
+              ),
+              _QuickActionButton(
+                icon: Icons.payment_rounded,
+                label: 'Pay\nBills',
+                backgroundColor: const Color(0xFF7C3AED), // Violet purple
+                onTap: () {
+                  // TODO: Navigate to payment screen
+                },
+              ),
+              _QuickActionButton(
+                icon: Icons.history_rounded,
+                label: 'View\nHistory',
+                backgroundColor: const Color(0xFFEA580C), // Orange red
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const TransactionDetailsScreen(
+                        title: 'Transaction History',
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickActionButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color backgroundColor;
+  final VoidCallback onTap;
+
+  const _QuickActionButton({
+    required this.icon,
+    required this.label,
+    required this.backgroundColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  backgroundColor,
+                  backgroundColor.withValues(alpha: 0.8),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: backgroundColor.withValues(alpha: 0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 28,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Column(
+            children: [
+              Text(
+                label.split('\n')[0], // First part (Saving, Loan, Pay, View)
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Text(
+                label.split('\n')[1], // Second part (Deposit, Apply, Bills, History)
+                style: TextStyle(
+                  color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.6),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -468,6 +670,3 @@ class _AccountMenuSection extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -117,29 +117,29 @@ class _CardCarouselState extends State<CardCarousel> {
     );
   }
 
-  // Cached gradients for better performance
+  // Cached gradients for better performance - Updated with awesome colors
   static const _loanGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFDC2626), Color(0xFFEA580C)],
+    colors: [Color(0xFF2563EB), Color(0xFF1D4ED8)], // Royal blue gradient
   );
   
   static const _shareGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFD97706), Color(0xFFEA580C)],
+    colors: [Color(0xFF7C3AED), Color(0xFF6D28D9)], // Violet purple gradient
   );
   
   static const _savingsGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF059669), Color(0xFF10B981)],
+    colors: [Color(0xFF059669), Color(0xFF047857)], // Emerald green gradient
   );
   
   static const _defaultGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1E3A8A), Color(0xFF3B82F6)],
+    colors: [Color(0xFFEA580C), Color(0xFFDC2626)], // Orange red gradient
   );
 
   Widget _buildCard(CardData card, int cardIndex) {
