@@ -117,30 +117,7 @@ class _CardCarouselState extends State<CardCarousel> {
     );
   }
 
-  // Cached gradients for better performance - Updated with awesome colors
-  static const _loanGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFF2563EB), Color(0xFF1D4ED8)], // Royal blue gradient
-  );
-  
-  static const _shareGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFF7C3AED), Color(0xFF6D28D9)], // Violet purple gradient
-  );
-  
-  static const _savingsGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFF059669), Color(0xFF047857)], // Emerald green gradient
-  );
-  
-  static const _defaultGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFFEA580C), Color(0xFFDC2626)], // Orange red gradient
-  );
+  // Use theme-based gradients for consistency
 
   Widget _buildCard(CardData card, int cardIndex) {
     final isLoan = card.title.toLowerCase().contains('loan');
@@ -155,11 +132,9 @@ class _CardCarouselState extends State<CardCarousel> {
         ? (isLoan ? '- ${card.amount}' : card.amount)
         : '*********************';
 
-    // Select cached gradient for performance
-    final Gradient cardGradient = isLoan ? _loanGradient
-        : isShare ? _shareGradient
-        : isSavings ? _savingsGradient
-        : _defaultGradient;
+    // Use theme gradient for all cards
+    final gradients = Theme.of(context).extension<AppGradients>()!;
+    final Gradient cardGradient = gradients.cardGradient;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 4),

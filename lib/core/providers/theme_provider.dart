@@ -11,10 +11,10 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Premium brand color palette
-  static const Color primaryBlue = Color(0xFF1E3A8A);      // Deep blue
-  static const Color secondaryTeal = Color(0xFF0F766E);     // Teal
-  static const Color accentGold = Color(0xFFD97706);        // Gold/amber
+  // Premium brand color palette - Updated with yellow primary
+  static const Color primaryYellow = Color(0xFFFBBD3E);     // Brand yellow (primary)
+  static const Color secondaryGold = Color(0xFFFFD700);     // Bright gold
+  static const Color accentOrange = Color(0xFFE6A82A);      // Darker yellow/orange
   static const Color successGreen = Color(0xFF059669);      // Emerald green
   static const Color warningOrange = Color(0xFFEA580C);     // Orange
   static const Color errorRed = Color(0xFFDC2626);          // Red
@@ -25,13 +25,13 @@ class ThemeProvider extends ChangeNotifier {
     if (_isDarkMode) {
       return ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color(0xFF0F172A),
-        primaryColor: primaryBlue,
+        primaryColor: primaryYellow,
         colorScheme: ColorScheme.dark(
-          primary: primaryBlue,
-          secondary: secondaryTeal,
+          primary: primaryYellow,
+          secondary: secondaryGold,
           surface: const Color(0xFF0F172A),
-          onPrimary: Colors.white,
-          onSecondary: Colors.white70,
+          onPrimary: Colors.black,
+          onSecondary: Colors.black87,
           onSurface: Colors.white70,
         ),
         textTheme: ThemeData.dark().textTheme.copyWith(
@@ -45,12 +45,12 @@ class ThemeProvider extends ChangeNotifier {
             headerGradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [primaryBlue.withValues(alpha: 0.9), secondaryTeal.withValues(alpha: 0.7)],
+              colors: [secondaryGold, primaryYellow],
             ),
             cardGradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [primaryBlue, secondaryTeal],
+              colors: [primaryYellow, accentOrange],
             ),
           ),
           const AppPalette(
@@ -67,13 +67,13 @@ class ThemeProvider extends ChangeNotifier {
       );
     } else {
       return ThemeData.light().copyWith(
-        primaryColor: primaryBlue,
+        primaryColor: primaryYellow,
         colorScheme: ColorScheme.light(
-          primary: primaryBlue,
-          secondary: secondaryTeal,
+          primary: primaryYellow,
+          secondary: secondaryGold,
           surface: const Color(0xFFF8FAFC),
-          onPrimary: Colors.white,
-          onSecondary: Colors.white,
+          onPrimary: Colors.black,
+          onSecondary: Colors.black87,
           onSurface: const Color(0xFF1E293B),
         ),
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -87,12 +87,12 @@ class ThemeProvider extends ChangeNotifier {
             headerGradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [primaryBlue, secondaryTeal],
+              colors: [secondaryGold, primaryYellow],
             ),
             cardGradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [primaryBlue, lightBlue],
+              colors: [primaryYellow, accentOrange],
             ),
           ),
           const AppPalette(

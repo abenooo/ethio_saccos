@@ -39,14 +39,14 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: Colors.black.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Builder(
                       builder: (context) => IconButton(
                         icon: const Icon(
                           Icons.menu_rounded,
-                          color: Colors.white,
+                          color: Colors.black,
                           size: 24,
                         ),
                         onPressed: () {
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
                           const Text(
                             'Welcome back,',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black87,
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                             ),
@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
                           const Text(
                             'Abenezer Kifle',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -87,13 +87,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
+                      color: Colors.black.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
                       icon: Icon(
                         isDark ? Icons.light_mode : Icons.dark_mode,
-                        color: Colors.white,
+                        color: Colors.black,
                         size: 24,
                       ),
                       onPressed: () {
@@ -105,15 +105,8 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFF10B981), // Emerald green
-                    Color(0xFF059669), // Darker emerald
-                  ],
-                ),
+              decoration: BoxDecoration(
+                gradient: gradients.headerGradient,
               ),
             ),
           ),
@@ -122,19 +115,12 @@ class HomeScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Stack(
               children: [
-                // Green background with curved bottom
+                // Golden yellow background with curved bottom - Extended height
                 Container(
-                  height: 280,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Color(0xFF10B981),
-                        Color(0xFF059669),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.only(
+                  height: 350, // Increased from 280 to extend into quick actions area
+                  decoration: BoxDecoration(
+                    gradient: gradients.headerGradient,
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(30),
                       bottomRight: Radius.circular(30),
                     ),
@@ -320,10 +306,12 @@ class _ModernQuickActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        color: Colors.white, // Always white for the new design
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -352,7 +340,7 @@ class _ModernQuickActions extends StatelessWidget {
           Text(
             'Quick Actions',
             style: TextStyle(
-              color: isDark ? Colors.white : Colors.black,
+              color: Colors.black, // Always black text on white background
               fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
@@ -364,7 +352,7 @@ class _ModernQuickActions extends StatelessWidget {
               _QuickActionButton(
                 icon: Icons.savings_rounded,
                 label: 'Saving\nDeposit',
-                backgroundColor: const Color(0xFF059669), // Emerald green
+                backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   NavigationService.navigateToSavings(context);
                 },
@@ -372,7 +360,7 @@ class _ModernQuickActions extends StatelessWidget {
               _QuickActionButton(
                 icon: Icons.account_balance_rounded,
                 label: 'Loan\nApply',
-                backgroundColor: const Color(0xFF2563EB), // Royal blue
+                backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   NavigationService.navigateToLoans(context);
                 },
@@ -380,7 +368,7 @@ class _ModernQuickActions extends StatelessWidget {
               _QuickActionButton(
                 icon: Icons.payment_rounded,
                 label: 'Pay\nBills',
-                backgroundColor: const Color(0xFF7C3AED), // Violet purple
+                backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   // TODO: Navigate to payment screen
                 },
@@ -388,7 +376,7 @@ class _ModernQuickActions extends StatelessWidget {
               _QuickActionButton(
                 icon: Icons.history_rounded,
                 label: 'View\nHistory',
-                backgroundColor: const Color(0xFFEA580C), // Orange red
+                backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -451,7 +439,7 @@ class _QuickActionButton extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: Colors.white,
+              color: Colors.black,
               size: 28,
             ),
           ),
@@ -461,7 +449,7 @@ class _QuickActionButton extends StatelessWidget {
               Text(
                 label.split('\n')[0], // First part (Saving, Loan, Pay, View)
                 style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black,
+                  color: Colors.black, // Always black text on white background
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                 ),
@@ -469,7 +457,7 @@ class _QuickActionButton extends StatelessWidget {
               Text(
                 label.split('\n')[1], // Second part (Deposit, Apply, Bills, History)
                 style: TextStyle(
-                  color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.6),
+                  color: Colors.black.withValues(alpha: 0.6), // Faded black text
                   fontSize: 10,
                   fontWeight: FontWeight.w400,
                 ),
