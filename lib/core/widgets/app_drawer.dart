@@ -78,62 +78,53 @@ class AppDrawer extends StatelessWidget {
 
   Widget _buildHeader(BuildContext context) {
     final theme = Theme.of(context);
+    final gradients = theme.extension<AppGradients>()!;
     
     return Container(
-      height: 200,
+      height: 160,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFF1E3A8A), // Primary Blue
-            const Color(0xFF0F766E), // Secondary Teal
-          ],
-        ),
+        gradient: gradients.headerGradient,
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: Container(
+          padding: const EdgeInsets.all(16),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Profile Picture
               Container(
-                width: 60,
-                height: 60,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2,
-                  ),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.person,
-                  color: Colors.white,
-                  size: 30,
+                  color: theme.colorScheme.secondary,
+                  size: 24,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
               
               // User Name
               Text(
                 'Abenezer Kifle',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  color: Colors.white,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.w600,
-                  fontSize: 20,
+                  fontSize: 16,
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 2),
               
-              // Member ID
+              // Phone number
               Text(
-                'Member ID: SAC001234',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.8),
-                  fontSize: 14,
+                '+251 912 345 678',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.7),
+                  fontSize: 12,
                 ),
               ),
             ],

@@ -39,14 +39,14 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.15),
+                      color: cs.secondary.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Builder(
                       builder: (context) => IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.menu_rounded,
-                          color: Colors.black,
+                          color: cs.secondary,
                           size: 24,
                         ),
                         onPressed: () {
@@ -63,19 +63,19 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Text(
+                          Text(
                             'Welcome back,',
                             style: TextStyle(
-                              color: Colors.black87,
+                              color: cs.secondary.withValues(alpha: 0.8),
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 2),
-                          const Text(
+                          Text(
                             'Abenezer Kifle',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: cs.secondary,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -87,13 +87,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(width: 20),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.15),
+                      color: cs.secondary.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: IconButton(
                       icon: Icon(
                         isDark ? Icons.light_mode : Icons.dark_mode,
-                        color: Colors.black,
+                        color: cs.secondary,
                         size: 24,
                       ),
                       onPressed: () {
