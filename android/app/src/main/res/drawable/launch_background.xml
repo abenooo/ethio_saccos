@@ -1,49 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SACCOS Ethiopia Launch Screen with SVG Logo -->
+<!-- Simple background - no logo to avoid double splash -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Background gradient matching our theme -->
+    <!-- Simple solid background matching your theme -->
     <item>
         <shape android:shape="rectangle">
-            <gradient
-                android:startColor="#FFD700"
-                android:endColor="#FBBD3E"
-                android:angle="135" />
+            <solid android:color="#FBBD3E" />
         </shape>
-    </item>
-    
-    <!-- Logo container with circular background -->
-    <item android:gravity="center">
-        <shape android:shape="oval">
-            <solid android:color="#FFFFFF" />
-            <size android:width="160dp" android:height="160dp" />
-        </shape>
-    </item>
-    
-    <!-- Vector Logo -->
-    <item android:gravity="center"
-          android:width="80dp"
-          android:height="80dp">
-        <vector xmlns:android="http://schemas.android.com/apk/res/android"
-            android:width="80dp"
-            android:height="80dp"
-            android:viewportWidth="120"
-            android:viewportHeight="120">
-            
-            <!-- Outer circle -->
-            <path
-                android:fillColor="#FBBD3E"
-                android:pathData="M60,10 C32.4,10 10,32.4 10,60 C10,87.6 32.4,110 60,110 C87.6,110 110,87.6 110,60 C110,32.4 87.6,10 60,10 Z M60,20 C82,20 100,38 100,60 C100,82 82,100 60,100 C38,100 20,82 20,60 C20,38 38,20 60,20 Z" />
-            
-            <!-- Inner design - stylized "S" for SACCOS -->
-            <path
-                android:fillColor="#100D08"
-                android:pathData="M45,35 C50,30 70,30 75,35 C75,40 70,42 60,42 C50,42 45,45 45,50 C45,55 50,57 60,57 C70,57 75,60 75,65 C75,70 70,72 60,72 C50,72 45,70 45,65 M60,75 C70,75 75,77 75,82 C70,87 50,87 45,82 C45,77 50,75 60,75" />
-            
-            <!-- Central dot as path -->
-            <path
-                android:fillColor="#100D08"
-                android:pathData="M60,57 C61.66,57 63,58.34 63,60 C63,61.66 61.66,63 60,63 C58.34,63 57,61.66 57,60 C57,58.34 58.34,57 60,57 Z" />
-                
-        </vector>
     </item>
 </layer-list>
