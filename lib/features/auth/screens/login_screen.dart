@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'register_screen.dart';
 import 'forgot_screen.dart';
 import '../services/auth_service.dart';
@@ -31,7 +32,15 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 8),
-                child: Image.asset('asset/app_logo.png', width: 56, height: 56),
+                child: SvgPicture.asset(
+                  'asset/app_logo.svg', 
+                  width: 56, 
+                  height: 56,
+                  colorFilter: ColorFilter.mode(
+                    cs.secondary,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
             ),
             Text('Sign In', style: TextStyle(color: cs.onBackground, fontSize: 28, fontWeight: FontWeight.w700)),

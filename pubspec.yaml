@@ -35,6 +35,7 @@ dependencies:
   shared_preferences: ^2.2.2
   curved_navigation_bar: ^1.0.6
   intl: ^0.18.1
+  flutter_svg: ^2.0.9
     
 
 dev_dependencies:
@@ -49,21 +50,6 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_launcher_icons: ^0.13.1
 
-# Flutter Launcher Icons Configuration
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "asset/app_logo_dark.png"
-  min_sdk_android: 21
-  web:
-    generate: true
-    image_path: "asset/app_logo_dark.png"
-  windows:
-    generate: true
-    image_path: "asset/app_logo_dark.png"
-  macos:
-    generate: true
-    image_path: "asset/app_logo_dark.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -81,8 +67,8 @@ flutter:
     - asset/Easy.png
     - asset/Fastest.png
     - asset/Secoure.png
-    - asset/app_logo.png
-    - asset/app_logo_dark.png
+    - asset/app_logo.svg
+    - asset/louncher.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -114,17 +100,17 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "asset/app_logo_dark.png"
+  image_path: "asset/louncher.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "asset/app_logo_dark.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
+    image_path: "asset/louncher.png"
+    background_color: "#FBBD3E"
+    theme_color: "#100D08"
   windows:
     generate: true
-    image_path: "asset/app_logo_dark.png"
+    image_path: "asset/louncher.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "asset/app_logo_dark.png"
+    image_path: "asset/louncher.png"

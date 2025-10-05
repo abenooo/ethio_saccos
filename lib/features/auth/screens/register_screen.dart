@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -21,7 +22,15 @@ class RegisterScreen extends StatelessWidget {
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 16),
-                child: Image.asset('asset/app_logo.png', width: 56, height: 56),
+                child: SvgPicture.asset(
+                  'asset/app_logo.svg', 
+                  width: 56, 
+                  height: 56,
+                  colorFilter: ColorFilter.mode(
+                    cs.secondary,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
             ),
             Container(

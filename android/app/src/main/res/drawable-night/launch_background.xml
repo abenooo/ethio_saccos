@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SACCOS Ethiopia Launch Screen with SVG Logo -->
+<!-- SACCOS Ethiopia Launch Screen with SVG Logo - Dark Mode -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Background gradient matching our theme -->
+    <!-- Background gradient matching our theme - Dark Mode -->
     <item>
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="#FFD700"
-                android:endColor="#FBBD3E"
+                android:startColor="#0F172A"
+                android:endColor="#1E293B"
                 android:angle="135" />
         </shape>
     </item>
