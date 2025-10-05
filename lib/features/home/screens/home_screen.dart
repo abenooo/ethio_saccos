@@ -497,14 +497,14 @@ class _AccountMenuSection extends StatelessWidget {
               icon: Icons.account_balance_wallet,
               title: 'Accounts',
               subtitle: 'View all accounts',
-              accentColor: const Color(0xFF1E3A8A), // Primary blue
+              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.calculate,
               title: 'Loan Calculator',
               subtitle: 'Calculate loans',
-              accentColor: const Color(0xFF1E3A8A), // Primary blue
+              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
               onTap: () {
                 Navigator.push(
                   context,
@@ -519,28 +519,28 @@ class _AccountMenuSection extends StatelessWidget {
               icon: Icons.receipt_long,
               title: 'Statement',
               subtitle: 'View statements',
-              accentColor: const Color(0xFF1E3A8A), // Primary blue
+              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.add_circle,
               title: 'Deposit',
               subtitle: 'Add money',
-              accentColor: const Color(0xFF1E3A8A), // Primary blue
+              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.remove_circle,
               title: 'Withdraw',
               subtitle: 'Take money',
-              accentColor: const Color(0xFF1E3A8A), // Primary blue
+              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.swap_horiz,
               title: 'Transfer',
-              subtitle: 'Send money',
-              accentColor: const Color(0xFF1E3A8A), // Primary blue
+              subtitle: 'Move money',
+              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
             ),
           ],
         ),

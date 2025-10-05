@@ -11,9 +11,9 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Premium brand color palette - Updated with yellow primary and dark blue secondary
+  // Premium brand color palette - Updated with yellow primary and dark chocolate secondary
   static const Color primaryYellow = Color(0xFFFBBD3E);     // Brand yellow (primary)
-  static const Color secondaryDarkBlue = Color(0xFF001D39); // Dark blue (secondary)
+  static const Color secondaryDarkChocolate = Color(0xFF100D08); // Dark chocolate (secondary)
   static const Color accentOrange = Color(0xFFE6A82A);      // Darker yellow/orange
   static const Color successGreen = Color(0xFF059669);      // Emerald green
   static const Color warningOrange = Color(0xFFEA580C);     // Orange
@@ -28,7 +28,7 @@ class ThemeProvider extends ChangeNotifier {
         primaryColor: primaryYellow,
         colorScheme: ColorScheme.dark(
           primary: primaryYellow,
-          secondary: secondaryDarkBlue,
+          secondary: secondaryDarkChocolate,
           surface: const Color(0xFF0F172A),
           onPrimary: Colors.black,
           onSecondary: Colors.white,
@@ -70,7 +70,7 @@ class ThemeProvider extends ChangeNotifier {
         primaryColor: primaryYellow,
         colorScheme: ColorScheme.light(
           primary: primaryYellow,
-          secondary: secondaryDarkBlue,
+          secondary: secondaryDarkChocolate,
           surface: const Color(0xFFF8FAFC),
           onPrimary: Colors.black,
           onSecondary: Colors.white,
@@ -99,10 +99,10 @@ class ThemeProvider extends ChangeNotifier {
             sectionBg: Color(0xFFF8FAFC),
             cardBg: Color(0xFFFFFFFF),
             cardBorder: Color(0xFFE2E8F0),
-            iconPrimary: Color(0xFF001D39), // Updated to secondary dark blue
-            textPrimary: Color(0xFF001D39), // Updated to secondary dark blue
+            iconPrimary: Color(0xFF100D08), // Updated to secondary dark chocolate
+            textPrimary: Color(0xFF100D08), // Updated to secondary dark chocolate
             textSecondary: Color(0xFF64748B),
-            dotActive: Color(0xFF001D39), // Updated to secondary dark blue
+            dotActive: Color(0xFF100D08), // Updated to secondary dark chocolate
             dotInactive: Color(0xFFCBD5E1),
           ),
         ],
