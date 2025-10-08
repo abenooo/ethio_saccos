@@ -26,39 +26,39 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   void initState() {
     super.initState();
     
-    // Logo animations
+    // Logo animations - reduced duration
     _logoController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    );
-    
-    // Text animations
-    _textController = AnimationController(
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
     
-    // Background animations
-    _backgroundController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+    // Text animations - reduced duration
+    _textController = AnimationController(
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
     
-    // Logo animations
+    // Background animations - reduced duration
+    _backgroundController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    
+    // Logo animations - simplified curves for better performance
     _logoScaleAnimation = Tween<double>(
-      begin: 0.0,
+      begin: 0.8,
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _logoController,
-      curve: Curves.elasticOut,
+      curve: Curves.easeOut,
     ));
     
     _logoRotationAnimation = Tween<double>(
       begin: 0.0,
-      end: 1.0,
+      end: 0.5,
     ).animate(CurvedAnimation(
       parent: _logoController,
-      curve: const Interval(0.0, 0.7, curve: Curves.easeInOut),
+      curve: Curves.easeInOut,
     ));
     
     _logoOpacityAnimation = Tween<double>(
@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _logoController,
-      curve: const Interval(0.0, 0.5, curve: Curves.easeIn),
+      curve: Curves.easeIn,
     ));
     
     // Text animations
@@ -79,11 +79,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     ));
     
     _textSlideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.5),
+      begin: const Offset(0, 0.3),
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _textController,
-      curve: Curves.easeOutBack,
+      curve: Curves.easeOut,
     ));
     
     // Background animation
@@ -100,19 +100,16 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
   
   void _startAnimations() async {
-    // Start background animation immediately
+    // Start all animations simultaneously for better performance
     _backgroundController.forward();
-    
-    // Start logo animation after a short delay
-    await Future.delayed(const Duration(milliseconds: 300));
     _logoController.forward();
     
-    // Start text animation after logo starts
-    await Future.delayed(const Duration(milliseconds: 800));
+    // Start text animation with shorter delay
+    await Future.delayed(const Duration(milliseconds: 400));
     _textController.forward();
     
-    // Navigate after all animations complete
-    await Future.delayed(const Duration(milliseconds: 1200));
+    // Navigate faster - reduced total time
+    await Future.delayed(const Duration(milliseconds: 800));
     if (mounted) {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
@@ -120,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          transitionDuration: const Duration(milliseconds: 500),
+          transitionDuration: const Duration(milliseconds: 300),
         ),
       );
     }
@@ -166,38 +163,28 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     builder: (context, child) {
                       return Transform.scale(
                         scale: _logoScaleAnimation.value,
-                        child: Transform.rotate(
-                          angle: _logoRotationAnimation.value * 0.5,
-                          child: Opacity(
-                            opacity: _logoOpacityAnimation.value,
-                            child: Container(
-                              padding: const EdgeInsets.all(24),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.9),
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: cs.secondary.withOpacity(0.3),
-                                    blurRadius: 30,
-                                    spreadRadius: 5,
-                                    offset: const Offset(0, 10),
-                                  ),
-                                  BoxShadow(
-                                    color: cs.primary.withOpacity(0.2),
-                                    blurRadius: 50,
-                                    spreadRadius: 10,
-                                    offset: const Offset(0, 20),
-                                  ),
-                                ],
-                              ),
-                              child: SvgPicture.asset(
-                                'asset/app_logo.svg',
-                                width: 120,
-                                height: 120,
-                                colorFilter: ColorFilter.mode(
-                                  cs.primary,
-                                  BlendMode.srcIn,
+                        child: Opacity(
+                          opacity: _logoOpacityAnimation.value,
+                          child: Container(
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.95),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: cs.secondary.withOpacity(0.2),
+                                  blurRadius: 15,
+                                  offset: const Offset(0, 5),
                                 ),
+                              ],
+                            ),
+                            child: SvgPicture.asset(
+                              'asset/app_logo.svg',
+                              width: 120,
+                              height: 120,
+                              colorFilter: ColorFilter.mode(
+                                cs.primary,
+                                BlendMode.srcIn,
                               ),
                             ),
                           ),

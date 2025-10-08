@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'register_screen.dart';
 import 'forgot_screen.dart';
 import '../services/auth_service.dart';
+import '../../settings/providers/biometric_provider.dart';
+import '../../../screens/main_navigation_screen.dart';
+import '../../../core/utils/page_transitions.dart';
+import '../../../generated/l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +18,82 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscure = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize biometric provider when login screen loads
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final biometricProvider = Provider.of<BiometricProvider>(context, listen: false);
+      biometricProvider.initialize();
+    });
+  }
+
+  Future<void> _handleBiometricLogin(BiometricProvider biometricProvider) async {
+    try {
+      print('Biometric login started...');
+      print('Biometric enabled: ${biometricProvider.isBiometricEnabled}');
+      print('Biometric available: ${biometricProvider.isBiometricAvailable}');
+      
+      final credentials = await biometricProvider.performBiometricLogin();
+      print('Biometric credentials result: $credentials');
+      
+      if (credentials != null) {
+        print('Attempting login with biometric credentials...');
+        // Login with stored biometric credentials
+        final success = await AuthService.login(
+          email: credentials['email'],
+          password: credentials['password'],
+        );
+        
+        if (success) {
+          print('Biometric login successful!');
+          if (!mounted) return;
+          context.pushReplacementFade(const MainNavigationScreen());
+        } else {
+          print('Login failed with stored credentials');
+          _showSnackBar('Login failed with stored credentials');
+        }
+      } else {
+        print('Biometric authentication returned null');
+        _showSnackBar('Biometric authentication failed');
+      }
+    } catch (e) {
+      print('Biometric authentication error: $e');
+      _showSnackBar('Biometric authentication error: $e');
+    }
+  }
+
+  Future<void> _handleRegularLogin() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackBar('Please enter both email and password');
+      return;
+    }
+    
+    final success = await AuthService.login(email: email, password: password);
+    
+    if (success) {
+      if (!mounted) return;
+      context.pushReplacementFade(const MainNavigationScreen());
+    } else {
+      _showSnackBar('Invalid email or password');
+    }
+  }
+
+  void _showSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Theme.of(context).colorScheme.error,
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +124,67 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Text('Sign In', style: TextStyle(color: cs.onBackground, fontSize: 28, fontWeight: FontWeight.w700)),
+            Text(
+              AppLocalizations.of(context).signIn, 
+              style: TextStyle(color: cs.onBackground, fontSize: 28, fontWeight: FontWeight.w700)
+            ),
+
+            
+            // Demo credentials info card
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: cs.primary.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: cs.primary.withValues(alpha: 0.3)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.info_outline, color: cs.primary, size: 16),
+                      const SizedBox(width: 8),
+                      Text(
+                        AppLocalizations.of(context).demoCredentials,
+                        style: TextStyle(
+                          color: cs.primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '${AppLocalizations.of(context).useAnyEmailPassword}\n${AppLocalizations.of(context).example}',
+                    style: TextStyle(
+                      color: cs.onBackground.withValues(alpha: 0.8),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 24),
-            Text('Email Address', style: TextStyle(color: cs.onBackground.withValues(alpha: 0.7))),
+            Text(AppLocalizations.of(context).emailAddress, style: TextStyle(color: cs.onBackground.withValues(alpha: 0.7))),
             const SizedBox(height: 8),
             TextField(
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.email_outlined),
-                hintText: 'you@example.com',
+                hintText: 'user@example.com',
                 filled: true,
                 fillColor: cs.surface,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
               ),
             ),
             const SizedBox(height: 16),
-            Text('Password', style: TextStyle(color: cs.onBackground.withValues(alpha: 0.7))),
+            Text(AppLocalizations.of(context).password, style: TextStyle(color: cs.onBackground.withValues(alpha: 0.7))),
             const SizedBox(height: 8),
             TextField(
+              controller: _passwordController,
               obscureText: _obscure,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.lock_outline),
@@ -67,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () => setState(() => _obscure = !_obscure),
                   icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off),
                 ),
-                hintText: '••••••••',
+                hintText: 'password123',
                 filled: true,
                 fillColor: cs.surface,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
@@ -78,9 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ForgotScreen()),
-                  );
+                  context.pushFade(const ForgotScreen());
                 },
                 child: const Text('Forgot password?'),
               ),
@@ -90,11 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               height: 48,
               child: ElevatedButton(
-                onPressed: () async {
-                  await AuthService.login();
-                  if (!mounted) return;
-                  Navigator.of(context).pushReplacementNamed('/main');
-                },
+                onPressed: _handleRegularLogin,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: cs.primary,
                   foregroundColor: cs.onPrimary,
@@ -104,13 +223,68 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text('Sign In', style: TextStyle(fontWeight: FontWeight.w600)),
               ),
             ),
+            const SizedBox(height: 16),
+            
+            // Biometric Authentication Section
+            Consumer<BiometricProvider>(
+              builder: (context, biometricProvider, child) {
+                if (biometricProvider.isBiometricEnabled && biometricProvider.isBiometricAvailable) {
+                  return Column(
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: cs.onBackground.withValues(alpha: 0.3))),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              'OR',
+                              style: TextStyle(
+                                color: cs.onBackground.withValues(alpha: 0.6),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Divider(color: cs.onBackground.withValues(alpha: 0.3))),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: OutlinedButton.icon(
+                          onPressed: () => _handleBiometricLogin(biometricProvider),
+                          icon: Icon(
+                            Icons.fingerprint,
+                            color: cs.primary,
+                          ),
+                          label: Text(
+                            'Sign in with ${biometricProvider.biometricTypeName}',
+                            style: TextStyle(
+                              color: cs.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: cs.primary),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+            
             const Spacer(),
             Center(
               child: TextButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                  );
+                  context.pushFade(const RegisterScreen());
                 },
                 child: const Text("I'm a new user. Sign up"),
               ),

@@ -1,0 +1,96 @@
+{
+  "@@locale": "am",
+  "appTitle": "ሳኮስ ኢትዮጵያ",
+  
+  "welcomeBack": "እንኳን ደህና መጡ,",
+  
+  "signIn": "ግባ",
+  
+  "signInWithBiometric": "በ{biometricType} ግባ",
+  
+  "emailAddress": "ኢሜይል አድራሻ",
+  
+  "password": "የይለፍ ቃል",
+  
+  "forgotPassword": "የይለፍ ቃልዎን ረሱት?",
+  
+  "dontHaveAccount": "መለያ የሎትም?",
+  
+  "signUp": "ይመዝገቡ",
+  
+  "register": "ተመዝገብ",
+  
+  "fullName": "ሙሉ ስም",
+  
+  "phoneNumber": "ስልክ ቁጥር",
+  
+  "confirmPassword": "የይለፍ ቃል አረጋግጥ",
+  
+  "alreadyHaveAccount": "ቀደም ሲል መለያ አለዎት?",
+  
+  "myAccounts": "የእኔ መለያዎች",
+  
+  "loanCalculator": "የብድር ማስሊያ",
+  
+  "statements": "መግለጫዎች",
+  
+  "deposit": "ማስቀመጥ",
+  
+  "withdraw": "ማውጣት",
+  
+  "transfer": "ማስተላለፍ",
+  
+  "settings": "ቅንብሮች",
+  
+  "profile": "መገለጫ",
+  
+  "notifications": "ማሳወቂያዎች",
+  
+  "security": "ደህንነት እና ድጋፍ",
+  
+  "biometricAuthentication": "ባዮሜትሪክ ማረጋገጫ",
+  
+  "biometricEnabled": "{biometricType} ነቅቷል",
+  
+  "biometricDisabled": "{biometricType} ጠፍቷል",
+  
+  "changePassword": "የይለፍ ቃል ቀይር",
+  
+  "helpCenter": "የእገዛ ማዕከል",
+  
+  "logout": "ውጣ",
+  
+  "balance": "ሂሳብ",
+  
+  "mainAccount": "ዋና መለያ",
+  
+  "personalLoan": "የግል ብድር",
+  
+  "shareAccount": "የአክሲዮን መለያ",
+  
+  "or": "ወይም",
+  
+  "demoCredentials": "የሙከራ ማረጋገጫዎች",
+  
+  "useAnyEmailPassword": "ለመግባት ማንኛውም ኢሜይል እና የይለፍ ቃል ይጠቀሙ",
+  
+  "example": "ምሳሌ: user@example.com / password123",
+  
+  "vibration": "ንዝረት",
+  
+  "enabled": "ነቅቷል",
+  
+  "disabled": "ጠፍቷል",
+  
+  "pushNotifications": "የግፊት ማሳወቂያዎች",
+  
+  "emailNotifications": "የኢሜይል ማሳወቂያዎች",
+  
+  "weeklySum": "የሳምንት ማጠቃለያ",
+  
+  "lastChanged": "መጨረሻ የተቀየረው {time}",
+  
+  "twoFactorAuth": "ባለሁለት-ደረጃ ማረጋገጫ",
+  
+  "faqsAndSupport": "ተደጋጋሚ ጥያቄዎች እና ድጋፍ"
+}

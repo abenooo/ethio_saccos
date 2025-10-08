@@ -4,6 +4,9 @@ import '../../../core/providers/theme_provider.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../profile/screens/profile_screen.dart';
 import '../../../core/theme/theme.dart';
+import '../providers/biometric_provider.dart';
+import '../../auth/services/auth_service.dart';
+import '../../../core/utils/page_transitions.dart';
 
 class SettingsScreen extends StatelessWidget {
   final bool showBackButton;
@@ -48,11 +51,7 @@ class SettingsScreen extends StatelessWidget {
               title: 'My Profile',
               subtitle: 'View and edit your profile',
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
-                  ),
-                );
+                context.pushFade(const ProfileScreen());
               },
             ),
             
@@ -153,21 +152,34 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {},
             ),
             
-            _buildSettingTile(
-              context,
-              icon: Icons.fingerprint,
-              title: 'Biometric Authentication',
-              subtitle: 'Face ID enabled',
-              trailing: Switch(
-                value: true,
-                onChanged: (value) {
-                  // Handle biometric toggle
-                },
-                activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
-                inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
-                inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
-              ),
+            Consumer<BiometricProvider>(
+              builder: (context, biometricProvider, child) {
+                return _buildSettingTile(
+                  context,
+                  icon: Icons.fingerprint,
+                  title: 'Biometric Authentication',
+                  subtitle: biometricProvider.getSubtitleText(),
+                  trailing: biometricProvider.isLoading
+                      ? SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: colorScheme.primary,
+                          ),
+                        )
+                      : Switch(
+                          value: biometricProvider.isBiometricEnabled,
+                          onChanged: biometricProvider.isBiometricAvailable
+                              ? (value) => _handleBiometricToggle(context, biometricProvider)
+                              : null,
+                          activeColor: colorScheme.primary,
+                          activeTrackColor: colorScheme.primary.withValues(alpha: 0.3),
+                          inactiveThumbColor: colorScheme.onSurface.withValues(alpha: 0.6),
+                          inactiveTrackColor: colorScheme.onSurface.withValues(alpha: 0.2),
+                        ),
+                );
+              },
             ),
             
             _buildSettingTile(
@@ -409,6 +421,142 @@ class SettingsScreen extends StatelessWidget {
       onTap: () {
         Navigator.of(context).pop();
       },
+    );
+  }
+
+  void _handleBiometricToggle(BuildContext context, BiometricProvider biometricProvider) async {
+    if (!biometricProvider.isBiometricEnabled) {
+      // Show dialog to enable biometric authentication
+      _showBiometricSetupDialog(context, biometricProvider);
+    } else {
+      // Disable biometric authentication
+      final success = await biometricProvider.toggleBiometric(null, null);
+      if (success) {
+        _showSnackBar(context, 'Biometric authentication disabled', false);
+      }
+    }
+  }
+
+  void _showBiometricSetupDialog(BuildContext context, BiometricProvider biometricProvider) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    bool isPasswordVisible = false;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: colorScheme.surface,
+              title: Text(
+                'Enable ${biometricProvider.biometricTypeName}',
+                style: TextStyle(color: colorScheme.onSurface),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Enter your login credentials to enable biometric authentication.',
+                    style: TextStyle(color: colorScheme.onSurface.withValues(alpha: 0.7)),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 12),
+                  TextField(
+                    controller: passwordController,
+                    obscureText: !isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isPasswordVisible = !isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(color: colorScheme.primary),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+                      Navigator.of(context).pop();
+                      final success = await biometricProvider.toggleBiometric(
+                        emailController.text.trim(),
+                        passwordController.text,
+                      );
+                      if (success) {
+                        _showSnackBar(context, 'Biometric authentication enabled successfully! You can now use biometrics to login.', true);
+                      } else {
+                        // Check if credentials are valid first
+                        final isValidCredentials = AuthService.validateCredentials(
+                          emailController.text.trim(),
+                          passwordController.text,
+                        );
+                        
+                        if (!isValidCredentials) {
+                          _showSnackBar(context, 'Please enter valid email and password', false);
+                        } else {
+                          // Check if biometric is available
+                          if (!biometricProvider.isBiometricAvailable) {
+                            _showSnackBar(context, 'Biometric authentication not available on this device', false);
+                          } else {
+                            _showSnackBar(context, 'Biometric setup failed. Please make sure your device has fingerprint or face recognition enabled in device settings.', false);
+                          }
+                        }
+                      }
+                    } else {
+                      _showSnackBar(context, 'Please enter both email and password', false);
+                    }
+                  },
+                  child: Text(
+                    'Enable',
+                    style: TextStyle(color: colorScheme.primary),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showSnackBar(BuildContext context, String message, bool isSuccess) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: isSuccess 
+            ? Theme.of(context).colorScheme.primary 
+            : Theme.of(context).colorScheme.error,
+        duration: const Duration(seconds: 3),
+      ),
     );
   }
 

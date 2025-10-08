@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import '../../features/home/screens/transaction_details_screen.dart' as details;
+import '../../features/loans/screens/loan_details_screen.dart';
 import '../theme/theme.dart';
 import '../services/navigation_service.dart';
+import '../utils/page_transitions.dart';
 import '../providers/card_data_provider.dart';
-import '../../features/home/screens/transaction_details_screen.dart' as details;
 
 class CardCarousel extends StatefulWidget {
   final bool isDark;
   final Gradient cardGradient;
-
   const CardCarousel({
     super.key,
     required this.isDark,
@@ -325,13 +327,11 @@ extension CardCarouselNavigation on _CardCarouselState {
       NavigationService.navigateToSavingsWithCardData(context, _cards);
     } else {
       // Navigate to transaction details for other cards
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (_) => details.TransactionDetailsScreen(
-            title: card.title,
-            isLoan: isLoan,
-            isShare: isShare,
-          ),
+      context.pushFade(
+        details.TransactionDetailsScreen(
+          title: card.title,
+          isLoan: isLoan,
+          isShare: isShare,
         ),
       );
     }

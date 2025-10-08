@@ -1,0 +1,261 @@
+{
+  "@@locale": "en",
+  "appTitle": "SACCOS Ethiopia",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "welcomeBack": "Welcome back,",
+  "@welcomeBack": {
+    "description": "Welcome message on home screen"
+  },
+  
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button text"
+  },
+  
+  "signInWithBiometric": "Sign in with {biometricType}",
+  "@signInWithBiometric": {
+    "description": "Sign in with biometric button text",
+    "placeholders": {
+      "biometricType": {
+        "type": "String",
+        "example": "Fingerprint"
+      }
+    }
+  },
+  
+  "emailAddress": "Email Address",
+  "@emailAddress": {
+    "description": "Email address label"
+  },
+  
+  "password": "Password",
+  "@password": {
+    "description": "Password label"
+  },
+  
+  "forgotPassword": "Forgot password?",
+  "@forgotPassword": {
+    "description": "Forgot password link text"
+  },
+  
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Don't have account text"
+  },
+  
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button text"
+  },
+  
+  "register": "Register",
+  "@register": {
+    "description": "Register button text"
+  },
+  
+  "fullName": "Full Name",
+  "@fullName": {
+    "description": "Full name label"
+  },
+  
+  "phoneNumber": "Phone Number",
+  "@phoneNumber": {
+    "description": "Phone number label"
+  },
+  
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password label"
+  },
+  
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Already have account text"
+  },
+  
+  "myAccounts": "My Accounts",
+  "@myAccounts": {
+    "description": "My accounts menu item"
+  },
+  
+  "loanCalculator": "Loan Calculator",
+  "@loanCalculator": {
+    "description": "Loan calculator menu item"
+  },
+  
+  "statements": "Statements",
+  "@statements": {
+    "description": "Statements menu item"
+  },
+  
+  "deposit": "Deposit",
+  "@deposit": {
+    "description": "Deposit menu item"
+  },
+  
+  "withdraw": "Withdraw",
+  "@withdraw": {
+    "description": "Withdraw menu item"
+  },
+  
+  "transfer": "Transfer",
+  "@transfer": {
+    "description": "Transfer menu item"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings menu item"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile menu item"
+  },
+  
+  "notifications": "Notifications",
+  "@notifications": {
+    "description": "Notifications menu item"
+  },
+  
+  "security": "Security & Support",
+  "@security": {
+    "description": "Security and support section"
+  },
+  
+  "biometricAuthentication": "Biometric Authentication",
+  "@biometricAuthentication": {
+    "description": "Biometric authentication setting"
+  },
+  
+  "biometricEnabled": "{biometricType} enabled",
+  "@biometricEnabled": {
+    "description": "Biometric enabled status",
+    "placeholders": {
+      "biometricType": {
+        "type": "String",
+        "example": "Fingerprint"
+      }
+    }
+  },
+  
+  "biometricDisabled": "{biometricType} disabled",
+  "@biometricDisabled": {
+    "description": "Biometric disabled status",
+    "placeholders": {
+      "biometricType": {
+        "type": "String",
+        "example": "Fingerprint"
+      }
+    }
+  },
+  
+  "changePassword": "Change Password",
+  "@changePassword": {
+    "description": "Change password menu item"
+  },
+  
+  "helpCenter": "Help Center",
+  "@helpCenter": {
+    "description": "Help center menu item"
+  },
+  
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout menu item"
+  },
+  
+  "balance": "Balance",
+  "@balance": {
+    "description": "Balance label"
+  },
+  
+  "mainAccount": "Main Account",
+  "@mainAccount": {
+    "description": "Main account label"
+  },
+  
+  "personalLoan": "Personal Loan",
+  "@personalLoan": {
+    "description": "Personal loan label"
+  },
+  
+  "shareAccount": "Share Account",
+  "@shareAccount": {
+    "description": "Share account label"
+  },
+  
+  "or": "OR",
+  "@or": {
+    "description": "OR separator text"
+  },
+  
+  "demoCredentials": "Demo Credentials",
+  "@demoCredentials": {
+    "description": "Demo credentials header"
+  },
+  
+  "useAnyEmailPassword": "Use any email and password to login",
+  "@useAnyEmailPassword": {
+    "description": "Demo credentials description"
+  },
+  
+  "example": "Example: user@example.com / password123",
+  "@example": {
+    "description": "Demo credentials example"
+  },
+  
+  "vibration": "Vibration",
+  "@vibration": {
+    "description": "Vibration setting"
+  },
+  
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled status"
+  },
+  
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled status"
+  },
+  
+  "pushNotifications": "Push Notifications",
+  "@pushNotifications": {
+    "description": "Push notifications setting"
+  },
+  
+  "emailNotifications": "Email Notifications",
+  "@emailNotifications": {
+    "description": "Email notifications setting"
+  },
+  
+  "weeklySum": "Weekly summary",
+  "@weeklySum": {
+    "description": "Weekly summary setting"
+  },
+  
+  "lastChanged": "Last changed {time}",
+  "@lastChanged": {
+    "description": "Last changed time",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "3 months ago"
+      }
+    }
+  },
+  
+  "twoFactorAuth": "Two-Factor Authentication",
+  "@twoFactorAuth": {
+    "description": "Two-factor authentication setting"
+  },
+  
+  "faqsAndSupport": "FAQs and support",
+  "@faqsAndSupport": {
+    "description": "FAQs and support description"
+  }
+}

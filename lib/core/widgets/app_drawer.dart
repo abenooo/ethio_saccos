@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import '../services/navigation_service.dart';
-import '../../features/notifications/screens/notifications_screen.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../features/home/screens/transaction_details_screen.dart';
+import '../../features/notifications/screens/notifications_screen.dart';
 import '../../features/auth/services/auth_service.dart';
 import '../../main.dart';
 import '../theme/theme.dart';
+import '../utils/page_transitions.dart';
+import '../services/navigation_service.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -155,7 +157,7 @@ class AppDrawer extends StatelessWidget {
               Icons.savings,
               'Savings Accounts',
               onTap: () {
-                NavigationService.popAndCloseDrawer(context);
+                Navigator.pop(context);
                 NavigationService.navigateToSavings(context);
               },
             ),
@@ -164,7 +166,7 @@ class AppDrawer extends StatelessWidget {
               Icons.account_balance,
               'Loans',
               onTap: () {
-                NavigationService.popAndCloseDrawer(context);
+                Navigator.pop(context);
                 NavigationService.navigateToLoans(context);
               },
             ),
@@ -174,11 +176,7 @@ class AppDrawer extends StatelessWidget {
               'Shares',
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionDetailsScreen(title: 'Share Account', isShare: true),
-                  ),
-                );
+                context.pushFade(const TransactionDetailsScreen(title: 'Share Account', isShare: true));
               },
             ),
             _buildMenuItem(
@@ -187,11 +185,7 @@ class AppDrawer extends StatelessWidget {
               'Transfers',
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => const TransactionDetailsScreen(title: 'Transfers'),
-                  ),
-                );
+                context.pushFade(const TransactionDetailsScreen(title: 'Transfers'));
               },
             ),
             
@@ -203,9 +197,7 @@ class AppDrawer extends StatelessWidget {
               'Notifications',
               onTap: () {
                 Navigator.pop(context);
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const NotificationsScreen()),
-                );
+                context.pushFade(const NotificationsScreen());
               },
             ),
             _buildMenuItem(context, Icons.lock, 'Privacy & Security'),
@@ -240,8 +232,8 @@ class AppDrawer extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   AuthService.logout();
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (_) => const AppInitializer()),
+                  context.pushAndRemoveUntilFade(
+                    const AppInitializer(),
                     (route) => false,
                   );
                 },

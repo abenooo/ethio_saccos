@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../providers/card_data_provider.dart';
 import '../../features/savings/screens/savings_list_screen.dart';
 import '../../features/loans/screens/loans_list_screen.dart';
 import '../../screens/main_navigation_screen.dart';
+import '../providers/card_data_provider.dart';
+import '../utils/page_transitions.dart';
 
 /// Centralized navigation service for consistent navigation across the app
 class NavigationService {
@@ -10,7 +11,6 @@ class NavigationService {
   static final NavigationService _instance = NavigationService._internal();
   factory NavigationService() => _instance;
   NavigationService._internal();
-
   static final CardDataProvider _cardDataProvider = CardDataProvider();
 
   /// Navigate to savings screen with consistent data
@@ -21,21 +21,17 @@ class NavigationService {
     final balance = customBalance ?? _cardDataProvider.getMainAccountBalance();
     
     if (useBottomNavigation) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => MainNavigationScreen(
-            initialIndex: 1, // Savings screen index
-            mainAccountBalance: balance,
-          ),
+      context.pushAndRemoveUntilFade(
+        MainNavigationScreen(
+          initialIndex: 1, // Savings screen index
+          mainAccountBalance: balance,
         ),
         (route) => false,
       );
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => SavingsListScreen(
-            mainAccountBalance: balance,
-          ),
+      context.pushFade(
+        SavingsListScreen(
+          mainAccountBalance: balance,
         ),
       );
     }
@@ -49,21 +45,17 @@ class NavigationService {
     final loanData = customLoanData ?? _cardDataProvider.getLoanCardData();
     
     if (useBottomNavigation) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-          builder: (context) => MainNavigationScreen(
-            initialIndex: 0, // Loans screen index
-            loanCardData: loanData,
-          ),
+      context.pushAndRemoveUntilFade(
+        MainNavigationScreen(
+          initialIndex: 0, // Loans screen index
+          loanCardData: loanData,
         ),
         (route) => false,
       );
     } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => LoansListScreen(
-            loanCardData: loanData,
-          ),
+      context.pushFade(
+        LoansListScreen(
+          loanCardData: loanData,
         ),
       );
     }
@@ -86,31 +78,26 @@ class NavigationService {
       final mainAccount = cards.firstWhere(
         (card) => (card is Map ? card['title'] : card.title) == 'Abenezer Kifle',
       );
-      balance = mainAccount is Map ? mainAccount['amount'] : mainAccount.amount;
     } catch (_) {
       // Silently fall back to default balance - expected behavior
       balance = _cardDataProvider.getMainAccountBalance();
     }
     
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (_) => MainNavigationScreen(
-          initialIndex: 1,
-          mainAccountBalance: balance,
-        ),
+    context.pushAndRemoveUntilFade(
+      MainNavigationScreen(
+        initialIndex: 1,
+        mainAccountBalance: balance,
       ),
-      (_) => false,
+      (route) => false,
     );
   }
 
   /// Navigate to loans screen via bottom navigation with card data
   static void navigateToLoansWithCardData(BuildContext context, dynamic loanCard) {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => MainNavigationScreen(
-          initialIndex: 0, // Loans screen index
-          loanCardData: loanCard,
-        ),
+    context.pushAndRemoveUntilFade(
+      MainNavigationScreen(
+        initialIndex: 0, // Loans screen index
+        loanCardData: loanCard,
       ),
       (route) => false,
     );

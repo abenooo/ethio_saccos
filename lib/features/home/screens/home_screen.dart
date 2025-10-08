@@ -483,28 +483,28 @@ class _AccountMenuSection extends StatelessWidget {
       child: Column(
         children: [
           
-          // Account Service Cards - All 6 cards
+          // Account Service Cards - Clean banking style
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
-            childAspectRatio: 2.2,
+            childAspectRatio: 2.0,
             children: [
             _buildQuickAccessCard(
               context,
-              icon: Icons.account_balance_wallet,
-              title: 'Accounts',
-              subtitle: 'View all accounts',
-              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
+              icon: Icons.account_balance_wallet_outlined,
+              title: 'My Accounts',
+              subtitle: '',
+              accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
-              icon: Icons.calculate,
+              icon: Icons.calculate_outlined,
               title: 'Loan Calculator',
-              subtitle: 'Calculate loans',
-              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
+              subtitle: '',
+              accentColor: Theme.of(context).colorScheme.secondary,
               onTap: () {
                 Navigator.push(
                   context,
@@ -516,31 +516,31 @@ class _AccountMenuSection extends StatelessWidget {
             ),
             _buildQuickAccessCard(
               context,
-              icon: Icons.receipt_long,
-              title: 'Statement',
-              subtitle: 'View statements',
-              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
+              icon: Icons.receipt_long_outlined,
+              title: 'Statements',
+              subtitle: '',
+              accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
-              icon: Icons.add_circle,
+              icon: Icons.add_circle_outline,
               title: 'Deposit',
-              subtitle: 'Add money',
-              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
+              subtitle: '',
+              accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
-              icon: Icons.remove_circle,
+              icon: Icons.remove_circle_outline,
               title: 'Withdraw',
-              subtitle: 'Take money',
-              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
+              subtitle: '',
+              accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
-              icon: Icons.swap_horiz,
+              icon: Icons.swap_horiz_outlined,
               title: 'Transfer',
-              subtitle: 'Move money',
-              accentColor: Theme.of(context).colorScheme.secondary, // Dark chocolate
+              subtitle: '',
+              accentColor: Theme.of(context).colorScheme.secondary,
             ),
           ],
         ),
@@ -560,99 +560,95 @@ class _AccountMenuSection extends StatelessWidget {
     final palette = Theme.of(context).extension<AppPalette>()!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
-    return GestureDetector(
-      onTap: onTap ?? () {
-        // TODO: Add functionality for each card later
-      },
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isDark 
-              ? [
-                  const Color(0xFF1E293B),
-                  const Color(0xFF334155),
-                ]
-              : [
-                  Colors.white,
-                  const Color(0xFFF8FAFC),
-                ],
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap ?? () {
+          // TODO: Add functionality for each card later
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E293B) : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              // Isometric 3D shadow effect
+              BoxShadow(
+                color: isDark 
+                  ? Colors.black.withValues(alpha: 0.4)
+                  : const Color(0xFF000000).withValues(alpha: 0.15),
+                blurRadius: 20,
+                offset: const Offset(4, 8), // Isometric offset
+                spreadRadius: 0,
+              ),
+              // Secondary shadow for depth
+              BoxShadow(
+                color: isDark 
+                  ? Colors.black.withValues(alpha: 0.2)
+                  : const Color(0xFF000000).withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(2, 4),
+                spreadRadius: 0,
+              ),
+              // Subtle highlight on top
+              BoxShadow(
+                color: Colors.white.withValues(alpha: isDark ? 0.05 : 0.8),
+                blurRadius: 1,
+                offset: const Offset(0, -1),
+                spreadRadius: 0,
+              ),
+            ],
           ),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: accentColor.withValues(alpha: 0.3),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: accentColor.withValues(alpha: 0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    accentColor.withValues(alpha: 0.1),
-                    accentColor.withValues(alpha: 0.2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Icon with brand color gradient background
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Theme.of(context).colorScheme.primary, // Brand yellow
+                      Theme.of(context).colorScheme.primary.withValues(alpha: 0.8), // Darker yellow
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
+                      blurRadius: 4,
+                      offset: const Offset(1, 2),
+                    ),
                   ],
                 ),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: accentColor.withValues(alpha: 0.3),
-                  width: 1,
+                child: Icon(
+                  icon,
+                  color: Theme.of(context).colorScheme.secondary, // Dark chocolate
+                  size: 16,
                 ),
               ),
-              child: Icon(
-                icon,
-                color: accentColor,
-                size: 18,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: palette.textPrimary,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+              const SizedBox(width: 12),
+              // Title with compact layout
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: palette.textPrimary,
+                    height: 1.2,
                   ),
-                  const SizedBox(height: 1),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      fontSize: 9,
-                      color: palette.textSecondary,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
