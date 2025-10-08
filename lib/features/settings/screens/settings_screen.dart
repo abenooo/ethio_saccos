@@ -98,61 +98,10 @@ class SettingsScreen extends StatelessWidget {
               }
             ),
             
-            _buildSettingTile(
-              context,
-              icon: Icons.text_fields,
-              title: AppLocalizations.of(context).fontSize,
-              subtitle: AppLocalizations.of(context).medium,
-              onTap: () {
-                _showFontSizeDialog(context);
-              },
-            ),
-            
-            _buildSettingTile(
-              context,
-              icon: Icons.notifications_outlined,
-              title: AppLocalizations.of(context).pushNotifications,
-              subtitle: AppLocalizations.of(context).enabled,
-              trailing: Switch(
-                value: true,
-                onChanged: (value) {
-                  // Handle notification toggle
-                },
-                activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
-                inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
-                inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
-              ),
-            ),
-            
-            _buildSettingTile(
-              context,
-              icon: Icons.email_outlined,
-              title: AppLocalizations.of(context).emailNotifications,
-              subtitle: AppLocalizations.of(context).weeklySum,
-              onTap: () {},
-            ),
-            
-            _buildSettingTile(
-              context,
-              icon: Icons.vibration,
-              title: AppLocalizations.of(context).vibration,
-              subtitle: AppLocalizations.of(context).enabled,
-              trailing: Switch(
-                value: true,
-                onChanged: (value) {
-                  // Handle vibration toggle
-                },
-                activeColor: colorScheme.primary,
-                activeTrackColor: colorScheme.primary.withValues(alpha:  0.3),
-                inactiveThumbColor: colorScheme.onSurface.withValues(alpha:  0.6),
-                inactiveTrackColor: colorScheme.onSurface.withValues(alpha:  0.2),
-              ),
-            ),
             
             const SizedBox(height: 32),
             
-            // Security & Support Section
+            // Security Section
             _buildSectionHeader(context, AppLocalizations.of(context).security),
             const SizedBox(height: 12),
             
@@ -201,6 +150,12 @@ class SettingsScreen extends StatelessWidget {
               subtitle: AppLocalizations.of(context).disabled,
               onTap: () {},
             ),
+            
+            const SizedBox(height: 32),
+            
+            // Support Section
+            _buildSectionHeader(context, AppLocalizations.of(context).support),
+            const SizedBox(height: 12),
             
             _buildSettingTile(
               context,
@@ -387,54 +342,6 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showFontSizeDialog(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: colorScheme.surface,
-          title: Text(
-            'Font Size',
-            style: TextStyle(color: colorScheme.onSurface),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildFontSizeOption(context, 'Small', false),
-              _buildFontSizeOption(context, 'Medium', true),
-              _buildFontSizeOption(context, 'Large', false),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: colorScheme.primary),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildFontSizeOption(BuildContext context, String size, bool isSelected) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return ListTile(
-      title: Text(
-        size,
-        style: TextStyle(color: colorScheme.onSurface),
-      ),
-      trailing: isSelected
-          ? Icon(Icons.check, color: colorScheme.primary)
-          : null,
-      onTap: () {
-        Navigator.of(context).pop();
-      },
-    );
-  }
 
   void _handleBiometricToggle(BuildContext context, BiometricProvider biometricProvider) async {
     if (!biometricProvider.isBiometricEnabled) {

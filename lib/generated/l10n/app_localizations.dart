@@ -242,10 +242,10 @@ abstract class AppLocalizations {
   /// **'Notifications'**
   String get notifications;
 
-  /// Security and support section
+  /// Security section
   ///
   /// In en, this message translates to:
-  /// **'Security & Support'**
+  /// **'Security'**
   String get security;
 
   /// Biometric authentication setting
@@ -443,7 +443,7 @@ abstract class AppLocalizations {
   /// Support section header
   ///
   /// In en, this message translates to:
-  /// **'SUPPORT'**
+  /// **'Support'**
   String get support;
 
   /// Regular savings account

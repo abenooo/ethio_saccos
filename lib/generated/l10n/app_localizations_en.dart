@@ -80,7 +80,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get notifications => 'Notifications';
 
   @override
-  String get security => 'Security & Support';
+  String get security => 'Security';
 
   @override
   String get biometricAuthentication => 'Biometric Authentication';
@@ -185,7 +185,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accountPreferences => 'Account & Preferences';
 
   @override
-  String get support => 'SUPPORT';
+  String get support => 'Support';
 
   @override
   String get regularSavings => 'Regular Savings';

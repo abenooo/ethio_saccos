@@ -121,9 +121,9 @@
     "description": "Notifications menu item"
   },
   
-  "security": "Security & Support",
+  "security": "Security",
   "@security": {
-    "description": "Security and support section"
+    "description": "Security section"
   },
   
   "biometricAuthentication": "Biometric Authentication",
@@ -749,7 +749,7 @@
     "description": "Job title"
   },
   
-  "support": "SUPPORT",
+  "support": "Support",
   "@support": {
     "description": "Support section header"
   },

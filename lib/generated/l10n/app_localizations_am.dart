@@ -80,7 +80,7 @@ class AppLocalizationsAm extends AppLocalizations {
   String get notifications => 'ማሳወቂያዎች';
 
   @override
-  String get security => 'ደህንነት እና ድጋፍ';
+  String get security => 'ደህንነት';
 
   @override
   String get biometricAuthentication => 'ባዮሜትሪክ ማረጋገጫ';
