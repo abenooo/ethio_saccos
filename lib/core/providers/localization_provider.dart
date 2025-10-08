@@ -34,6 +34,12 @@ class LocalizationProvider extends ChangeNotifier {
     switch (_locale.languageCode) {
       case 'am':
         return 'አማርኛ'; // Amharic
+      case 'om':
+        return 'Afaan Oromoo'; // Afan Oromo
+      case 'ti':
+        return 'ትግርኛ'; // Tigrigna
+      case 'so':
+        return 'Af-Soomaali'; // Afan Somali
       case 'en':
       default:
         return 'English';
@@ -44,6 +50,9 @@ class LocalizationProvider extends ChangeNotifier {
   List<Map<String, String>> get availableLanguages => [
     {'code': 'en', 'name': 'English', 'nativeName': 'English'},
     {'code': 'am', 'name': 'Amharic', 'nativeName': 'አማርኛ'},
+    {'code': 'om', 'name': 'Afan Oromo', 'nativeName': 'Afaan Oromoo'},
+    {'code': 'ti', 'name': 'Tigrigna', 'nativeName': 'ትግርኛ'},
+    {'code': 'so', 'name': 'Afan Somali', 'nativeName': 'Af-Soomaali'},
   ];
   
   /// Check if current language is RTL (Right-to-Left)

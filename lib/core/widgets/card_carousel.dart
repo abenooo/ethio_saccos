@@ -7,6 +7,7 @@ import '../theme/theme.dart';
 import '../services/navigation_service.dart';
 import '../utils/page_transitions.dart';
 import '../providers/card_data_provider.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class CardCarousel extends StatefulWidget {
   final bool isDark;
@@ -58,22 +59,48 @@ class _CardCarouselState extends State<CardCarousel> {
     switch (title.toLowerCase()) {
       case 'abenezer kifle':
         return Icons.account_balance_wallet;
-      case 'personal loan':
+      case 'personalloan':
         return Icons.account_balance;
-      case 'share account':
+      case 'shareaccount':
         return Icons.pie_chart;
-      case 'regular savings':
+      case 'regularsavings':
         return Icons.savings;
-      case 'fixed deposit 12m':
+      case 'fixeddeposit':
         return Icons.trending_up;
-      case 'emergency fund':
+      case 'emergencyfund':
         return Icons.emergency;
-      case 'children education':
+      case 'childreneducation':
         return Icons.school;
-      case 'holiday savings':
+      case 'holidaysavings':
         return Icons.beach_access;
       default:
         return Icons.savings;
+    }
+  }
+
+  // Helper method to get localized title
+  String _getLocalizedTitle(BuildContext context, String titleKey) {
+    final l10n = AppLocalizations.of(context);
+    switch (titleKey) {
+      case 'personalLoan':
+        return l10n.personalLoan;
+      case 'shareAccount':
+        return l10n.shareAccount;
+      case 'regularSavings':
+        return l10n.regularSavings;
+      case 'fixedDeposit':
+        return l10n.fixedDeposit;
+      case 'emergencyFund':
+        return l10n.emergencyFund;
+      case 'childrenEducation':
+        return l10n.childrenEducation;
+      case 'holidaySavings':
+        return l10n.holidaySavings;
+      case 'mainAccount':
+        return l10n.mainAccount;
+      // If it's a person's name (contains space), return as is
+      default:
+        return titleKey.contains(' ') ? titleKey : titleKey; // Keep names unchanged
     }
   }
 
@@ -192,7 +219,7 @@ class _CardCarouselState extends State<CardCarousel> {
         const SizedBox(width: 8),
         Expanded(
           child: Text(
-            card.title,
+            _getLocalizedTitle(context, card.title),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 16,

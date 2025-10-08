@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n/app_localizations.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/theme/theme.dart';
 
@@ -30,9 +31,10 @@ class _TransactionDetailsScreenState extends State<TransactionDetailsScreen> wit
   int _tab = 0;
   late AnimationController _animationController;
   List<String> get _tabs {
-    if (widget.isLoan) return ['All', 'Repayments', 'Disbursements'];
-    if (widget.isShare) return ['All', 'Buy/Sell', 'Dividends'];
-    return ['All', 'Deposits', 'Withdrawals'];
+    final l10n = AppLocalizations.of(context);
+    if (widget.isLoan) return [l10n.all, l10n.repayments, l10n.disbursements];
+    if (widget.isShare) return [l10n.all, l10n.buySell, l10n.dividends];
+    return [l10n.all, l10n.deposits, l10n.withdrawals];
   }
 
   List<_Txn> _buildData() {

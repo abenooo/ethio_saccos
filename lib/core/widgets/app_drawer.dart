@@ -7,6 +7,7 @@ import '../../main.dart';
 import '../theme/theme.dart';
 import '../utils/page_transitions.dart';
 import '../services/navigation_service.dart';
+import '../../generated/l10n/app_localizations.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -151,11 +152,11 @@ class AppDrawer extends StatelessWidget {
             _buildHeader(context),
             
             // Member Section
-            _buildGroupHeader(context, 'Member'),
+            _buildGroupHeader(context, AppLocalizations.of(context).member),
             _buildMenuItem(
               context,
               Icons.savings,
-              'Savings Accounts',
+              AppLocalizations.of(context).savingsAccounts,
               onTap: () {
                 Navigator.pop(context);
                 NavigationService.navigateToSavings(context);
@@ -164,7 +165,7 @@ class AppDrawer extends StatelessWidget {
             _buildMenuItem(
               context,
               Icons.account_balance,
-              'Loans',
+              AppLocalizations.of(context).loans,
               onTap: () {
                 Navigator.pop(context);
                 NavigationService.navigateToLoans(context);
@@ -173,7 +174,7 @@ class AppDrawer extends StatelessWidget {
             _buildMenuItem(
               context,
               Icons.pie_chart,
-              'Shares',
+              AppLocalizations.of(context).shares,
               onTap: () {
                 Navigator.pop(context);
                 context.pushFade(const TransactionDetailsScreen(title: 'Share Account', isShare: true));
@@ -182,7 +183,7 @@ class AppDrawer extends StatelessWidget {
             _buildMenuItem(
               context,
               Icons.swap_horiz,
-              'Transfers',
+              AppLocalizations.of(context).transfers,
               onTap: () {
                 Navigator.pop(context);
                 context.pushFade(const TransactionDetailsScreen(title: 'Transfers'));
@@ -190,24 +191,24 @@ class AppDrawer extends StatelessWidget {
             ),
             
             // Settings Section
-            _buildGroupHeader(context, 'Settings'),
+            _buildGroupHeader(context, AppLocalizations.of(context).settings),
             _buildMenuItem(
               context,
               Icons.notifications,
-              'Notifications',
+              AppLocalizations.of(context).notifications,
               onTap: () {
                 Navigator.pop(context);
                 context.pushFade(const NotificationsScreen());
               },
             ),
-            _buildMenuItem(context, Icons.lock, 'Privacy & Security'),
-            _buildMenuItem(context, Icons.language, 'Language'),
+            _buildMenuItem(context, Icons.lock, AppLocalizations.of(context).security),
+            _buildMenuItem(context, Icons.language, 'Language / ቋንቋ'),
             
             // Support Section
-            _buildGroupHeader(context, 'Support'),
-            _buildMenuItem(context, Icons.help, 'Help Center'),
-            _buildMenuItem(context, Icons.support_agent, 'Contact Support'),
-            _buildMenuItem(context, Icons.info, 'About SACCO'),
+            _buildGroupHeader(context, AppLocalizations.of(context).support),
+            _buildMenuItem(context, Icons.help, AppLocalizations.of(context).helpCenter),
+            _buildMenuItem(context, Icons.support_agent, AppLocalizations.of(context).contactSupport),
+            _buildMenuItem(context, Icons.info, AppLocalizations.of(context).aboutSacco),
             
             // Divider
             Container(
@@ -228,7 +229,7 @@ class AppDrawer extends StatelessWidget {
               child: _buildMenuItem(
                 context,
                 Icons.logout,
-                'Logout',
+                AppLocalizations.of(context).logout,
                 onTap: () {
                   Navigator.pop(context);
                   AuthService.logout();

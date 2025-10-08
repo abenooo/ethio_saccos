@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../generated/l10n/app_localizations.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -13,7 +14,7 @@ class RegisterScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: cs.onBackground,
-        title: const Text('Create Account'),
+        title: Text(AppLocalizations.of(context).signUp),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

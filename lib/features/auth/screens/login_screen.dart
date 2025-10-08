@@ -205,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   context.pushFade(const ForgotScreen());
                 },
-                child: const Text('Forgot password?'),
+                child: Text(AppLocalizations.of(context).forgotPassword),
               ),
             ),
             const SizedBox(height: 8),
@@ -220,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   elevation: 0,
                 ),
-                child: const Text('Sign In', style: TextStyle(fontWeight: FontWeight.w600)),
+                child: Text(AppLocalizations.of(context).signIn, style: const TextStyle(fontWeight: FontWeight.w600)),
               ),
             ),
             const SizedBox(height: 16),
@@ -237,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              'OR',
+                              AppLocalizations.of(context).or,
                               style: TextStyle(
                                 color: cs.onBackground.withValues(alpha: 0.6),
                                 fontWeight: FontWeight.w500,
@@ -258,7 +258,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: cs.primary,
                           ),
                           label: Text(
-                            'Sign in with ${biometricProvider.biometricTypeName}',
+                            AppLocalizations.of(context).signInWithBiometric(biometricProvider.biometricTypeName),
                             style: TextStyle(
                               color: cs.primary,
                               fontWeight: FontWeight.w600,
@@ -286,7 +286,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   context.pushFade(const RegisterScreen());
                 },
-                child: const Text("I'm a new user. Sign up"),
+                child: Text(AppLocalizations.of(context).newUserSignUp),
               ),
             )
           ],

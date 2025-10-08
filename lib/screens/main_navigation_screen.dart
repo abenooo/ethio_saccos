@@ -10,6 +10,7 @@ import '../features/home/screens/transaction_details_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/support/widgets/floating_chat_button.dart';
 import '../core/providers/theme_provider.dart';
+import '../generated/l10n/app_localizations.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   final int initialIndex;
@@ -349,7 +350,7 @@ class LoansScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Loans',
+          AppLocalizations.of(context).loans,
           style: TextStyle(
             color: colorScheme.onBackground,
             fontSize: 20,
@@ -369,7 +370,7 @@ class LoansScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Loan Services',
+              AppLocalizations.of(context).loanServices,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -378,7 +379,7 @@ class LoansScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Apply for loans, view loan status and payments',
+              AppLocalizations.of(context).applyLoans,
               style: TextStyle(
                 fontSize: 16,
                 color: colorScheme.onBackground.withValues(alpha: 0.7),
@@ -405,7 +406,7 @@ class SavingsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Text(
-          'Savings',
+          AppLocalizations.of(context).savings,
           style: TextStyle(
             color: colorScheme.onBackground,
             fontSize: 20,
@@ -425,7 +426,7 @@ class SavingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              'Savings Account',
+              AppLocalizations.of(context).savingsAccount,
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -434,7 +435,7 @@ class SavingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Manage your savings, view interest and deposits',
+              AppLocalizations.of(context).manageSavings,
               style: TextStyle(
                 fontSize: 16,
                 color: colorScheme.onBackground.withValues(alpha: 0.7),

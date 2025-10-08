@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/providers/localization_provider.dart';
-import '../../../core/widgets/custom_app_bar.dart';
 import '../../../generated/l10n/app_localizations.dart';
 
 class LanguageSelectionScreen extends StatelessWidget {
@@ -13,9 +12,15 @@ class LanguageSelectionScreen extends StatelessWidget {
     
     return Scaffold(
       backgroundColor: cs.surface,
-      appBar: const CustomAppBar(
-        title: 'Language / ቋንቋ',
-        showBackButton: true,
+      appBar: AppBar(
+        title: const Text('Language / ቋንቋ / Afaan / ቋንቋ / Luqadda'),
+        backgroundColor: cs.surface,
+        foregroundColor: cs.onSurface,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: cs.onSurface),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: Consumer<LocalizationProvider>(
         builder: (context, localizationProvider, child) {
@@ -93,13 +98,29 @@ class LanguageSelectionScreen extends StatelessWidget {
                       
                       // Show confirmation snackbar
                       if (context.mounted) {
+                        String message;
+                        switch (language['code']) {
+                          case 'am':
+                            message = 'ቋንቋ ወደ አማርኛ ተቀይሯል';
+                            break;
+                          case 'om':
+                            message = 'Afaan gara Afaan Oromootti jijjiirame';
+                            break;
+                          case 'ti':
+                            message = 'ቋንቋ ናብ ትግርኛ ተቐይሩ';
+                            break;
+                          case 'so':
+                            message = 'Luqadda waxaa loo beddelay Af-Soomaali';
+                            break;
+                          case 'en':
+                          default:
+                            message = 'Language changed to English';
+                            break;
+                        }
+                        
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              language['code'] == 'am' 
-                                ? 'ቋንቋ ወደ አማርኛ ተቀይሯል'
-                                : 'Language changed to English',
-                            ),
+                            content: Text(message),
                             backgroundColor: cs.primary,
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(

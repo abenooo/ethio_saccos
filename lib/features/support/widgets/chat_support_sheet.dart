@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n/app_localizations.dart';
 
 class ChatSupportSheet extends StatefulWidget {
   const ChatSupportSheet({super.key});
@@ -13,24 +14,33 @@ class _ChatSupportSheetState extends State<ChatSupportSheet> {
 
   final List<_ChatMessage> _messages = <_ChatMessage>[];
 
-  @override
-  void initState() {
-    super.initState();
-    // Seed greeting and main menu quick action
+  bool _isInitialized = false;
+
+  void _initializeMessages(BuildContext context) {
+    if (_isInitialized) return;
+    _isInitialized = true;
+    
+    final l10n = AppLocalizations.of(context);
     final now = TimeOfDay.now();
+    
     _messages.add(
       _ChatMessage(
-        text:
-            'Hello and Welcome!\n\nI\'m Selam, your Ethio SACCO digital assistant. I\'m here to help with membership, savings, loans, transfers and other SACCO services. How can I assist you today?',
+        text: '${l10n.helloWelcome}\n\n${l10n.supportIntro}',
         isMe: false,
         time: now,
-        quickReplies: const ['Main Menu'],
+        quickReplies: [l10n.mainMenu],
       ),
     );
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _initializeMessages(context);
     final colorScheme = Theme.of(context).colorScheme;
 
     return SafeArea(
@@ -140,8 +150,8 @@ class _ChatSupportSheetState extends State<ChatSupportSheet> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: TextField(
                         controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: 'Type your message... ',
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context).typeMessage,
                           border: InputBorder.none,
                         ),
                         onSubmitted: (_) => _send(),

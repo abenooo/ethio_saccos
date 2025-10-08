@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/providers/theme_provider.dart';
+import '../../../core/providers/localization_provider.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../profile/screens/profile_screen.dart';
 import '../../../core/theme/theme.dart';
 import '../providers/biometric_provider.dart';
 import '../../auth/services/auth_service.dart';
 import '../../../core/utils/page_transitions.dart';
+import '../../../generated/l10n/app_localizations.dart';
+import 'language_selection_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   final bool showBackButton;
@@ -25,7 +28,7 @@ class SettingsScreen extends StatelessWidget {
       body: Column(
         children: [
           CustomAppBar(
-            title: 'Settings',
+            title: AppLocalizations.of(context).settings,
             showLanguage: false,
             onBackPressed: () {
               if (onBackToHome != null) {
@@ -42,14 +45,14 @@ class SettingsScreen extends StatelessWidget {
                 child: Column(
                   children: [
             // Account & Preferences Section
-            _buildSectionHeader(context, 'Account & Preferences'),
+            _buildSectionHeader(context, AppLocalizations.of(context).accountPreferences),
             const SizedBox(height: 12),
             
             _buildSettingTile(
               context,
               icon: Icons.person_outline,
-              title: 'My Profile',
-              subtitle: 'View and edit your profile',
+              title: AppLocalizations.of(context).profile,
+              subtitle: AppLocalizations.of(context).viewEditProfile,
               onTap: () {
                 context.pushFade(const ProfileScreen());
               },
@@ -60,8 +63,8 @@ class SettingsScreen extends StatelessWidget {
                 return _buildSettingTile(
                   context,
                   icon: themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-                  title: 'Theme',
-                  subtitle: themeProvider.isDarkMode ? 'Dark Mode' : 'Light Mode',
+                  title: AppLocalizations.of(context).theme,
+                  subtitle: themeProvider.isDarkMode ? AppLocalizations.of(context).darkMode : AppLocalizations.of(context).lightMode,
                   trailing: Switch(
                     value: themeProvider.isDarkMode,
                     onChanged: (value) {
@@ -76,21 +79,30 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             
-            _buildSettingTile(
-              context,
-              icon: Icons.language,
-              title: 'Language',
-              subtitle: 'English',
-              onTap: () {
-                _showLanguageDialog(context);
-              },
+            Consumer<LocalizationProvider>(
+              builder: (context, localizationProvider, child) {
+                return _buildSettingTile(
+                  context,
+                  icon: Icons.language,
+                  title: 'Language / ቋንቋ',
+                  subtitle: localizationProvider.currentLanguageName,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LanguageSelectionScreen(),
+                      ),
+                    );
+                  },
+                );
+              }
             ),
             
             _buildSettingTile(
               context,
               icon: Icons.text_fields,
-              title: 'Font Size',
-              subtitle: 'Medium',
+              title: AppLocalizations.of(context).fontSize,
+              subtitle: AppLocalizations.of(context).medium,
               onTap: () {
                 _showFontSizeDialog(context);
               },
@@ -99,8 +111,8 @@ class SettingsScreen extends StatelessWidget {
             _buildSettingTile(
               context,
               icon: Icons.notifications_outlined,
-              title: 'Push Notifications',
-              subtitle: 'Enabled',
+              title: AppLocalizations.of(context).pushNotifications,
+              subtitle: AppLocalizations.of(context).enabled,
               trailing: Switch(
                 value: true,
                 onChanged: (value) {
@@ -116,16 +128,16 @@ class SettingsScreen extends StatelessWidget {
             _buildSettingTile(
               context,
               icon: Icons.email_outlined,
-              title: 'Email Notifications',
-              subtitle: 'Weekly summary',
+              title: AppLocalizations.of(context).emailNotifications,
+              subtitle: AppLocalizations.of(context).weeklySum,
               onTap: () {},
             ),
             
             _buildSettingTile(
               context,
               icon: Icons.vibration,
-              title: 'Vibration',
-              subtitle: 'Enabled',
+              title: AppLocalizations.of(context).vibration,
+              subtitle: AppLocalizations.of(context).enabled,
               trailing: Switch(
                 value: true,
                 onChanged: (value) {
@@ -141,14 +153,14 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 32),
             
             // Security & Support Section
-            _buildSectionHeader(context, 'Security & Support'),
+            _buildSectionHeader(context, AppLocalizations.of(context).security),
             const SizedBox(height: 12),
             
             _buildSettingTile(
               context,
               icon: Icons.lock_outline,
-              title: 'Change Password',
-              subtitle: 'Last changed 3 months ago',
+              title: AppLocalizations.of(context).changePassword,
+              subtitle: AppLocalizations.of(context).lastChanged('3 months ago'),
               onTap: () {},
             ),
             
@@ -157,7 +169,7 @@ class SettingsScreen extends StatelessWidget {
                 return _buildSettingTile(
                   context,
                   icon: Icons.fingerprint,
-                  title: 'Biometric Authentication',
+                  title: AppLocalizations.of(context).biometricAuthentication,
                   subtitle: biometricProvider.getSubtitleText(),
                   trailing: biometricProvider.isLoading
                       ? SizedBox(
@@ -185,32 +197,32 @@ class SettingsScreen extends StatelessWidget {
             _buildSettingTile(
               context,
               icon: Icons.security,
-              title: 'Two-Factor Authentication',
-              subtitle: 'Disabled',
+              title: AppLocalizations.of(context).twoFactorAuth,
+              subtitle: AppLocalizations.of(context).disabled,
               onTap: () {},
             ),
             
             _buildSettingTile(
               context,
               icon: Icons.help_outline,
-              title: 'Help Center',
-              subtitle: 'FAQs and support',
+              title: AppLocalizations.of(context).helpCenter,
+              subtitle: AppLocalizations.of(context).faqsAndSupport,
               onTap: () {},
             ),
             
             _buildSettingTile(
               context,
               icon: Icons.chat_bubble_outline,
-              title: 'Contact Us',
-              subtitle: 'Get in touch',
+              title: AppLocalizations.of(context).contactUs,
+              subtitle: AppLocalizations.of(context).getInTouch,
               onTap: () {},
             ),
             
             _buildSettingTile(
               context,
               icon: Icons.info_outline,
-              title: 'About',
-              subtitle: 'Version 1.0.0',
+              title: AppLocalizations.of(context).about,
+              subtitle: AppLocalizations.of(context).version,
               onTap: () {},
             ),
             
@@ -234,7 +246,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Logout',
+                  AppLocalizations.of(context).logout,
                   style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.error),
                 ),
               ),

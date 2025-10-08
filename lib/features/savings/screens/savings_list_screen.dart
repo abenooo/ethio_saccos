@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/providers/card_data_provider.dart';
@@ -35,23 +36,25 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
     // Use centralized data conversion for consistency and performance
     final savingsAccounts = _cardDataProvider.convertToSavingsAccounts(widget.mainAccountBalance);
     
+    final l10n = AppLocalizations.of(context);
+    
     final savingsProducts = [
       {
-        'title': 'SACCO Share Account',
+        'title': l10n.shareAccount,
         'description': 'Membership share contribution',
         'interestRate': '6 %',
         'minDeposit': '100.00 ETB',
         'maxDeposit': '50,000.00 ETB',
       },
       {
-        'title': 'SACCO Regular Savings',
+        'title': l10n.regularSavings,
         'description': 'Monthly savings account',
         'interestRate': '7 %',
         'minDeposit': '50.00 ETB',
-        'maxDeposit': 'No Limit',
+        'maxDeposit': l10n.noLimit,
       },
       {
-        'title': 'SACCO Fixed Deposit 6M',
+        'title': '${l10n.fixedDeposit} 6M',
         'savingDays': '180',
         'description': 'Fixed term deposit',
         'interestRate': '9 %',
@@ -59,7 +62,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
         'maxDeposit': '500,000.00 ETB',
       },
       {
-        'title': 'SACCO Fixed Deposit 12M',
+        'title': l10n.fixedDeposit,
         'savingDays': '365',
         'description': 'Long-term fixed deposit',
         'interestRate': '11 %',
@@ -67,7 +70,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
         'maxDeposit': '1,000,000.00 ETB',
       },
       {
-        'title': 'SACCO Children Savings',
+        'title': l10n.childrenEducation,
         'description': 'Education savings for children',
         'interestRate': '8 %',
         'minDeposit': '25.00 ETB',
@@ -80,7 +83,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
       body: Column(
         children: [
           CustomAppBar(
-            title: 'SACCO Savings',
+            title: AppLocalizations.of(context).savingsScreen,
             onBackPressed: () {
               if (widget.onBackToHome != null) {
                 widget.onBackToHome!();
@@ -124,7 +127,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Available Savings Products',
+                l10n.savingsAccounts,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -188,7 +191,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       ],
                       if (product['savingDays'] != null) ...[
                         Text(
-                          'Saving days: ${product['savingDays']}',
+                          '${l10n.savingDays}: ${product['savingDays']}',
                           style: TextStyle(
                             color: palette.textSecondary,
                             fontSize: 12,
@@ -197,7 +200,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                         const SizedBox(height: 4),
                       ],
                       Text(
-                        'Interest Rate: ${product['interestRate']}',
+                        '${l10n.interestRate}: ${product['interestRate']}',
                         style: TextStyle(
                           color: palette.textSecondary,
                           fontSize: 12,
@@ -205,7 +208,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Min Deposit: ${product['minDeposit']}',
+                        '${l10n.minDeposit}: ${product['minDeposit']}',
                         style: TextStyle(
                           color: palette.textSecondary,
                           fontSize: 12,
@@ -213,7 +216,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Max Deposit: ${product['maxDeposit']}',
+                        '${l10n.maxDeposit}: ${product['maxDeposit']}',
                         style: TextStyle(
                           color: palette.textSecondary,
                           fontSize: 12,
@@ -235,12 +238,12 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                               vertical: 8,
                             ),
                           ),
-                          child: const Row(
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Detail'),
-                              SizedBox(width: 4),
-                              Icon(Icons.arrow_forward, size: 16),
+                              Text(l10n.view),
+                              const SizedBox(width: 4),
+                              const Icon(Icons.arrow_forward, size: 16),
                             ],
                           ),
                         ),
@@ -370,7 +373,7 @@ class _SavingsListScreenState extends State<SavingsListScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Balance',
+                              AppLocalizations.of(context).balance,
                               style: TextStyle(
                                 color: palette.textSecondary,
                                 fontSize: 9,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n/app_localizations.dart';
 import '../../../core/theme/theme.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/providers/card_data_provider.dart';
@@ -23,6 +24,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
     final cs = Theme.of(context).colorScheme;
     final palette = Theme.of(context).extension<AppPalette>()!;
     final textTheme = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
     // Use centralized data conversion for consistency and performance
     final loanAccounts = _cardDataProvider.convertToLoanAccounts(widget.loanCardData);
 
@@ -31,7 +33,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
       body: Column(
         children: [
           CustomAppBar(
-            title: 'SACCO Loans',
+            title: AppLocalizations.of(context).loansScreen,
             onBackPressed: () {
               if (widget.onBackToHome != null) {
                 widget.onBackToHome!();
@@ -71,7 +73,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'TOTAL LOAN BALANCE',
+                              l10n.totalLoanBalance.toUpperCase(),
                               style: TextStyle(
                                 color: palette.textSecondary,
                                 fontSize: 12,
@@ -114,7 +116,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Remaining Loan',
+                                  l10n.remainingLoan,
                                   style: TextStyle(
                                     color: palette.textSecondary,
                                     fontSize: 12,
@@ -147,7 +149,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Total Interest',
+                                  l10n.totalInterest,
                                   style: TextStyle(
                                     color: palette.textSecondary,
                                     fontSize: 12,
@@ -187,7 +189,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    'Initial Loan Provided:',
+                                    '${l10n.initialLoanProvided}:',
                                     style: TextStyle(
                                       color: palette.textSecondary,
                                       fontSize: 12,
@@ -241,7 +243,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: Text(
-                    'SACCO Loan Products',
+                    l10n.loanServices,
                     style: textTheme.titleMedium?.copyWith(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -391,7 +393,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Monthly Payment: ${(loan['monthlyPayment'] as double).toStringAsFixed(2)} ETB',
+                              '${l10n.monthlyPayment}: ${(loan['monthlyPayment'] as double).toStringAsFixed(2)} ETB',
                               style: TextStyle(
                                 color: palette.textSecondary,
                                 fontSize: 11,
@@ -399,7 +401,7 @@ class _LoansListScreenState extends State<LoansListScreen> {
                               ),
                             ),
                             Text(
-                              '${loan['remainingMonths']} months left',
+                              '${loan['remainingMonths']} ${l10n.monthsLeft}',
                               style: TextStyle(
                                 color: palette.textSecondary,
                                 fontSize: 11,

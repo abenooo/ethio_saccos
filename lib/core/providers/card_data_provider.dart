@@ -10,7 +10,7 @@ class CardDataProvider {
   // Default card data - single source of truth
   static const String defaultMainAccountBalance = '2,000,000.00 ETB';
   static const Map<String, dynamic> defaultLoanCardData = {
-    'title': 'Personal Loan',
+    'title': 'personalLoan', // Use key for localization
     'amount': '50,000.00 ETB',
     'info1': '1213123123123456',
     'info2': 'Loan Account',
@@ -18,10 +18,10 @@ class CardDataProvider {
 
   // Main account card data
   static const Map<String, dynamic> mainAccountCardData = {
-    'title': 'Abenezer Kifle',
+    'title': 'Abenezer Kifle', // Keep name as is
     'amount': defaultMainAccountBalance,
     'info1': '1213123123123123',
-    'info2': 'Main Account',
+    'info2': 'mainAccount', // Use key for localization
   };
 
   // All card data for consistency - includes all savings accounts
@@ -30,42 +30,42 @@ class CardDataProvider {
     defaultLoanCardData,
     // All savings accounts displayed as cards
     {
-      'title': 'Share Account',
+      'title': 'shareAccount', // Use key for localization
       'amount': '45,000.00 ETB',
       'info1': 'SA-001-2024',
       'info2': 'Share • 6.5%',
       'accountType': 'Share',
     },
     {
-      'title': 'Regular Savings',
+      'title': 'regularSavings', // Use key for localization
       'amount': '28,750.00 ETB',
       'info1': 'RS-002-2024',
       'info2': 'Savings • 7.0%',
       'accountType': 'Savings',
     },
     {
-      'title': 'Fixed Deposit 12M',
+      'title': 'fixedDeposit', // Use key for localization
       'amount': '125,000.00 ETB',
       'info1': 'FD-003-2024',
       'info2': 'Fixed • 9.5%',
       'accountType': 'Fixed Deposit',
     },
     {
-      'title': 'Emergency Fund',
+      'title': 'emergencyFund', // Use key for localization
       'amount': '15,500.00 ETB',
       'info1': 'EF-004-2024',
       'info2': 'Emergency • 5.5%',
       'accountType': 'Emergency',
     },
     {
-      'title': 'Children Education',
+      'title': 'childrenEducation', // Use key for localization
       'amount': '30,000.00 ETB',
       'info1': 'CE-005-2024',
       'info2': 'Education • 8.0%',
       'accountType': 'Education',
     },
     {
-      'title': 'Holiday Savings',
+      'title': 'holidaySavings', // Use key for localization
       'amount': '12,250.00 ETB',
       'info1': 'HS-006-2024',
       'info2': 'Holiday • 6.0%',

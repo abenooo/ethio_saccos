@@ -4,3 +4,5 @@ output-localization-file: app_localizations.dart
 output-class: AppLocalizations
 output-dir: lib/generated/l10n
 nullable-getter: false
+untranslated-messages-file: untranslated.json
+# Supported languages: English (en), Amharic (am), Afan Oromo (om), Tigrigna (ti), Afan Somali (so)

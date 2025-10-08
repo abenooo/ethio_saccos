@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../generated/l10n/app_localizations.dart';
 import '../../settings/screens/settings_screen.dart';
 import '../../../core/widgets/custom_app_bar.dart';
 import '../../../core/theme/theme.dart';
@@ -16,8 +17,8 @@ class ProfileScreen extends StatelessWidget {
       backgroundColor: colorScheme.surface,
       body: Column(
         children: [
-          const CustomAppBar(
-            title: 'Profile',
+          CustomAppBar(
+            title: AppLocalizations.of(context).profile,
             showLanguage: false,
           ),
           // Themed section header with profile info
@@ -64,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Senior Designer',
+                          AppLocalizations.of(context).seniorDesigner,
                           style: TextStyle(
                             fontSize: 16,
                             color: palette.textSecondary,
@@ -75,13 +76,13 @@ class ProfileScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            _buildStatItem(context, 'Member Since', '2019'),
+                            _buildStatItem(context, AppLocalizations.of(context).memberSince, '2019'),
                             Container(
                               height: 40,
                               width: 1,
                               color: palette.cardBorder,
                             ),
-                            _buildStatItem(context, 'Account Status', 'Active'),
+                            _buildStatItem(context, AppLocalizations.of(context).accountStatus, AppLocalizations.of(context).active),
                           ],
                         ),
                       ],
@@ -101,44 +102,44 @@ class ProfileScreen extends StatelessWidget {
             _buildMenuItem(
               context,
               icon: Icons.person_outline,
-              title: 'Personal Information',
+              title: AppLocalizations.of(context).personalInformation,
               onTap: () {},
             ),
             _buildMenuItem(
               context,
               icon: Icons.credit_card,
-              title: 'Payment Preferences',
+              title: AppLocalizations.of(context).paymentPreferences,
               onTap: () {},
             ),
             _buildMenuItem(
               context,
               icon: Icons.account_balance_wallet,
-              title: 'Banks and Cards',
+              title: AppLocalizations.of(context).banksAndCards,
               onTap: () {},
             ),
             _buildMenuItem(
               context,
               icon: Icons.notifications_outlined,
-              title: 'Notifications',
+              title: AppLocalizations.of(context).notifications,
               badge: '2',
               onTap: () {},
             ),
             _buildMenuItem(
               context,
               icon: Icons.chat_bubble_outline,
-              title: 'Message Center',
+              title: AppLocalizations.of(context).messageCenter,
               onTap: () {},
             ),
             _buildMenuItem(
               context,
               icon: Icons.location_on_outlined,
-              title: 'Address',
+              title: AppLocalizations.of(context).address,
               onTap: () {},
             ),
             _buildMenuItem(
               context,
               icon: Icons.settings_outlined,
-              title: 'Settings',
+              title: AppLocalizations.of(context).settings,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

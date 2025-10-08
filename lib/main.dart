@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'screens/main_navigation_screen.dart';
@@ -11,6 +12,58 @@ import 'core/providers/localization_provider.dart';
 import 'features/onboarding/services/onboarding_service.dart';
 import 'features/settings/providers/biometric_provider.dart';
 import 'generated/l10n/app_localizations.dart';
+
+// Custom delegate to handle fallback for unsupported locales
+class FallbackMaterialLocalizationsDelegate extends LocalizationsDelegate<MaterialLocalizations> {
+  const FallbackMaterialLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    // Support all locales, but will fallback to English for unsupported ones
+    return true;
+  }
+
+  @override
+  Future<MaterialLocalizations> load(Locale locale) async {
+    // For unsupported locales, use English as fallback
+    const fallbackLocale = Locale('en');
+    
+    // Check if the locale is supported by Material
+    if (GlobalMaterialLocalizations.delegate.isSupported(locale)) {
+      return await GlobalMaterialLocalizations.delegate.load(locale);
+    } else {
+      // Use English fallback for unsupported locales
+      return await GlobalMaterialLocalizations.delegate.load(fallbackLocale);
+    }
+  }
+
+  @override
+  bool shouldReload(FallbackMaterialLocalizationsDelegate old) => false;
+}
+
+// Custom delegate to handle fallback for unsupported Cupertino locales
+class FallbackCupertinoLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+  const FallbackCupertinoLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) {
+    return true;
+  }
+
+  @override
+  Future<CupertinoLocalizations> load(Locale locale) async {
+    const fallbackLocale = Locale('en');
+    
+    if (GlobalCupertinoLocalizations.delegate.isSupported(locale)) {
+      return await GlobalCupertinoLocalizations.delegate.load(locale);
+    } else {
+      return await GlobalCupertinoLocalizations.delegate.load(fallbackLocale);
+    }
+  }
+
+  @override
+  bool shouldReload(FallbackCupertinoLocalizationsDelegate old) => false;
+}
 
 void main() {
   runApp(
@@ -46,14 +99,30 @@ class MyApp extends StatelessWidget {
           locale: localizationProvider.locale,
           localizationsDelegates: const [
             AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
+            FallbackMaterialLocalizationsDelegate(),
             GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+            FallbackCupertinoLocalizationsDelegate(),
           ],
           supportedLocales: const [
             Locale('en'), // English
             Locale('am'), // Amharic
+            Locale('om'), // Afan Oromo
+            Locale('ti'), // Tigrigna
+            Locale('so'), // Afan Somali
           ],
+          // Locale resolution callback to handle unsupported locales
+          localeResolutionCallback: (locale, supportedLocales) {
+            // Check if the current locale is supported
+            if (locale != null) {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode) {
+                  return supportedLocale;
+                }
+              }
+            }
+            // If the locale is not supported, return English as fallback
+            return const Locale('en');
+          },
           home: const SplashScreen(),
           routes: {
             '/main': (_) => const MainNavigationScreen(),

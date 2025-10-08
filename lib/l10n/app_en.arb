@@ -257,5 +257,815 @@
   "faqsAndSupport": "FAQs and support",
   "@faqsAndSupport": {
     "description": "FAQs and support description"
+  },
+  
+  "contactSupport": "Contact Support",
+  "@contactSupport": {
+    "description": "Contact support menu item"
+  },
+  
+  "aboutSacco": "About SACCO",
+  "@aboutSacco": {
+    "description": "About SACCO menu item"
+  },
+  
+  "privacySecurity": "Privacy & Security",
+  "@privacySecurity": {
+    "description": "Privacy and security menu item"
+  },
+  
+  "fontSize": "Font Size",
+  "@fontSize": {
+    "description": "Font size setting"
+  },
+  
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium size option"
+  },
+  
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting"
+  },
+  
+  "darkMode": "Dark Mode",
+  "@darkMode": {
+    "description": "Dark mode setting"
+  },
+  
+  "lightMode": "Light Mode",
+  "@lightMode": {
+    "description": "Light mode setting"
+  },
+  
+  "accountPreferences": "Account & Preferences",
+  "@accountPreferences": {
+    "description": "Account and preferences section header"
+  },
+  
+  "support": "Support",
+  "@support": {
+    "description": "Support section header"
+  },
+  
+  "mainAccount": "Main Account",
+  "@mainAccount": {
+    "description": "Main account label"
+  },
+  
+  "personalLoan": "Personal Loan",
+  "@personalLoan": {
+    "description": "Personal loan label"
+  },
+  
+  "shareAccount": "Share Account",
+  "@shareAccount": {
+    "description": "Share account label"
+  },
+  
+  "regularSavings": "Regular Savings",
+  "@regularSavings": {
+    "description": "Regular savings account"
+  },
+  
+  "fixedDeposit": "Fixed Deposit 12M",
+  "@fixedDeposit": {
+    "description": "Fixed deposit account"
+  },
+  
+  "emergencyFund": "Emergency Fund",
+  "@emergencyFund": {
+    "description": "Emergency fund account"
+  },
+  
+  "childrenEducation": "Children Education",
+  "@childrenEducation": {
+    "description": "Children education savings"
+  },
+  
+  "holidaySavings": "Holiday Savings",
+  "@holidaySavings": {
+    "description": "Holiday savings account"
+  },
+  
+  "viewBalancesDetails": "View balances & details",
+  "@viewBalancesDetails": {
+    "description": "Account details subtitle"
+  },
+  
+  "calculatePayments": "Calculate payments",
+  "@calculatePayments": {
+    "description": "Loan calculator subtitle"
+  },
+  
+  "downloadView": "Download & view",
+  "@downloadView": {
+    "description": "Statements subtitle"
+  },
+  
+  "addFunds": "Add funds",
+  "@addFunds": {
+    "description": "Deposit subtitle"
+  },
+  
+  "cashWithdrawal": "Cash withdrawal",
+  "@cashWithdrawal": {
+    "description": "Withdraw subtitle"
+  },
+  
+  "sendMoney": "Send money",
+  "@sendMoney": {
+    "description": "Transfer subtitle"
+  },
+  
+  "viewEditProfile": "View and edit your profile",
+  "@viewEditProfile": {
+    "description": "Profile subtitle"
+  },
+  
+  "quickPersonalFinancing": "Quick personal financing",
+  "@quickPersonalFinancing": {
+    "description": "Personal loan description"
+  },
+  
+  "growYourBusiness": "Grow your business",
+  "@growYourBusiness": {
+    "description": "Business loan description"
+  },
+  
+  "homeFinancing": "Home financing",
+  "@homeFinancing": {
+    "description": "Mortgage loan description"
+  },
+  
+  "vehicleFinancing": "Vehicle financing",
+  "@vehicleFinancing": {
+    "description": "Auto loan description"
+  },
+  
+  "businessLoan": "Business Loan",
+  "@businessLoan": {
+    "description": "Business loan label"
+  },
+  
+  "mortgagesLoan": "Mortgages Loan",
+  "@mortgagesLoan": {
+    "description": "Mortgage loan label"
+  },
+  
+  "autoLoan": "Auto Loan",
+  "@autoLoan": {
+    "description": "Auto loan label"
+  },
+  
+  "payToMerchant": "Pay to Merchant",
+  "@payToMerchant": {
+    "description": "Pay to merchant service"
+  },
+  
+  "paymentRequest": "Payment Request",
+  "@paymentRequest": {
+    "description": "Payment request service"
+  },
+  
+  "ticket": "Ticket",
+  "@ticket": {
+    "description": "Ticket service"
+  },
+  
+  "governmentServices": "Government Services",
+  "@governmentServices": {
+    "description": "Government services"
+  },
+  
+  "payFor": "Pay for",
+  "@payFor": {
+    "description": "Pay for service"
+  },
+  
+  "donations": "Donations",
+  "@donations": {
+    "description": "Donations service"
+  },
+  
+  "otherServices": "Other Services",
+  "@otherServices": {
+    "description": "Other services"
+  },
+  
+  "scanQr": "Scan QR",
+  "@scanQr": {
+    "description": "Scan QR code"
+  },
+  
+  "home": "Home",
+  "@home": {
+    "description": "Home navigation"
+  },
+  
+  "accounts": "Accounts",
+  "@accounts": {
+    "description": "Accounts navigation"
+  },
+  
+  "loans": "Loans",
+  "@loans": {
+    "description": "Loans navigation"
+  },
+  
+  "more": "More",
+  "@more": {
+    "description": "More navigation"
+  },
+  
+  "savings": "Savings",
+  "@savings": {
+    "description": "Savings navigation"
+  },
+  
+  "savingsAccount": "Savings Account",
+  "@savingsAccount": {
+    "description": "Savings account title"
+  },
+  
+  "manageSavings": "Manage your savings, view interest and deposits",
+  "@manageSavings": {
+    "description": "Savings account description"
+  },
+  
+  "loanServices": "Loan Services",
+  "@loanServices": {
+    "description": "Loan services title"
+  },
+  
+  "applyLoans": "Apply for loans, view loan status and payments",
+  "@applyLoans": {
+    "description": "Loan services description"
+  },
+  
+  "newUserSignUp": "I'm a new user. Sign up",
+  "@newUserSignUp": {
+    "description": "New user sign up text"
+  },
+  
+  "fontSize": "Font Size",
+  "@fontSize": {
+    "description": "Font size setting"
+  },
+  
+  "medium": "Medium",
+  "@medium": {
+    "description": "Medium font size"
+  },
+  
+  "pushNotifications": "Push Notifications",
+  "@pushNotifications": {
+    "description": "Push notifications setting"
+  },
+  
+  "emailNotifications": "Email Notifications",
+  "@emailNotifications": {
+    "description": "Email notifications setting"
+  },
+  
+  "weeklySum": "Weekly summary",
+  "@weeklySum": {
+    "description": "Weekly summary setting"
+  },
+  
+  "vibration": "Vibration",
+  "@vibration": {
+    "description": "Vibration setting"
+  },
+  
+  "enabled": "Enabled",
+  "@enabled": {
+    "description": "Enabled status"
+  },
+  
+  "savingsAccounts": "Savings Accounts",
+  "@savingsAccounts": {
+    "description": "Savings accounts menu"
+  },
+  
+  "shares": "Shares",
+  "@shares": {
+    "description": "Shares menu"
+  },
+  
+  "transfers": "Transfers",
+  "@transfers": {
+    "description": "Transfers menu"
+  },
+  
+  "member": "MEMBER",
+  "@member": {
+    "description": "Member status"
+  },
+  
+  "quickActions": "Quick Actions",
+  "@quickActions": {
+    "description": "Quick actions section"
+  },
+  
+  "saving": "Saving",
+  "@saving": {
+    "description": "Saving action"
+  },
+  
+  "loan": "Loan",
+  "@loan": {
+    "description": "Loan action"
+  },
+  
+  "pay": "Pay",
+  "@pay": {
+    "description": "Pay action"
+  },
+  
+  "view": "View",
+  "@view": {
+    "description": "View action"
+  },
+  
+  "apply": "Apply",
+  "@apply": {
+    "description": "Apply action"
+  },
+  
+  "bills": "Bills",
+  "@bills": {
+    "description": "Bills payment"
+  },
+  
+  "history": "History",
+  "@history": {
+    "description": "History view"
+  },
+  
+  "saccoSupport": "SACCO Support",
+  "@saccoSupport": {
+    "description": "SACCO support title"
+  },
+  
+  "typicallyReplies": "Typically replies in a few minutes",
+  "@typicallyReplies": {
+    "description": "Support response time"
+  },
+  
+  "helloWelcome": "Hello and Welcome!",
+  "@helloWelcome": {
+    "description": "Support greeting"
+  },
+  
+  "supportIntro": "I'm Selam, your Ethio SACCO digital assistant. I'm here to help with membership, savings, loans, transfers and other SACCO services. How can I assist you today?",
+  "@supportIntro": {
+    "description": "Support introduction message"
+  },
+  
+  "mainMenu": "Main Menu",
+  "@mainMenu": {
+    "description": "Main menu button"
+  },
+  
+  "chooseOption": "Choose an option to continue:",
+  "@chooseOption": {
+    "description": "Choose option text"
+  },
+  
+  "saccoServices": "SACCO Services",
+  "@saccoServices": {
+    "description": "SACCO services button"
+  },
+  
+  "memberSelfService": "Member Self Service",
+  "@memberSelfService": {
+    "description": "Member self service button"
+  },
+  
+  "exchangeRate": "Exchange Rate",
+  "@exchangeRate": {
+    "description": "Exchange rate button"
+  },
+  
+  "contactUs": "Contact Us",
+  "@contactUs": {
+    "description": "Contact us button"
+  },
+  
+  "faqs": "FAQs",
+  "@faqs": {
+    "description": "FAQs button"
+  },
+  
+  "aboutSacco": "About SACCO",
+  "@aboutSacco": {
+    "description": "About SACCO button"
+  },
+  
+  "changeLanguage": "Change Language",
+  "@changeLanguage": {
+    "description": "Change language button"
+  },
+  
+  "notAvailableOnDevice": "Not available on this device",
+  "@notAvailableOnDevice": {
+    "description": "Biometric not available message"
+  },
+  
+  "twoFactorAuth": "Two-Factor Authentication",
+  "@twoFactorAuth": {
+    "description": "Two-factor authentication setting"
+  },
+  
+  "disabled": "Disabled",
+  "@disabled": {
+    "description": "Disabled status"
+  },
+  
+  "helpCenter": "Help Center",
+  "@helpCenter": {
+    "description": "Help center menu"
+  },
+  
+  "faqsAndSupport": "FAQs and support",
+  "@faqsAndSupport": {
+    "description": "FAQs and support subtitle"
+  },
+  
+  "getInTouch": "Get in touch",
+  "@getInTouch": {
+    "description": "Contact us subtitle"
+  },
+  
+  "about": "About",
+  "@about": {
+    "description": "About menu"
+  },
+  
+  "version": "Version 1.0.0",
+  "@version": {
+    "description": "App version"
+  },
+  
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button"
+  },
+  
+  "personalInformation": "Personal Information",
+  "@personalInformation": {
+    "description": "Personal information menu"
+  },
+  
+  "paymentPreferences": "Payment Preferences",
+  "@paymentPreferences": {
+    "description": "Payment preferences menu"
+  },
+  
+  "banksAndCards": "Banks and Cards",
+  "@banksAndCards": {
+    "description": "Banks and cards menu"
+  },
+  
+  "memberSince": "Member Since",
+  "@memberSince": {
+    "description": "Member since label"
+  },
+  
+  "accountStatus": "Account Status",
+  "@accountStatus": {
+    "description": "Account status label"
+  },
+  
+  "active": "Active",
+  "@active": {
+    "description": "Active status"
+  },
+  
+  "seniorDesigner": "Senior Designer",
+  "@seniorDesigner": {
+    "description": "Job title"
+  },
+  
+  "support": "SUPPORT",
+  "@support": {
+    "description": "Support section header"
+  },
+  
+  "contactSupport": "Contact Support",
+  "@contactSupport": {
+    "description": "Contact support menu"
+  },
+  
+  "aboutSacco": "About SACCO",
+  "@aboutSacco": {
+    "description": "About SACCO menu"
+  },
+  
+  "loanCalculator": "Loan Calculator",
+  "@loanCalculator": {
+    "description": "Loan calculator title"
+  },
+  
+  "chooseLoanType": "Choose Loan Type",
+  "@chooseLoanType": {
+    "description": "Choose loan type header"
+  },
+  
+  "selectLoanType": "Select the type of loan you want to calculate",
+  "@selectLoanType": {
+    "description": "Select loan type subtitle"
+  },
+  
+  "loanHistory": "Loan History",
+  "@loanHistory": {
+    "description": "Loan history menu"
+  },
+  
+  "viewPreviousLoans": "View your previously calculated loans",
+  "@viewPreviousLoans": {
+    "description": "View previous loans subtitle"
+  },
+  
+  "calculateNewLoan": "Calculate New Loan",
+  "@calculateNewLoan": {
+    "description": "Calculate new loan header"
+  },
+  
+  "personalLoanCalc": "Personal Loan",
+  "@personalLoanCalc": {
+    "description": "Personal loan calculator"
+  },
+  
+  "quickPersonalFinancing": "Quick personal financing",
+  "@quickPersonalFinancing": {
+    "description": "Personal loan subtitle"
+  },
+  
+  "businessLoan": "Business Loan",
+  "@businessLoan": {
+    "description": "Business loan calculator"
+  },
+  
+  "growYourBusiness": "Grow your business",
+  "@growYourBusiness": {
+    "description": "Business loan subtitle"
+  },
+  
+  "mortgagesLoan": "Mortgages Loan",
+  "@mortgagesLoan": {
+    "description": "Mortgage loan calculator"
+  },
+  
+  "homeFinancing": "Home financing",
+  "@homeFinancing": {
+    "description": "Mortgage loan subtitle"
+  },
+  
+  "autoLoan": "Auto Loan",
+  "@autoLoan": {
+    "description": "Auto loan calculator"
+  },
+  
+  "vehicleFinancing": "Vehicle financing",
+  "@vehicleFinancing": {
+    "description": "Auto loan subtitle"
+  },
+  
+  "transactionHistory": "Transaction History",
+  "@transactionHistory": {
+    "description": "Transaction history title"
+  },
+  
+  "all": "All",
+  "@all": {
+    "description": "All transactions filter"
+  },
+  
+  "deposits": "Deposits",
+  "@deposits": {
+    "description": "Deposits filter"
+  },
+  
+  "withdrawals": "Withdrawals",
+  "@withdrawals": {
+    "description": "Withdrawals filter"
+  },
+  
+  "cashDeposit": "Cash Deposit",
+  "@cashDeposit": {
+    "description": "Cash deposit transaction"
+  },
+  
+  "branchCashier": "Branch Cashier",
+  "@branchCashier": {
+    "description": "Branch cashier source"
+  },
+  
+  "completed": "Completed",
+  "@completed": {
+    "description": "Completed status"
+  },
+  
+  "atmWithdrawal": "ATM Withdrawal",
+  "@atmWithdrawal": {
+    "description": "ATM withdrawal transaction"
+  },
+  
+  "mobileMoneyDeposit": "Mobile Money Deposit",
+  "@mobileMoneyDeposit": {
+    "description": "Mobile money deposit transaction"
+  },
+  
+  "wallet": "Wallet",
+  "@wallet": {
+    "description": "Wallet source"
+  },
+  
+  "transferOut": "Transfer Out",
+  "@transferOut": {
+    "description": "Transfer out transaction"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile screen title"
+  },
+  
+  "viewEditProfile": "View and edit profile",
+  "@viewEditProfile": {
+    "description": "Profile subtitle"
+  },
+  
+  "accountPreferences": "Account & Preferences",
+  "@accountPreferences": {
+    "description": "Account preferences section"
+  },
+  
+  "securitySupport": "Security & Support",
+  "@securitySupport": {
+    "description": "Security support section"
+  },
+  
+  "home": "Home",
+  "@home": {
+    "description": "Home navigation"
+  },
+  
+  "accounts": "Accounts",
+  "@accounts": {
+    "description": "Accounts navigation"
+  },
+  
+  "more": "More",
+  "@more": {
+    "description": "More navigation"
+  },
+  
+  "savingsScreen": "Savings",
+  "@savingsScreen": {
+    "description": "Savings screen title"
+  },
+  
+  "loansScreen": "Loans",
+  "@loansScreen": {
+    "description": "Loans screen title"
+  },
+  
+  "chatBot": "Chat Bot",
+  "@chatBot": {
+    "description": "Chat bot title"
+  },
+  
+  "howCanIHelp": "How can I help you today?",
+  "@howCanIHelp": {
+    "description": "Chat bot greeting"
+  },
+  
+  "typeMessage": "Type a message...",
+  "@typeMessage": {
+    "description": "Chat input placeholder"
+  },
+  
+  "send": "Send",
+  "@send": {
+    "description": "Send button"
+  },
+  
+  "back": "Back",
+  "@back": {
+    "description": "Back button"
+  },
+  
+  "menu": "Menu",
+  "@menu": {
+    "description": "Menu button"
+  },
+  
+  "close": "Close",
+  "@close": {
+    "description": "Close button"
+  },
+  
+  "messageCenter": "Message Center",
+  "@messageCenter": {
+    "description": "Message center menu"
+  },
+  
+  "address": "Address",
+  "@address": {
+    "description": "Address menu"
+  },
+  
+  "repayments": "Repayments",
+  "@repayments": {
+    "description": "Loan repayments tab"
+  },
+  
+  "disbursements": "Disbursements",
+  "@disbursements": {
+    "description": "Loan disbursements tab"
+  },
+  
+  "buySell": "Buy/Sell",
+  "@buySell": {
+    "description": "Share buy/sell tab"
+  },
+  
+  "dividends": "Dividends",
+  "@dividends": {
+    "description": "Share dividends tab"
+  },
+  
+  "helloWelcome": "Hello and Welcome!",
+  "@helloWelcome": {
+    "description": "Chat bot greeting"
+  },
+  
+  "supportIntro": "I'm Selam, your Ethio SACCO digital assistant. I'm here to help with membership, savings, loans, transfers and other SACCO services. How can I assist you today?",
+  "@supportIntro": {
+    "description": "Chat bot introduction"
+  },
+  
+  "mainMenu": "Main Menu",
+  "@mainMenu": {
+    "description": "Main menu button"
+  },
+  
+  "savingDays": "Saving days",
+  "@savingDays": {
+    "description": "Label for saving period"
+  },
+  
+  "interestRate": "Interest Rate",
+  "@interestRate": {
+    "description": "Interest rate label"
+  },
+  
+  "minDeposit": "Min Deposit",
+  "@minDeposit": {
+    "description": "Minimum deposit label"
+  },
+  
+  "maxDeposit": "Max Deposit",
+  "@maxDeposit": {
+    "description": "Maximum deposit label"
+  },
+  
+  "totalLoanBalance": "Total Loan Balance",
+  "@totalLoanBalance": {
+    "description": "Total loan balance header"
+  },
+  
+  "remainingLoan": "Remaining Loan",
+  "@remainingLoan": {
+    "description": "Remaining loan amount"
+  },
+  
+  "totalInterest": "Total Interest",
+  "@totalInterest": {
+    "description": "Total interest amount"
+  },
+  
+  "initialLoanProvided": "Initial Loan Provided",
+  "@initialLoanProvided": {
+    "description": "Initial loan amount label"
+  },
+  
+  "monthlyPayment": "Monthly Payment",
+  "@monthlyPayment": {
+    "description": "Monthly payment amount"
+  },
+  
+  "monthsLeft": "months left",
+  "@monthsLeft": {
+    "description": "Remaining months label"
+  },
+  
+  "noLimit": "No Limit",
+  "@noLimit": {
+    "description": "No limit text for deposits"
   }
 }

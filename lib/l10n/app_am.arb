@@ -92,5 +92,319 @@
   
   "twoFactorAuth": "ባለሁለት-ደረጃ ማረጋገጫ",
   
-  "faqsAndSupport": "ተደጋጋሚ ጥያቄዎች እና ድጋፍ"
+  "faqsAndSupport": "ተደጋጋሚ ጥያቄዎች እና ድጋፍ",
+  
+  "contactSupport": "ድጋፍ ያግኙ",
+  
+  "aboutSacco": "ስለ ሳኮስ",
+  
+  "privacySecurity": "ግላዊነት እና ደህንነት",
+  
+  "fontSize": "የፊደል መጠን",
+  
+  "medium": "መካከለኛ",
+  
+  "theme": "ገጽታ",
+  
+  "darkMode": "ጨለማ ገጽታ",
+  
+  "lightMode": "ብሩህ ገጽታ",
+  
+  "accountPreferences": "መለያ እና ምርጫዎች",
+  
+  "support": "ድጋፍ",
+  
+  "mainAccount": "ዋና መለያ",
+  
+  "personalLoan": "የግል ብድር",
+  
+  "shareAccount": "የአክሲዮን መለያ",
+  
+  "regularSavings": "መደበኛ ቁጠባ",
+  
+  "fixedDeposit": "የተወሰነ ጊዜ ተቀማጭ",
+  
+  "emergencyFund": "የአደጋ ጊዜ ገንዘብ",
+  
+  "childrenEducation": "የልጆች ትምህርት",
+  
+  "holidaySavings": "የበዓል ቁጠባ",
+  
+  "viewBalancesDetails": "ሂሳቦችን እና ዝርዝሮችን ይመልከቱ",
+  
+  "calculatePayments": "ክፍያዎችን ያስሉ",
+  
+  "downloadView": "አውርድ እና ይመልከቱ",
+  
+  "addFunds": "ገንዘብ ያክሉ",
+  
+  "cashWithdrawal": "ገንዘብ ማውጣት",
+  
+  "sendMoney": "ገንዘብ ላክ",
+  
+  "viewEditProfile": "መገለጫዎን ይመልከቱ እና ያርትዑ",
+  
+  "quickPersonalFinancing": "ፈጣን የግል ብድር",
+  
+  "growYourBusiness": "ንግድዎን ያሳድጉ",
+  
+  "homeFinancing": "የቤት ብድር",
+  
+  "vehicleFinancing": "የተሽከርካሪ ብድር",
+  
+  "businessLoan": "የንግድ ብድር",
+  
+  "mortgagesLoan": "የቤት ብድር",
+  
+  "autoLoan": "የመኪና ብድር",
+  
+  "payToMerchant": "ለነጋዴ ክፈል",
+  
+  "paymentRequest": "የክፍያ ጥያቄ",
+  
+  "ticket": "ቲኬት",
+  
+  "governmentServices": "የመንግስት አገልግሎቶች",
+  
+  "payFor": "ክፈል ለ",
+  
+  "donations": "ልገሳዎች",
+  
+  "otherServices": "ሌሎች አገልግሎቶች",
+  
+  "scanQr": "QR ስካን",
+  
+  "home": "ቤት",
+  
+  "accounts": "መለያዎች",
+  
+  "loans": "ብድሮች",
+  
+  "more": "ተጨማሪ",
+  
+  "savings": "ቁጠባ",
+  
+  "savingsAccount": "የቁጠባ መለያ",
+  
+  "manageSavings": "ቁጠባዎን ያስተዳድሩ፣ ወለድ እና ተቀማጭ ገንዘብ ይመልከቱ",
+  
+  "loanServices": "የብድር አገልግሎቶች",
+  
+  "applyLoans": "ለብድር ያመልክቱ፣ የብድር ሁኔታ እና ክፍያዎችን ይመልከቱ",
+  
+  "newUserSignUp": "አዲስ ተጠቃሚ ነኝ። ይመዝገቡ",
+  
+  "fontSize": "የፊደል መጠን",
+  
+  "medium": "መካከለኛ",
+  
+  "pushNotifications": "የመላክ ማሳወቂያዎች",
+  
+  "emailNotifications": "የኢሜይል ማሳወቂያዎች",
+  
+  "weeklySum": "ሳምንታዊ ማጠቃለያ",
+  
+  "vibration": "ንዝረት",
+  
+  "enabled": "ነቅቷል",
+  
+  "savingsAccounts": "የቁጠባ መለያዎች",
+  
+  "shares": "አክሲዮኖች",
+  
+  "transfers": "ማስተላለፊያዎች",
+  
+  "member": "አባል",
+  
+  "quickActions": "ፈጣን እርምጃዎች",
+  
+  "saving": "ቁጠባ",
+  
+  "loan": "ብድር",
+  
+  "pay": "ክፈል",
+  
+  "view": "ይመልከቱ",
+  
+  "apply": "ያመልክቱ",
+  
+  "bills": "ሂሳቦች",
+  
+  "history": "ታሪክ",
+  
+  "saccoSupport": "የሳኮ ድጋፍ",
+  
+  "typicallyReplies": "በአብዛኛው በጥቂት ደቂቃዎች ውስጥ ይመልሳል",
+  
+  "helloWelcome": "ሰላም እና እንኳን ደህና መጡ!",
+  
+  "supportIntro": "እኔ ሰላም ነኝ፣ የእርስዎ የኢትዮ ሳኮ ዲጂታል ረዳት። በአባልነት፣ ቁጠባ፣ ብድር፣ ማስተላለፍ እና ሌሎች የሳኮ አገልግሎቶች ላይ ለመርዳት እዚህ ነኝ። ዛሬ እንዴት ልረዳዎት?",
+  
+  "mainMenu": "ዋና ሜኑ",
+  
+  "chooseOption": "ለመቀጠል አንድ አማራጭ ይምረጡ:",
+  
+  "saccoServices": "የሳኮ አገልግሎቶች",
+  
+  "memberSelfService": "የአባል ራስ አገልግሎት",
+  
+  "exchangeRate": "የምንዛሪ ተመን",
+  
+  "contactUs": "ያግኙን",
+  
+  "faqs": "ተደጋጋሚ ጥያቄዎች",
+  
+  "aboutSacco": "ስለ ሳኮ",
+  
+  "changeLanguage": "ቋንቋ ይቀይሩ",
+  
+  "notAvailableOnDevice": "በዚህ መሳሪያ ላይ አይገኝም",
+  
+  "twoFactorAuth": "ባለሁለት ደረጃ ማረጋገጫ",
+  
+  "disabled": "ተሰናክሏል",
+  
+  "helpCenter": "የእርዳታ ማዕከል",
+  
+  "faqsAndSupport": "ተደጋጋሚ ጥያቄዎች እና ድጋፍ",
+  
+  "getInTouch": "ያግኙን",
+  
+  "about": "ስለ",
+  
+  "version": "ስሪት 1.0.0",
+  
+  "logout": "ውጣ",
+  
+  "personalInformation": "የግል መረጃ",
+  
+  "paymentPreferences": "የክፍያ ምርጫዎች",
+  
+  "banksAndCards": "ባንኮች እና ካርዶች",
+  
+  "memberSince": "አባል ከ",
+  
+  "accountStatus": "የመለያ ሁኔታ",
+  
+  "active": "ንቁ",
+  
+  "seniorDesigner": "ሲኒየር ዲዛይነር",
+  
+  "support": "ድጋፍ",
+  
+  "contactSupport": "ድጋፍ ያግኙ",
+  
+  "aboutSacco": "ስለ ሳኮ",
+  
+  "loanCalculator": "የብድር ካልኩሌተር",
+  
+  "chooseLoanType": "የብድር አይነት ይምረጡ",
+  
+  "selectLoanType": "ማስላት የሚፈልጉትን የብድር አይነት ይምረጡ",
+  
+  "loanHistory": "የብድር ታሪክ",
+  
+  "viewPreviousLoans": "ቀደም ሲል የተሰሉ ብድሮችዎን ይመልከቱ",
+  
+  "calculateNewLoan": "አዲስ ብድር ያስሉ",
+  
+  "personalLoanCalc": "የግል ብድር",
+  
+  "quickPersonalFinancing": "ፈጣን የግል ፋይናንስ",
+  
+  "businessLoan": "የንግድ ብድር",
+  
+  "growYourBusiness": "ንግድዎን ያሳድጉ",
+  
+  "mortgagesLoan": "የቤት ብድር",
+  
+  "homeFinancing": "የቤት ፋይናንስ",
+  
+  "autoLoan": "የመኪና ብድር",
+  
+  "vehicleFinancing": "የተሽከርካሪ ፋይናንስ",
+  
+  "transactionHistory": "የግብይት ታሪክ",
+  
+  "all": "ሁሉም",
+  
+  "deposits": "ተቀማጭ ገንዘቦች",
+  
+  "withdrawals": "መውጫዎች",
+  
+  "cashDeposit": "የገንዘብ ተቀማጭ",
+  
+  "branchCashier": "የቅርንጫፍ ገንዘብ ያዥ",
+  
+  "completed": "ተጠናቅቋል",
+  
+  "atmWithdrawal": "ኤቲኤም መውጫ",
+  
+  "mobileMoneyDeposit": "የሞባይል ገንዘብ ተቀማጭ",
+  
+  "wallet": "ዋሌት",
+  
+  "transferOut": "ማስተላለፊያ ወጪ",
+  
+  "profile": "መገለጫ",
+  
+  "viewEditProfile": "መገለጫ ይመልከቱ እና ያርትዑ",
+  
+  "accountPreferences": "መለያ እና ምርጫዎች",
+  
+  "securitySupport": "ደህንነት እና ድጋፍ",
+  
+  "home": "ቤት",
+  
+  "accounts": "መለያዎች",
+  
+  "more": "ተጨማሪ",
+  
+  "savingsScreen": "ቁጠባ",
+  
+  "loansScreen": "ብድሮች",
+  
+  "chatBot": "የውይይት ሮቦት",
+  
+  "howCanIHelp": "ዛሬ እንዴት ልረዳዎት?",
+  
+  "typeMessage": "መልእክት ይተይቡ...",
+  
+  "send": "ላክ",
+  
+  "back": "ተመለስ",
+  
+  "menu": "ሜኑ",
+  
+  "close": "ዝጋ",
+  
+  "messageCenter": "የመልእክት ማዕከል",
+  
+  "address": "አድራሻ",
+  
+  "repayments": "ክፍያዎች",
+  
+  "disbursements": "ብድር ማከፋፈያ",
+  
+  "buySell": "ግዢ/ሽያጭ",
+  
+  "dividends": "ትርፍ ክፍፍል",
+  
+  "helloWelcome": "ሰላም እና እንኳን ደህና መጡ!",
+  
+  "supportIntro": "እኔ ሰላም ነኝ፣ የእርስዎ የኢትዮ ሳኮ ዲጂታል ረዳት። በአባልነት፣ ቁጠባ፣ ብድር፣ ማስተላለፊያ እና ሌሎች የሳኮ አገልግሎቶች ላይ ለመርዳት እዚህ ነኝ። ዛሬ እንዴት ልረዳዎት?",
+  
+  "mainMenu": "ዋና ሜኑ",
+  
+  "savingDays": "የቁጠባ ቀናት",
+  "interestRate": "የወለድ መጠን",
+  "minDeposit": "ዝቅተኛ ተቀማጭ",
+  "maxDeposit": "ከፍተኛ ተቀማጭ",
+  "totalLoanBalance": "አጠቃላይ የብድር ቀሪ",
+  "remainingLoan": "የቀረ ብድር",
+  "totalInterest": "አጠቃላይ ወለድ",
+  "initialLoanProvided": "መጀመሪያ የተሰጠ ብድር",
+  "monthlyPayment": "ወርሃዊ ክፍያ",
+  "monthsLeft": "ወራት ቀርተዋል",
+  "noLimit": "ገደብ የለም"
 }

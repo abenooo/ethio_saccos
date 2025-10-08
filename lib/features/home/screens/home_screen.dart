@@ -7,6 +7,7 @@ import '../../../core/providers/theme_provider.dart';
 import '../../../core/services/navigation_service.dart';
 import '../../loans/screens/loan_calculator_screen.dart';
 import 'transaction_details_screen.dart';
+import '../../../generated/l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   final bool showBottomNav;
@@ -64,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Welcome back,',
+                            AppLocalizations.of(context).welcomeBack,
                             style: TextStyle(
                               color: cs.secondary.withValues(alpha: 0.8),
                               fontSize: 12,
@@ -338,7 +339,7 @@ class _ModernQuickActions extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Quick Actions',
+            AppLocalizations.of(context).quickActions,
             style: TextStyle(
               color: Colors.black, // Always black text on white background
               fontSize: 14,
@@ -351,7 +352,7 @@ class _ModernQuickActions extends StatelessWidget {
             children: [
               _QuickActionButton(
                 icon: Icons.savings_rounded,
-                label: 'Saving\nDeposit',
+                label: '${AppLocalizations.of(context).saving}\n${AppLocalizations.of(context).deposit}',
                 backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   NavigationService.navigateToSavings(context);
@@ -359,7 +360,7 @@ class _ModernQuickActions extends StatelessWidget {
               ),
               _QuickActionButton(
                 icon: Icons.account_balance_rounded,
-                label: 'Loan\nApply',
+                label: '${AppLocalizations.of(context).loan}\n${AppLocalizations.of(context).apply}',
                 backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   NavigationService.navigateToLoans(context);
@@ -367,7 +368,7 @@ class _ModernQuickActions extends StatelessWidget {
               ),
               _QuickActionButton(
                 icon: Icons.payment_rounded,
-                label: 'Pay\nBills',
+                label: '${AppLocalizations.of(context).pay}\n${AppLocalizations.of(context).bills}',
                 backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   // TODO: Navigate to payment screen
@@ -375,7 +376,7 @@ class _ModernQuickActions extends StatelessWidget {
               ),
               _QuickActionButton(
                 icon: Icons.history_rounded,
-                label: 'View\nHistory',
+                label: '${AppLocalizations.of(context).view}\n${AppLocalizations.of(context).history}',
                 backgroundColor: cs.primary, // Use theme primary color
                 onTap: () {
                   Navigator.of(context).push(
@@ -495,14 +496,14 @@ class _AccountMenuSection extends StatelessWidget {
             _buildQuickAccessCard(
               context,
               icon: Icons.account_balance_wallet_outlined,
-              title: 'My Accounts',
+              title: AppLocalizations.of(context).myAccounts,
               subtitle: '',
               accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.calculate_outlined,
-              title: 'Loan Calculator',
+              title: AppLocalizations.of(context).loanCalculator,
               subtitle: '',
               accentColor: Theme.of(context).colorScheme.secondary,
               onTap: () {
@@ -517,28 +518,28 @@ class _AccountMenuSection extends StatelessWidget {
             _buildQuickAccessCard(
               context,
               icon: Icons.receipt_long_outlined,
-              title: 'Statements',
+              title: AppLocalizations.of(context).statements,
               subtitle: '',
               accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.add_circle_outline,
-              title: 'Deposit',
+              title: AppLocalizations.of(context).deposit,
               subtitle: '',
               accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.remove_circle_outline,
-              title: 'Withdraw',
+              title: AppLocalizations.of(context).withdraw,
               subtitle: '',
               accentColor: Theme.of(context).colorScheme.secondary,
             ),
             _buildQuickAccessCard(
               context,
               icon: Icons.swap_horiz_outlined,
-              title: 'Transfer',
+              title: AppLocalizations.of(context).transfer,
               subtitle: '',
               accentColor: Theme.of(context).colorScheme.secondary,
             ),
