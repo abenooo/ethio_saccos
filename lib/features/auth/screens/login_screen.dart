@@ -105,11 +105,20 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Colors.transparent,
         foregroundColor: cs.onBackground,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height - 
+                         MediaQuery.of(context).padding.top - 
+                         MediaQuery.of(context).padding.bottom - 
+                         kToolbarHeight - 40, // Account for padding
+            ),
+            child: IntrinsicHeight(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
             Center(
               child: Padding(
                 padding: const EdgeInsets.only(top: 8, bottom: 8),
@@ -128,11 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
               AppLocalizations.of(context).signIn, 
               style: TextStyle(color: cs.onBackground, fontSize: 28, fontWeight: FontWeight.w700)
             ),
-
+            const SizedBox(height: 16),
             
             // Demo credentials info card
             Container(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: cs.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
@@ -166,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.03), // Responsive spacing
             Text(AppLocalizations.of(context).emailAddress, style: TextStyle(color: cs.onBackground.withValues(alpha: 0.7))),
             const SizedBox(height: 8),
             TextField(
@@ -280,7 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
             
-            const Spacer(),
+            const Flexible(child: SizedBox(height: 20)),
             Center(
               child: TextButton(
                 onPressed: () {
@@ -288,8 +297,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: Text(AppLocalizations.of(context).newUserSignUp),
               ),
-            )
-          ],
+            ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
